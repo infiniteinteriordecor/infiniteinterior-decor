@@ -1,0 +1,651 @@
+/**
+ * CSS Reset - Professional Reset Styles
+ * 
+ * This file provides a comprehensive CSS reset for the Infinite Interior Decor website.
+ * Based on modern best practices including:
+ * - Box-sizing reset
+ * - Remove default margins
+ * - Normalize typography
+ * - Remove list styles
+ * - Reset form elements
+ * - Reset tables
+ * - Reset media elements
+ * 
+ * Usage:
+ * - Import this file after design-tokens.css and breakpoints.css
+ * - This should be the first stylesheet imported in your CSS
+ * 
+ * Philosophy:
+ * - Remove browser defaults for consistency
+ * - Provide a clean slate for custom styling
+ * - Maintain accessibility and usability
+ * - Support modern browsers (last 2 versions)
+ */
+
+/* ============================================
+   BOX SIZING RESET
+   ============================================ */
+
+/**
+ * Change the box model so that `width` and `height` are not affected by `padding` or `border`.
+ * This is the modern, recommended approach.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ============================================
+   DOCUMENT RESET
+   ============================================ */
+
+/**
+ * Remove default margin and padding from the document body
+ * Set default font family and line height
+ */
+html {
+  /* Ensure consistent font sizing across browsers */
+  -webkit-text-size-adjust: 100%;
+  /* Prevent iOS text size adjust after orientation change */
+  -webkit-tap-highlight-color: transparent;
+  /* Remove tap highlight color on mobile */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  /* Use design token for font family */
+  font-family: var(--font-family-base);
+  /* Use design token for line height */
+  line-height: var(--line-height-normal);
+  /* Use design token for text color */
+  color: var(--color-text-primary);
+  /* Use design token for background color */
+  background-color: var(--color-bg-primary);
+  /* Smooth scrolling for anchor links */
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+   TYPOGRAPHY RESET
+   ============================================ */
+
+/**
+ * Remove default margins from headings
+ * Reset heading font sizes to base size
+ * Headings will be styled in component files
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/**
+ * Remove default margins from paragraphs
+ */
+p {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset text elements
+ */
+address,
+blockquote,
+dl,
+ol,
+ul,
+figure,
+fieldset,
+legend {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset links
+ * Remove default underline and color
+ */
+a {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+/**
+ * Reset links on hover and focus
+ */
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+/**
+ * Reset strong and b to use semantic font weight
+ */
+strong,
+b {
+  font-weight: var(--font-weight-bold);
+}
+
+/**
+ * Reset em and i to use semantic font style
+ */
+em,
+i {
+  font-style: italic;
+}
+
+/**
+ * Reset small element
+ */
+small {
+  font-size: var(--font-size-sm);
+}
+
+/**
+ * Reset mark element
+ */
+mark {
+  background-color: var(--color-warning-200);
+  color: var(--color-text-primary);
+}
+
+/**
+ * Reset code elements
+ */
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-family-mono);
+  font-size: 1em;
+}
+
+/**
+ * Reset pre element
+ */
+pre {
+  margin: 0;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/**
+ * Reset sub and sup elements
+ */
+sub,
+sup {
+  position: relative;
+  font-size: 0.75em;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+/* ============================================
+   LIST RESET
+   ============================================ */
+
+/**
+ * Remove default list styles
+ */
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset list item margins
+ */
+li {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset description lists
+ */
+dl,
+dt,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   TABLE RESET
+   ============================================ */
+
+/**
+ * Reset table elements
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset table cells
+ */
+th,
+td {
+  padding: 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+/**
+ * Reset table caption
+ */
+caption {
+  padding: 0;
+  text-align: left;
+  caption-side: top;
+}
+
+/* ============================================
+   FORM ELEMENT RESET
+   ============================================ */
+
+/**
+ * Reset form elements
+ */
+form {
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset fieldset
+ */
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+
+/**
+ * Reset legend
+ */
+legend {
+  display: table;
+  max-width: 100%;
+  white-space: normal;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset label
+ */
+label {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+/**
+ * Reset input elements
+ */
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset input and textarea
+ */
+input,
+textarea {
+  /* Remove default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Remove outline on focus (will be styled in components) */
+  outline: none;
+  /* Remove default border */
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-base);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+/**
+ * Reset input types
+ */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"],
+input[type="week"],
+textarea {
+  width: 100%;
+  padding: var(--spacing-3) var(--spacing-4);
+}
+
+/**
+ * Reset checkbox and radio
+ */
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  height: auto;
+  padding: 0;
+  border: 1px solid var(--color-border-medium);
+  cursor: pointer;
+}
+
+/**
+ * Reset file input
+ */
+input[type="file"] {
+  width: auto;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/**
+ * Reset range input
+ */
+input[type="range"] {
+  width: 100%;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/**
+ * Reset color input
+ */
+input[type="color"] {
+  width: auto;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+/**
+ * Reset select
+ */
+select {
+  width: 100%;
+  padding: var(--spacing-3) var(--spacing-4);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-base);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  /* Remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23737373' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-3) center;
+  padding-right: var(--spacing-10);
+}
+
+/**
+ * Reset textarea
+ */
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/**
+ * Reset button
+ */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: inherit;
+  /* Remove default appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/**
+ * Reset button on focus
+ */
+button:focus {
+  outline: none;
+}
+
+/**
+ * Reset button disabled state
+ */
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ============================================
+   MEDIA ELEMENT RESET
+   ============================================ */
+
+/**
+ * Reset images
+ */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset embedded content
+ */
+iframe {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset audio
+ */
+audio {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   OTHER ELEMENT RESET
+   ============================================ */
+
+/**
+ * Reset hr
+ */
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border-light);
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset blockquote
+ */
+blockquote {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset abbr
+ */
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+/**
+ * Reset details and summary
+ */
+details {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Reset dialog
+ */
+dialog {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+}
+
+/**
+ * Reset progress and meter
+ */
+progress,
+meter {
+  display: inline-block;
+  vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================ */
+
+/**
+ * Ensure focus styles are visible for keyboard navigation
+ * Actual focus styles will be defined in component files
+ */
+:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Hide elements visually but keep them accessible for screen readers
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/**
+ * Remove animations for users who prefer reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+/**
+ * Basic print styles reset
+ */
+@media print {
+  body {
+    background-color: var(--color-white);
+    color: var(--color-black);
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+  
+  img {
+    page-break-inside: avoid;
+  }
+  
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+  
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}

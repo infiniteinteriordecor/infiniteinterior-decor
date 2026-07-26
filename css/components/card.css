@@ -1,0 +1,621 @@
+/**
+ * Card Component Styles
+ * 
+ * A versatile card component for displaying content in a structured layout.
+ * Supports multiple variants, sizes, and content arrangements.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use card classes for content containers
+ * - Combine with grid system for layouts
+ * - Customize with utility classes
+ * 
+ * Variants:
+ * - Default: Standard card with shadow
+ * - Flat: Card without shadow
+ * - Bordered: Card with border instead of shadow
+ * - Elevated: Card with larger shadow
+ * - Featured: Prominent card with accent border
+ * 
+ * Sizes:
+ * - Small: Compact card
+ * - Medium: Default size
+ * - Large: Spacious card
+ * 
+ * Content:
+ * - Image: Card with image
+ * - Horizontal: Horizontal layout
+ * - Overlay: Text overlay on image
+ */
+
+/* ============================================
+   CARD BASE STYLES
+   ============================================ */
+
+/**
+ * Base card styles
+ * Applied to all card variants
+ */
+.card {
+  /* Display and layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* Spacing */
+  overflow: hidden;
+  
+  /* Background */
+  background-color: var(--color-bg-primary);
+  
+  /* Border and radius */
+  border-radius: var(--radius-xl);
+  
+  /* Shadow */
+  box-shadow: var(--shadow-base);
+  
+  /* Transition */
+  transition: var(--transition-base-all);
+  
+  /* Position */
+  position: relative;
+}
+
+/**
+ * Card hover effect
+ */
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ============================================
+   CARD VARIANTS
+   ============================================ */
+
+/**
+ * Flat card
+ * No shadow, minimal styling
+ */
+.card--flat {
+  box-shadow: none;
+  border: 1px solid var(--color-border-light);
+}
+
+.card--flat:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--color-border-medium);
+}
+
+/**
+ * Bordered card
+ * Border instead of shadow
+ */
+.card--bordered {
+  box-shadow: none;
+  border: 2px solid var(--color-border-light);
+}
+
+.card--bordered:hover {
+  transform: none;
+  box-shadow: var(--shadow-sm);
+  border-color: var(--color-primary);
+}
+
+/**
+ * Elevated card
+ * Larger shadow for emphasis
+ */
+.card--elevated {
+  box-shadow: var(--shadow-lg);
+}
+
+.card--elevated:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/**
+ * Featured card
+ * Accent border and prominent styling
+ */
+.card--featured {
+  border: 2px solid var(--color-primary);
+  box-shadow: var(--shadow-md);
+}
+
+.card--featured:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-dark);
+}
+
+/**
+ * Dark card
+ * Dark background for contrast
+ */
+.card--dark {
+  background-color: var(--color-gray-900);
+  color: var(--color-white);
+}
+
+.card--dark:hover {
+  background-color: var(--color-gray-800);
+}
+
+/* ============================================
+   CARD SIZES
+   ============================================ */
+
+/**
+ * Small card
+ * Compact spacing
+ */
+.card--small {
+  border-radius: var(--radius-lg);
+}
+
+.card--small .card__content {
+  padding: var(--spacing-4);
+}
+
+.card--small .card__title {
+  font-size: var(--font-size-lg);
+}
+
+/**
+ * Medium card (default)
+ * Standard spacing
+ */
+.card--medium .card__content {
+  padding: var(--spacing-6);
+}
+
+.card--medium .card__title {
+  font-size: var(--font-size-xl);
+}
+
+/**
+ * Large card
+ * Spacious spacing
+ */
+.card--large {
+  border-radius: var(--radius-2xl);
+}
+
+.card--large .card__content {
+  padding: var(--spacing-8);
+}
+
+.card--large .card__title {
+  font-size: var(--font-size-2xl);
+}
+
+/* ============================================
+   CARD ELEMENTS
+   ============================================ */
+
+/**
+ * Card image wrapper
+ */
+.card__image {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-gray-100);
+}
+
+.card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-slow) var(--transition-ease-out);
+}
+
+/**
+ * Image zoom on hover
+ */
+.card:hover .card__image img {
+  transform: scale(1.05);
+}
+
+/**
+ * Card image aspect ratios
+ */
+.card__image--aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.card__image--aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.card__image--aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+.card__image--aspect-3-2 {
+  aspect-ratio: 3 / 2;
+}
+
+/**
+ * Card image overlay
+ * Gradient overlay for text readability
+ */
+.card__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-base) var(--transition-ease-out);
+  pointer-events: none;
+}
+
+.card--overlay .card__image::after {
+  opacity: 1;
+}
+
+/**
+ * Card content wrapper
+ */
+.card__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+/**
+ * Card category/tag
+ */
+.card__category {
+  display: inline-block;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-1);
+}
+
+/**
+ * Card title
+ */
+.card__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.card__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--transition-fast) var(--transition-ease-out);
+}
+
+.card__title a:hover {
+  color: var(--color-primary);
+}
+
+/**
+ * Card description
+ */
+.card__description {
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/**
+ * Card metadata
+ */
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin-top: var(--spacing-2);
+}
+
+.card__meta-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.card__meta-icon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+/**
+ * Card footer
+ */
+.card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  margin-top: var(--spacing-4);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/**
+ * Card actions
+ */
+.card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+/* ============================================
+   CARD LAYOUT VARIANTS
+   ============================================ */
+
+/**
+ * Horizontal card
+ * Image on left, content on right
+ */
+.card--horizontal {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.card--horizontal .card__image {
+  width: 40%;
+  flex-shrink: 0;
+}
+
+.card--horizontal .card__content {
+  width: 60%;
+  flex: 1;
+}
+
+@media (max-width: 639px) {
+  .card--horizontal {
+    flex-direction: column;
+  }
+  
+  .card--horizontal .card__image {
+    width: 100%;
+  }
+  
+  .card--horizontal .card__content {
+    width: 100%;
+  }
+}
+
+/**
+ * Overlay card
+ * Content overlay on image
+ */
+.card--overlay {
+  position: relative;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.card--overlay .card__image {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.card--overlay .card__content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  justify-content: flex-end;
+  padding: var(--spacing-6);
+  color: var(--color-white);
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+}
+
+.card--overlay .card__title {
+  color: var(--color-white);
+}
+
+.card--overlay .card__description {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.card--overlay .card__category {
+  color: var(--color-primary-300);
+}
+
+.card--overlay .card__meta {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.card--overlay .card__footer {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================
+   CARD STATES
+   ============================================ */
+
+/**
+ * Clickable card
+ * Entire card is clickable
+ */
+.card--clickable {
+  cursor: pointer;
+}
+
+.card--clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.card--clickable:active {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/**
+ * Disabled card
+ */
+.card--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  filter: grayscale(0.5);
+}
+
+/**
+ * Loading card
+ */
+.card--loading {
+  pointer-events: none;
+}
+
+.card--loading .card__content {
+  opacity: 0.5;
+}
+
+.card--loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================
+   CARD GROUP
+   ============================================ */
+
+/**
+ * Card group container
+ */
+.card-group {
+  display: grid;
+  gap: var(--spacing-6);
+}
+
+.card-group--2-col {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.card-group--3-col {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-group--4-col {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 639px) {
+  .card-group--2-col,
+  .card-group--3-col,
+  .card-group--4-col {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .card-group--3-col,
+  .card-group--4-col {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.card--clickable:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * High contrast mode support
+ */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid currentColor;
+  }
+  
+  .card--flat,
+  .card--bordered {
+    border-width: 3px;
+  }
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  
+  .card:hover {
+    transform: none;
+  }
+  
+  .card:hover .card__image img {
+    transform: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+/**
+ * Print styles for cards
+ */
+@media print {
+  .card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid var(--color-gray-300);
+    page-break-inside: avoid;
+  }
+  
+  .card--flat,
+  .card--bordered,
+  .card--elevated,
+  .card--featured {
+    box-shadow: none;
+    border: 1px solid var(--color-gray-300);
+  }
+  
+  .card--clickable:hover {
+    transform: none;
+  }
+  
+  .card:hover .card__image img {
+    transform: none;
+  }
+  
+  .card__image::after {
+    display: none;
+  }
+}

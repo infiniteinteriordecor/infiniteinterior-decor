@@ -1,0 +1,819 @@
+/**
+ * Responsive Grid System
+ * 
+ * A flexible, responsive grid system built with CSS Grid.
+ * Supports multiple column layouts, gaps, and responsive breakpoints.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use grid classes for layout structure
+ * - Combine with utility classes for spacing and alignment
+ * 
+ * Features:
+ * - Responsive column counts
+ * - Automatic row sizing
+ * - Configurable gaps
+ * - Alignment options
+ * - Nested grid support
+ * - Mobile-first approach
+ */
+
+/* ============================================
+   GRID CONTAINER
+   ============================================ */
+
+/**
+ * Base grid container
+ * Creates a CSS Grid layout with automatic columns
+ */
+.grid {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(var(--grid-columns, 1), minmax(0, 1fr));
+}
+
+/**
+ * Grid container with fixed columns
+ */
+.grid--fixed {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(var(--grid-columns, 12), 1fr);
+}
+
+/**
+ * Grid container with auto-fit columns
+ * Automatically adjusts column count based on available space
+ */
+.grid--auto-fit {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min-width, 300px)), 1fr));
+}
+
+/**
+ * Grid container with auto-fill columns
+ * Similar to auto-fit but doesn't expand columns to fill space
+ */
+.grid--auto-fill {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--grid-min-width, 300px)), 1fr));
+}
+
+/* ============================================
+   GRID GAPS
+   ============================================ */
+
+/**
+ * No gap between grid items
+ */
+.grid--gap-none {
+  gap: 0;
+}
+
+/**
+ * Small gap between grid items
+ */
+.grid--gap-sm {
+  gap: var(--spacing-4);
+}
+
+/**
+ * Medium gap between grid items (default)
+ */
+.grid--gap-md {
+  gap: var(--spacing-6);
+}
+
+/**
+ * Large gap between grid items
+ */
+.grid--gap-lg {
+  gap: var(--spacing-8);
+}
+
+/**
+ * Extra large gap between grid items
+ */
+.grid--gap-xl {
+  gap: var(--spacing-12);
+}
+
+/**
+ * Custom gap using design token
+ */
+.grid--gap-custom {
+  gap: var(--grid-gap, var(--spacing-6));
+}
+
+/* ============================================
+   GRID COLUMN SPANS
+   ============================================ */
+
+/**
+ * Span 1 column
+ */
+.grid__col-span-1 {
+  grid-column: span 1 / span 1;
+}
+
+/**
+ * Span 2 columns
+ */
+.grid__col-span-2 {
+  grid-column: span 2 / span 2;
+}
+
+/**
+ * Span 3 columns
+ */
+.grid__col-span-3 {
+  grid-column: span 3 / span 3;
+}
+
+/**
+ * Span 4 columns
+ */
+.grid__col-span-4 {
+  grid-column: span 4 / span 4;
+}
+
+/**
+ * Span 5 columns
+ */
+.grid__col-span-5 {
+  grid-column: span 5 / span 5;
+}
+
+/**
+ * Span 6 columns
+ */
+.grid__col-span-6 {
+  grid-column: span 6 / span 6;
+}
+
+/**
+ * Span 7 columns
+ */
+.grid__col-span-7 {
+  grid-column: span 7 / span 7;
+}
+
+/**
+ * Span 8 columns
+ */
+.grid__col-span-8 {
+  grid-column: span 8 / span 8;
+}
+
+/**
+ * Span 9 columns
+ */
+.grid__col-span-9 {
+  grid-column: span 9 / span 9;
+}
+
+/**
+ * Span 10 columns
+ */
+.grid__col-span-10 {
+  grid-column: span 10 / span 10;
+}
+
+/**
+ * Span 11 columns
+ */
+.grid__col-span-11 {
+  grid-column: span 11 / span 11;
+}
+
+/**
+ * Span 12 columns (full width)
+ */
+.grid__col-span-12 {
+  grid-column: span 12 / span 12;
+}
+
+/**
+ * Span all columns
+ */
+.grid__col-span-full {
+  grid-column: 1 / -1;
+}
+
+/* ============================================
+   GRID ROW SPANS
+   ============================================ */
+
+/**
+ * Span 1 row
+ */
+.grid__row-span-1 {
+  grid-row: span 1 / span 1;
+}
+
+/**
+ * Span 2 rows
+ */
+.grid__row-span-2 {
+  grid-row: span 2 / span 2;
+}
+
+/**
+ * Span 3 rows
+ */
+.grid__row-span-3 {
+  grid-row: span 3 / span 3;
+}
+
+/**
+ * Span 4 rows
+ */
+.grid__row-span-4 {
+  grid-row: span 4 / span 4;
+}
+
+/**
+ * Span all rows
+ */
+.grid__row-span-full {
+  grid-row: 1 / -1;
+}
+
+/* ============================================
+   GRID COLUMN START
+   ============================================ */
+
+/**
+ * Start at column 1
+ */
+.grid__col-start-1 {
+  grid-column-start: 1;
+}
+
+/**
+ * Start at column 2
+ */
+.grid__col-start-2 {
+  grid-column-start: 2;
+}
+
+/**
+ * Start at column 3
+ */
+.grid__col-start-3 {
+  grid-column-start: 3;
+}
+
+/**
+ * Start at column 4
+ */
+.grid__col-start-4 {
+  grid-column-start: 4;
+}
+
+/**
+ * Start at column 5
+ */
+.grid__col-start-5 {
+  grid-column-start: 5;
+}
+
+/**
+ * Start at column 6
+ */
+.grid__col-start-6 {
+  grid-column-start: 6;
+}
+
+/**
+ * Start at column 7
+ */
+.grid__col-start-7 {
+  grid-column-start: 7;
+}
+
+/**
+ * Start at column 8
+ */
+.grid__col-start-8 {
+  grid-column-start: 8;
+}
+
+/**
+ * Start at column 9
+ */
+.grid__col-start-9 {
+  grid-column-start: 9;
+}
+
+/**
+ * Start at column 10
+ */
+.grid__col-start-10 {
+  grid-column-start: 10;
+}
+
+/**
+ * Start at column 11
+ */
+.grid__col-start-11 {
+  grid-column-start: 11;
+}
+
+/**
+ * Start at column 12
+ */
+.grid__col-start-12 {
+  grid-column-start: 12;
+}
+
+/**
+ * Start at auto
+ */
+.grid__col-start-auto {
+  grid-column-start: auto;
+}
+
+/* ============================================
+   GRID COLUMN END
+   ============================================ */
+
+/**
+ * End at column 1
+ */
+.grid__col-end-1 {
+  grid-column-end: 1;
+}
+
+/**
+ * End at column 2
+ */
+.grid__col-end-2 {
+  grid-column-end: 2;
+}
+
+/**
+ * End at column 3
+ */
+.grid__col-end-3 {
+  grid-column-end: 3;
+}
+
+/**
+ * End at column 4
+ */
+.grid__col-end-4 {
+  grid-column-end: 4;
+}
+
+/**
+ * End at column 5
+ */
+.grid__col-end-5 {
+  grid-column-end: 5;
+}
+
+/**
+ * End at column 6
+ */
+.grid__col-end-6 {
+  grid-column-end: 6;
+}
+
+/**
+ * End at column 7
+ */
+.grid__col-end-7 {
+  grid-column-end: 7;
+}
+
+/**
+ * End at column 8
+ */
+.grid__col-end-8 {
+  grid-column-end: 8;
+}
+
+/**
+ * End at column 9
+ */
+.grid__col-end-9 {
+  grid-column-end: 9;
+}
+
+/**
+ * End at column 10
+ */
+.grid__col-end-10 {
+  grid-column-end: 10;
+}
+
+/**
+ * End at column 11
+ */
+.grid__col-end-11 {
+  grid-column-end: 11;
+}
+
+/**
+ * End at column 12
+ */
+.grid__col-end-12 {
+  grid-column-end: 12;
+}
+
+/**
+ * End at auto
+ */
+.grid__col-end-auto {
+  grid-column-end: auto;
+}
+
+/* ============================================
+   RESPONSIVE GRID COLUMNS
+   ============================================ */
+
+/**
+ * Mobile: 1 column (default)
+ * Tablet: 2 columns
+ * Desktop: 3 columns
+ * Wide: 4 columns
+ */
+
+@media (min-width: 640px) {
+  .grid--tablet-2 {
+    --grid-columns: 2;
+  }
+  
+  .grid--tablet-3 {
+    --grid-columns: 3;
+  }
+  
+  .grid--tablet-4 {
+    --grid-columns: 4;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid--desktop-2 {
+    --grid-columns: 2;
+  }
+  
+  .grid--desktop-3 {
+    --grid-columns: 3;
+  }
+  
+  .grid--desktop-4 {
+    --grid-columns: 4;
+  }
+  
+  .grid--desktop-6 {
+    --grid-columns: 6;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid--wide-3 {
+    --grid-columns: 3;
+  }
+  
+  .grid--wide-4 {
+    --grid-columns: 4;
+  }
+  
+  .grid--wide-5 {
+    --grid-columns: 5;
+  }
+  
+  .grid--wide-6 {
+    --grid-columns: 6;
+  }
+}
+
+/* ============================================
+   RESPONSIVE COLUMN SPANS
+   ============================================ */
+
+@media (min-width: 640px) {
+  .grid__col-span-1--tablet {
+    grid-column: span 1 / span 1;
+  }
+  
+  .grid__col-span-2--tablet {
+    grid-column: span 2 / span 2;
+  }
+  
+  .grid__col-span-3--tablet {
+    grid-column: span 3 / span 3;
+  }
+  
+  .grid__col-span-4--tablet {
+    grid-column: span 4 / span 4;
+  }
+  
+  .grid__col-span-6--tablet {
+    grid-column: span 6 / span 6;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid__col-span-1--desktop {
+    grid-column: span 1 / span 1;
+  }
+  
+  .grid__col-span-2--desktop {
+    grid-column: span 2 / span 2;
+  }
+  
+  .grid__col-span-3--desktop {
+    grid-column: span 3 / span 3;
+  }
+  
+  .grid__col-span-4--desktop {
+    grid-column: span 4 / span 4;
+  }
+  
+  .grid__col-span-6--desktop {
+    grid-column: span 6 / span 6;
+  }
+  
+  .grid__col-span-8--desktop {
+    grid-column: span 8 / span 8;
+  }
+}
+
+/* ============================================
+   GRID ALIGNMENT
+   ============================================ */
+
+/**
+ * Align items to start
+ */
+.grid--items-start {
+  align-items: start;
+}
+
+/**
+ * Align items to center
+ */
+.grid--items-center {
+  align-items: center;
+}
+
+/**
+ * Align items to end
+ */
+.grid--items-end {
+  align-items: end;
+}
+
+/**
+ * Stretch items to fill
+ */
+.grid--items-stretch {
+  align-items: stretch;
+}
+
+/**
+ * Justify items to start
+ */
+.grid--justify-start {
+  justify-items: start;
+}
+
+/**
+ * Justify items to center
+ */
+.grid--justify-center {
+  justify-items: center;
+}
+
+/**
+ * Justify items to end
+ */
+.grid--justify-end {
+  justify-items: end;
+}
+
+/**
+ * Justify items to stretch
+ */
+.grid--justify-stretch {
+  justify-items: stretch;
+}
+
+/**
+ * Align content to start
+ */
+.grid--content-start {
+  align-content: start;
+}
+
+/**
+ * Align content to center
+ */
+.grid--content-center {
+  align-content: center;
+}
+
+/**
+ * Align content to end
+ */
+.grid--content-end {
+  align-content: end;
+}
+
+/**
+ * Align content to space between
+ */
+.grid--content-between {
+  align-content: space-between;
+}
+
+/**
+ * Align content to space around
+ */
+.grid--content-around {
+  align-content: space-around;
+}
+
+/**
+ * Align content to space evenly
+ */
+.grid--content-evenly {
+  align-content: space-evenly;
+}
+
+/**
+ * Justify content to start
+ */
+.grid--justify-content-start {
+  justify-content: start;
+}
+
+/**
+ * Justify content to center
+ */
+.grid--justify-content-center {
+  justify-content: center;
+}
+
+/**
+ * Justify content to end
+ */
+.grid--justify-content-end {
+  justify-content: end;
+}
+
+/**
+ * Justify content to space between
+ */
+.grid--justify-content-between {
+  justify-content: space-between;
+}
+
+/**
+ * Justify content to space around
+ */
+.grid--justify-content-around {
+  justify-content: space-around;
+}
+
+/**
+ * Justify content to space evenly
+ */
+.grid--justify-content-evenly {
+  justify-content: space-evenly;
+}
+
+/* ============================================
+   PREDEFINED GRID LAYOUTS
+   ============================================ */
+
+/**
+ * 2-column grid (responsive)
+ */
+.grid--2-col {
+  --grid-columns: 2;
+}
+
+@media (max-width: 639px) {
+  .grid--2-col {
+    --grid-columns: 1;
+  }
+}
+
+/**
+ * 3-column grid (responsive)
+ */
+.grid--3-col {
+  --grid-columns: 3;
+}
+
+@media (max-width: 639px) {
+  .grid--3-col {
+    --grid-columns: 1;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .grid--3-col {
+    --grid-columns: 2;
+  }
+}
+
+/**
+ * 4-column grid (responsive)
+ */
+.grid--4-col {
+  --grid-columns: 4;
+}
+
+@media (max-width: 639px) {
+  .grid--4-col {
+    --grid-columns: 1;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .grid--4-col {
+    --grid-columns: 2;
+  }
+}
+
+/**
+ * 6-column grid (responsive)
+ */
+.grid--6-col {
+  --grid-columns: 6;
+}
+
+@media (max-width: 639px) {
+  .grid--6-col {
+    --grid-columns: 1;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .grid--6-col {
+    --grid-columns: 2;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .grid--6-col {
+    --grid-columns: 3;
+  }
+}
+
+/* ============================================
+   NESTED GRID
+   ============================================ */
+
+/**
+ * Nested grid container
+ * Inherits gap from parent but can be overridden
+ */
+.grid--nested {
+  display: grid;
+  gap: inherit;
+  grid-template-columns: repeat(var(--nested-grid-columns, 2), minmax(0, 1fr));
+}
+
+/* ============================================
+   GRID ITEM ALIGNMENT
+   ============================================ */
+
+/**
+ * Align grid item to start
+ */
+.grid__item--start {
+  align-self: start;
+  justify-self: start;
+}
+
+/**
+ * Align grid item to center
+ */
+.grid__item--center {
+  align-self: center;
+  justify-self: center;
+}
+
+/**
+ * Align grid item to end
+ */
+.grid__item--end {
+  align-self: end;
+  justify-self: end;
+}
+
+/**
+ * Stretch grid item
+ */
+.grid__item--stretch {
+  align-self: stretch;
+  justify-self: stretch;
+}

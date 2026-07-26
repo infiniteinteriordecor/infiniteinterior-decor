@@ -1,0 +1,169 @@
+/**
+ * Luxury Micro-Interactions
+ * 
+ * Subtle, premium interactions for a top-tier luxury experience
+ * Smooth transitions, elegant hover effects, and refined animations
+ */
+
+/* ============================================
+   IMAGE LOADING STATES
+   ============================================ */
+
+img {
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-luxury);
+}
+
+img.loaded {
+  opacity: 1;
+}
+
+/* Skeleton loading state */
+img:not(.loaded) {
+  background-color: var(--color-bg-tertiary);
+}
+
+/* ============================================
+   IMAGE HOVER EFFECTS
+   ============================================ */
+
+img,
+.image,
+.card__image,
+.project__image,
+.gallery__image {
+  transition: transform var(--transition-luxury), opacity 0.6s var(--ease-luxury);
+}
+
+img:hover,
+.image:hover,
+.card:hover .card__image,
+.project:hover .project__image,
+.gallery__item:hover .gallery__image {
+  transform: scale(1.03);
+}
+
+/* ============================================
+   BUTTON HOVER EFFECTS
+   ============================================ */
+
+.button,
+.btn,
+.navbar__link {
+  transition: 
+    transform 0.3s var(--ease-luxury),
+    color 0.3s var(--ease-luxury),
+    background-color 0.3s var(--ease-luxury),
+    box-shadow 0.3s var(--ease-luxury);
+}
+
+.button:hover,
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   CARD HOVER EFFECTS
+   ============================================ */
+
+.card,
+.project,
+.service,
+.feature {
+  transition: 
+    transform 0.4s var(--ease-luxury),
+    box-shadow 0.4s var(--ease-luxury);
+}
+
+.card:hover,
+.project:hover,
+.service:hover,
+.feature:hover {
+  transform: translateY(-4px);
+}
+
+/* ============================================
+   LINK HOVER EFFECTS
+   ============================================ */
+
+a,
+.link {
+  transition: color 0.3s var(--ease-luxury);
+}
+
+/* ============================================
+   FADE-IN ANIMATIONS
+   ============================================ */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s var(--ease-luxury) forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s var(--ease-luxury) forwards;
+}
+
+/* Staggered animations for lists */
+.animate-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+.animate-stagger > *:nth-child(6) { animation-delay: 0.6s; }
+
+/* ============================================
+   SCROLL REVEAL
+   ============================================ */
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: 
+    opacity 1s var(--ease-luxury),
+    transform 1s var(--ease-luxury);
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   PREFERS REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

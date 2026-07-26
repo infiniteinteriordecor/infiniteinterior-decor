@@ -1,0 +1,252 @@
+/**
+ * Trusted By Section Styles
+ * 
+ * Premium client logo marquee with pause on hover.
+ * Features responsive design and smooth animations.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with trusted-by section HTML structure
+ */
+
+/* ============================================
+   TRUSTED BY SECTION
+   ============================================ */
+
+/**
+ * Main trusted by container
+ */
+.trusted-by {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(2rem, 4vw, 4rem) 0;
+  
+  /* Background */
+  background-color: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  .trusted-by {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   TRUSTED BY CONTAINER
+   ============================================ */
+
+/**
+ * Trusted by inner container
+ */
+.trusted-by__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .trusted-by__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/**
+ * Section header
+ */
+.trusted-by__header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+/**
+ * Section label
+ */
+.trusted-by__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-2);
+}
+
+/**
+ * Section title
+ */
+.trusted-by__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* ============================================
+   MARQUEE
+   ============================================ */
+
+/**
+ * Marquee container
+ */
+.trusted-by__marquee {
+  position: relative;
+  overflow: hidden;
+  
+  /* Mask for fade effect */
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+/**
+ * Marquee track
+ */
+.trusted-by__track {
+  display: flex;
+  gap: clamp(2rem, 4vw, 4rem);
+  
+  /* Animation */
+  animation: marquee 30s linear infinite;
+  
+  /* Pause on hover */
+}
+
+.trusted-by__marquee:hover .trusted-by__track {
+  animation-play-state: paused;
+}
+
+/**
+ * Marquee animation
+ */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ============================================
+   CLIENT LOGO
+   ============================================ */
+
+/**
+ * Client logo item
+ */
+.trusted-by__logo {
+  flex-shrink: 0;
+  
+  /* Size */
+  width: clamp(120px, 15vw, 180px);
+  height: clamp(60px, 8vw, 90px);
+  
+  /* Flex layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Border */
+  border: 1px solid var(--color-border-light);
+  
+  /* Border radius */
+  border-radius: var(--radius-lg);
+  
+  /* Background */
+  background-color: var(--color-gray-50);
+  
+  /* Transition */
+  transition: border-color var(--transition-base) var(--transition-ease-out),
+              background-color var(--transition-base) var(--transition-ease-out);
+}
+
+.trusted-by__logo:hover {
+  border-color: var(--color-primary-300);
+  background-color: var(--color-white);
+}
+
+/**
+ * Logo image
+ */
+.trusted-by__logo img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  opacity: 0.6;
+  
+  /* Transition */
+  transition: opacity var(--transition-base) var(--transition-ease-out);
+}
+
+.trusted-by__logo:hover img {
+  opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .trusted-by__title {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .trusted-by__track {
+    animation: none;
+  }
+  
+  .trusted-by__marquee:hover .trusted-by__track {
+    animation-play-state: running;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .trusted-by {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .trusted-by__track {
+    animation: none;
+  }
+  
+  .trusted-by__logo {
+    border: 1px solid #e0e0e0;
+    background-color: #f5f5f5;
+  }
+}

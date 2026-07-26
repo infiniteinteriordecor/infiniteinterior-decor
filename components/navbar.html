@@ -1,0 +1,98 @@
+<!--
+  Navigation Bar Component
+  
+  A responsive navigation bar with logo, main navigation links,
+  and mobile menu toggle.
+  
+  Usage:
+  Include this component at the top of each page.
+  Ensure the navbar CSS is loaded.
+  
+  Accessibility:
+  - Proper ARIA labels for screen readers
+  - Keyboard navigation support
+  - Mobile menu with proper focus management
+  
+  Structure:
+  - Logo/brand area
+  - Desktop navigation
+  - Mobile menu toggle
+  - Mobile navigation drawer
+-->
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+  <!-- Skip to main content link (hidden visually, available to screen readers) -->
+  <a href="#main-content" class="navbar__skip-link">Skip to main content</a>
+  
+  <!-- Navbar container -->
+  <div class="navbar__container">
+    <!-- Logo/Brand -->
+    <div class="navbar__brand">
+      <a href="/" class="navbar__logo-link" aria-label="Infinite Interior Decor Home">
+        <div id="navbar-logo-container"></div>
+      </a>
+    </div>
+    
+    <!-- Desktop Navigation -->
+    <ul class="navbar__nav navbar__nav--desktop">
+      <li class="navbar__item">
+        <a href="/" class="navbar__link navbar__link--active" aria-current="page">Home</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/about/" class="navbar__link">About</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/services/" class="navbar__link">Services</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/projects/" class="navbar__link">Projects</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/gallery/" class="navbar__link">Gallery</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/contact/" class="navbar__link">Contact</a>
+      </li>
+    </ul>
+    
+    <!-- Mobile Menu Toggle -->
+    <button 
+      class="navbar__toggle" 
+      type="button" 
+      aria-label="Toggle navigation menu"
+      aria-expanded="false"
+      aria-controls="navbar-menu"
+    >
+      <span class="navbar__toggle-icon" aria-hidden="true">
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+        <span class="navbar__toggle-line"></span>
+      </span>
+      <span class="navbar__toggle-text">Menu</span>
+    </button>
+  </div>
+  
+  <!-- Mobile Navigation Drawer -->
+  <div class="navbar__menu" id="navbar-menu" aria-hidden="true">
+    <ul class="navbar__nav navbar__nav--mobile">
+      <li class="navbar__item">
+        <a href="/" class="navbar__link navbar__link--active" aria-current="page">Home</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/about/" class="navbar__link">About</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/services/" class="navbar__link">Services</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/projects/" class="navbar__link">Projects</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/gallery/" class="navbar__link">Gallery</a>
+      </li>
+      <li class="navbar__item">
+        <a href="/contact/" class="navbar__link">Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>

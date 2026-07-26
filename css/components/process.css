@@ -1,0 +1,338 @@
+/**
+ * Process Section Styles
+ * 
+ * Premium timeline showing the 5-step process.
+ * Features horizontal timeline on desktop, vertical on mobile.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with process section HTML structure
+ */
+
+/* ============================================
+   PROCESS SECTION
+   ============================================ */
+
+/**
+ * Main process container
+ */
+.process {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  
+  /* Background */
+  background-color: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  .process {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   PROCESS CONTAINER
+   ============================================ */
+
+/**
+ * Process inner container
+ */
+.process__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .process__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/**
+ * Section header
+ */
+.process__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/**
+ * Section label
+ */
+.process__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+}
+
+/**
+ * Section title
+ */
+.process__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .process__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * Section description
+ */
+.process__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   PROCESS TIMELINE
+   ============================================ */
+
+/**
+ * Timeline container
+ */
+.process__timeline {
+  position: relative;
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .process__timeline {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+  }
+}
+
+/**
+ * Timeline line (vertical on mobile, horizontal on desktop)
+ */
+.process__line {
+  position: absolute;
+  background: linear-gradient(to bottom, var(--color-primary-300), var(--color-primary-500));
+  
+  /* Vertical line on mobile */
+  left: clamp(20px, 4vw, 32px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+}
+
+@media (min-width: 1024px) {
+  .process__line {
+    /* Horizontal line on desktop */
+    left: 0;
+    right: 0;
+    top: clamp(32px, 5vw, 48px);
+    height: 2px;
+    width: auto;
+    background: linear-gradient(to right, var(--color-primary-300), var(--color-primary-500));
+  }
+}
+
+/* ============================================
+   PROCESS STEP
+   ============================================ */
+
+/**
+ * Step container
+ */
+.process__step {
+  position: relative;
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@media (min-width: 1024px) {
+  .process__step {
+    flex: 1;
+    text-align: center;
+    padding: 0 var(--spacing-4);
+  }
+}
+
+/**
+ * Step number
+ */
+.process__step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Size */
+  width: clamp(40px, 6vw, 64px);
+  height: clamp(40px, 6vw, 64px);
+  
+  /* Background */
+  background: linear-gradient(135deg, var(--color-primary-400) 0%, var(--color-primary-600) 100%);
+  
+  /* Border radius */
+  border-radius: var(--radius-full);
+  
+  /* Color */
+  color: var(--color-white);
+  
+  /* Typography */
+  font-family: var(--font-family-secondary);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  font-weight: var(--font-weight-bold);
+  
+  /* Position */
+  position: relative;
+  z-index: 1;
+  
+  /* Shadow */
+  box-shadow: 0 4px 12px rgba(154, 125, 62, 0.3);
+  
+  /* Flex shrink */
+  flex-shrink: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .process__step-number {
+    background: linear-gradient(135deg, var(--color-primary-500) 0%, var(--color-primary-700) 100%);
+  }
+}
+
+/**
+ * Step content
+ */
+.process__step-content {
+  /* Padding on mobile to account for number */
+  padding-left: clamp(60px, 10vw, 80px);
+}
+
+@media (min-width: 1024px) {
+  .process__step-content {
+    padding-left: 0;
+    padding-top: var(--spacing-6);
+  }
+}
+
+/**
+ * Step title
+ */
+.process__step-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+/**
+ * Step description
+ */
+.process__step-description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .process__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .process__description {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.process__step:focus-within {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--radius-lg);
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .process__step {
+    transition: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .process {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .process__line {
+    display: none;
+  }
+  
+  .process__step-number {
+    background: var(--color-primary-500);
+    color: var(--color-white);
+  }
+  
+  .process__title {
+    color: var(--color-black);
+  }
+  
+  .process__description {
+    color: var(--color-text-secondary);
+  }
+}

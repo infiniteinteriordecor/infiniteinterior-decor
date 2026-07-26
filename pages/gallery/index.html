@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Character Encoding -->
+  <meta charset="UTF-8">
+  
+  <!-- Viewport Configuration -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Browse our gallery of premium interior design projects and inspirations.">
+  <meta name="keywords" content="interior design gallery, design inspiration, portfolio gallery">
+  <meta name="author" content="Infinite Interior Decor">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Page Title -->
+  <title>Gallery - Infinite Interior Decor</title>
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://infiniteinterior.com/gallery">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://infiniteinterior.com/gallery">
+  <meta property="og:title" content="Gallery - Infinite Interior Decor">
+  <meta property="og:description" content="Browse our gallery of premium interior design projects and inspirations.">
+  <meta property="og:image" content="https://infiniteinterior.com/assets/images/og-image.jpg">
+  <meta property="og:site_name" content="Infinite Interior Decor">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://infiniteinterior.com/gallery">
+  <meta property="twitter:title" content="Gallery - Infinite Interior Decor">
+  <meta property="twitter:description" content="Browse our gallery of premium interior design projects and inspirations.">
+  <meta property="twitter:image" content="https://infiniteinterior.com/assets/images/twitter-image.jpg">
+  
+  <!-- Preconnect to External Domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
+  
+  <!-- CSS Files - Consolidated Luxury Architecture -->
+  <link rel="stylesheet" href="../../css/main.css">
+  <link rel="stylesheet" href="../../css/pages/gallery.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <!-- Skip to main content link (hidden visually, available to screen readers) -->
+    <a href="#main-content" class="navbar__skip-link u-sr-only">Skip to main content</a>
+    
+    <!-- Navbar container -->
+    <div class="navbar__container u-container">
+      <!-- Logo/Brand -->
+      <div class="navbar__brand">
+        <a href="../../index.html" class="navbar__logo-link" aria-label="Infinite Interior Decor Home">
+          <div id="navbar-logo-container" class="navbar__logo-container">
+            <!-- Logo will be rendered by JavaScript -->
+          </div>
+        </a>
+      </div>
+      
+      <!-- Desktop Navigation -->
+      <ul class="navbar__nav navbar__nav--desktop u-display-flex u-flex-row u-items-center u-gap-6">
+        <li class="navbar__item">
+          <a href="../../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../about/index.html" class="navbar__link">About</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../services/index.html" class="navbar__link">Services</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../projects/index.html" class="navbar__link">Projects</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../" class="navbar__link navbar__link--active" aria-current="page">Gallery</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../contact/index.html" class="navbar__link">Contact</a>
+        </li>
+      </ul>
+      
+      <!-- Mobile Menu Toggle -->
+      <button 
+        class="navbar__toggle" 
+        type="button" 
+        aria-label="Toggle navigation menu"
+        aria-expanded="false"
+        aria-controls="navbar-menu"
+      >
+        <span class="navbar__toggle-icon" aria-hidden="true">
+          <span class="navbar__toggle-line"></span>
+          <span class="navbar__toggle-line"></span>
+          <span class="navbar__toggle-line"></span>
+        </span>
+        <span class="navbar__toggle-text">Menu</span>
+      </button>
+    </div>
+    
+    <!-- Mobile Navigation Drawer -->
+    <div class="navbar__menu" id="navbar-menu" aria-hidden="true">
+      <ul class="navbar__nav navbar__nav--mobile">
+        <li class="navbar__item">
+          <a href="../../index.html" class="navbar__link">Home</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../about/index.html" class="navbar__link">About</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../services/index.html" class="navbar__link">Services</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../projects/index.html" class="navbar__link">Projects</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../" class="navbar__link navbar__link--active" aria-current="page">Gallery</a>
+        </li>
+        <li class="navbar__item">
+          <a href="../contact/index.html" class="navbar__link">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content">
+  <!-- Gallery Hero -->
+  <header class="gallery-hero">
+    <div class="gallery-hero__container">
+      <div class="gallery-hero__content">
+        <span class="gallery-hero__label">Our Gallery</span>
+        <h1 class="gallery-hero__title">Design Portfolio</h1>
+        <p class="gallery-hero__description">Explore our collection of premium interior design projects showcasing our craftsmanship and attention to detail.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Gallery Filters -->
+  <section class="gallery-filters">
+    <div class="gallery-filters__container">
+      <div class="gallery-filters__list" id="gallery-filters">
+        <button class="gallery-filters__button gallery-filters__button--active" data-filter="all">All</button>
+        <button class="gallery-filters__button" data-filter="residential">Residential</button>
+        <button class="gallery-filters__button" data-filter="commercial">Commercial</button>
+        <button class="gallery-filters__button" data-filter="retail">Retail</button>
+        <button class="gallery-filters__button" data-filter="hospitality">Hospitality</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Masonry -->
+  <section class="gallery-masonry">
+    <div class="gallery-masonry__container">
+      <div class="gallery-masonry__grid" id="gallery-grid">
+        <!-- Gallery items will be loaded dynamically -->
+      </div>
+      <div class="gallery-empty" id="gallery-empty" style="display: none;">
+        <div class="gallery-empty__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="gallery-empty__title">No Images Found</h3>
+        <p class="gallery-empty__description">There are no images in this category. Please check back later or explore other categories.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta__container">
+      <div class="cta__content">
+        <h2 class="cta__title">Inspired by Our Work?</h2>
+        <p class="cta__description">Let's create something extraordinary together. Contact us to discuss your project.</p>
+        <a href="../contact/index.html" class="button button--primary button--large">
+          Start Your Project
+        </a>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox__content">
+      <button class="lightbox__close" aria-label="Close lightbox">
+        <svg class="lightbox__close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous image">
+        <svg class="lightbox__nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button class="lightbox__nav lightbox__nav--next" aria-label="Next image">
+        <svg class="lightbox__nav-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <img class="lightbox__image" id="lightbox-image" src="" alt="">
+      <div class="lightbox__caption">
+        <div class="lightbox__caption-title" id="lightbox-title">Image Title</div>
+        <div class="lightbox__caption-category" id="lightbox-category">Category</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__content">
+        <!-- Footer Logo -->
+        <div class="footer__logo">
+          <div class="image-placeholder image-placeholder--logo" data-text="IID" data-width="120" data-height="40"></div>
+        </div>
+        
+        <!-- Footer Links -->
+        <div class="footer__links">
+          <div class="footer__section">
+            <h4 class="footer__section-title">Quick Links</h4>
+            <ul class="footer__list">
+              <li class="footer__item">
+                <a href="../../index.html" class="footer__link">Home</a>
+              </li>
+              <li class="footer__item">
+                <a href="../about/index.html" class="footer__link">About</a>
+              </li>
+              <li class="footer__item">
+                <a href="../services/index.html" class="footer__link">Services</a>
+              </li>
+              <li class="footer__item">
+                <a href="../contact/index.html" class="footer__link">Contact</a>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="footer__section">
+            <h4 class="footer__section-title">Contact</h4>
+            <ul class="footer__list">
+              <li class="footer__item">
+                <a href="mailto:infiniteinteriordecor@gmail.com" class="footer__link">infiniteinteriordecor@gmail.com</a>
+              </li>
+              <li class="footer__item">
+                <a href="tel:+916398038550" class="footer__link">+91 6398038550</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Footer Bottom -->
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2024 Infinite Interior Decor. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="../../js/image-placeholder.js"></script>
+  <script src="../../js/navbar.js"></script>
+  <script>
+    // Gallery state
+    let galleryImages = [];
+    let currentFilter = 'all';
+    let currentImageIndex = 0;
+
+    // Load gallery data
+    async function loadGalleryData() {
+      const galleryGrid = document.getElementById('gallery-grid');
+      const emptyState = document.getElementById('gallery-empty');
+      
+      let data = null;
+      
+      try {
+        const response = await fetch('../../data/database.json');
+        if (response.ok) {
+          data = await response.json();
+        } else {
+          console.warn('Could not load database.json');
+        }
+      } catch (error) {
+        console.warn('Error loading database.json:', error);
+      }
+
+      // Extract images from projects
+      galleryImages = [];
+      
+      if (data && data.projects && Array.isArray(data.projects)) {
+        data.projects.forEach(project => {
+          if (project.gallery && Array.isArray(project.gallery) && project.gallery.length > 0) {
+            project.gallery.forEach((image, index) => {
+              galleryImages.push({
+                src: image,
+                title: project.name || 'Project',
+                category: (project.category || 'residential').toLowerCase(),
+                projectId: project.id
+              });
+            });
+          }
+        });
+      }
+
+      // If no images found, show coming soon section
+      if (galleryImages.length === 0) {
+        showComingSoon();
+        return;
+      }
+
+      // Render gallery
+      renderGallery();
+      
+      // Setup filter buttons
+      setupFilters();
+    }
+    
+    // Show coming soon section
+    function showComingSoon() {
+      const galleryGrid = document.getElementById('gallery-grid');
+      const emptyState = document.getElementById('gallery-empty');
+      
+      galleryGrid.style.display = 'none';
+      emptyState.style.display = 'block';
+      
+      // Update empty state to show coming soon message
+      emptyState.innerHTML = `
+        <div class="gallery-empty__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="64" height="64">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 class="gallery-empty__title">Gallery Coming Soon</h3>
+        <p class="gallery-empty__description">We're currently curating our portfolio of stunning interior design projects. Check back soon to explore our completed work and design inspirations.</p>
+        <a href="../projects/index.html" class="button button--primary button--large" style="margin-top: 1.5rem;">
+          Explore Our Projects
+        </a>
+      `;
+      
+      // Hide filters since there's nothing to filter
+      const filtersSection = document.querySelector('.gallery-filters');
+      if (filtersSection) {
+        filtersSection.style.display = 'none';
+      }
+    }
+    
+    // Render gallery grid
+    function renderGallery() {
+      const galleryGrid = document.getElementById('gallery-grid');
+      const emptyState = document.getElementById('gallery-empty');
+      
+      if (!galleryGrid || !emptyState) return;
+      
+      // Filter images
+      const filteredImages = currentFilter === 'all' 
+        ? galleryImages 
+        : galleryImages.filter(img => img.category === currentFilter);
+      
+      if (filteredImages.length === 0) {
+        galleryGrid.style.display = 'none';
+        emptyState.style.display = 'block';
+        emptyState.innerHTML = `
+          <div class="gallery-empty__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="gallery-empty__title">No Images Found</h3>
+          <p class="gallery-empty__description">There are no images in this category. Please check back later or explore other categories.</p>
+        `;
+        return;
+      }
+      
+      galleryGrid.style.display = 'grid';
+      emptyState.style.display = 'none';
+      
+      galleryGrid.innerHTML = '';
+      
+      filteredImages.forEach((image, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.setAttribute('role', 'button');
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('aria-label', `View ${image.title}`);
+        item.innerHTML = `
+          <div class="gallery-item__image">
+            <div class="image-placeholder" data-text="${image.title.substring(0, 3).toUpperCase()}" data-width="400" data-height="300"></div>
+            <div class="gallery-item__overlay">
+              <div class="gallery-item__content">
+                <div class="gallery-item__category">${image.category}</div>
+                <div class="gallery-item__title">${image.title}</div>
+                <div class="gallery-item__zoom-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        item.addEventListener('click', () => openLightbox(index));
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(index);
+          }
+        });
+        
+        galleryGrid.appendChild(item);
+      });
+      
+      // Initialize image placeholders for newly added items
+      if (window.ImagePlaceholder) {
+        window.ImagePlaceholder.init();
+      }
+    }
+    
+    // Setup filter buttons
+    function setupFilters() {
+      const filterButtons = document.querySelectorAll('.gallery-filters__button');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          // Update active state
+          filterButtons.forEach(btn => btn.classList.remove('gallery-filters__button--active'));
+          button.classList.add('gallery-filters__button--active');
+          
+          // Update filter
+          currentFilter = button.dataset.filter;
+          renderGallery();
+        });
+      });
+    }
+    
+    // Open lightbox
+    function openLightbox(index) {
+      const filteredImages = currentFilter === 'all' 
+        ? galleryImages 
+        : galleryImages.filter(img => img.category === currentFilter);
+      
+      currentImageIndex = index;
+      updateLightboxImage(filteredImages[index]);
+      
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox) {
+        lightbox.classList.add('lightbox--active');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    
+    // Update lightbox image
+    function updateLightboxImage(image) {
+      const lightboxImage = document.getElementById('lightbox-image');
+      const lightboxTitle = document.getElementById('lightbox-title');
+      const lightboxCategory = document.getElementById('lightbox-category');
+      
+      if (lightboxImage && lightboxTitle && lightboxCategory) {
+        // Use placeholder for lightbox since actual images aren't uploaded yet
+        lightboxImage.style.display = 'none';
+        lightboxTitle.textContent = image.title || 'Image';
+        lightboxCategory.textContent = image.category || 'Category';
+      }
+    }
+    
+    // Close lightbox
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox) {
+        lightbox.classList.remove('lightbox--active');
+        lightbox.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    }
+    
+    // Navigate lightbox
+    function navigateLightbox(direction) {
+      const filteredImages = currentFilter === 'all' 
+        ? galleryImages 
+        : galleryImages.filter(img => img.category === currentFilter);
+      
+      currentImageIndex += direction;
+      
+      if (currentImageIndex < 0) {
+        currentImageIndex = filteredImages.length - 1;
+      } else if (currentImageIndex >= filteredImages.length) {
+        currentImageIndex = 0;
+      }
+      
+      updateLightboxImage(filteredImages[currentImageIndex]);
+    }
+    
+    // Lightbox event listeners
+    const closeBtn = document.querySelector('.lightbox__close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', closeLightbox);
+    }
+    
+    const prevBtn = document.querySelector('.lightbox__nav--prev');
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => navigateLightbox(-1));
+    }
+    
+    const nextBtn = document.querySelector('.lightbox__nav--next');
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => navigateLightbox(1));
+    }
+    
+    const lightboxEl = document.getElementById('lightbox');
+    if (lightboxEl) {
+      lightboxEl.addEventListener('click', (e) => {
+        if (e.target.id === 'lightbox') {
+          closeLightbox();
+        }
+      });
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      const lightbox = document.getElementById('lightbox');
+      if (lightbox && lightbox.classList.contains('lightbox--active')) {
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+          navigateLightbox(-1);
+        } else if (e.key === 'ArrowRight') {
+          navigateLightbox(1);
+        }
+      }
+    });
+    
+    // Initialize
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadGalleryData);
+    } else {
+      loadGalleryData();
+    }
+  </script>
+
+  <!-- JavaScript -->
+  <script src="../../js/core/image-placeholder.js"></script>
+  <script src="../../js/core/lazy-load.js"></script>
+  <script src="../../js/core/logo-base64.js"></script>
+  <script src="../../js/core/navbar.js"></script>
+  <script src="../../js/core/app.js"></script>
+</body>
+</html>

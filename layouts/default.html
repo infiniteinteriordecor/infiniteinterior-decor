@@ -1,0 +1,167 @@
+<!--
+  Default Page Layout
+  
+  This is the default layout template for all pages in the Infinite Interior Decor website.
+  It provides a consistent structure with navbar, main content area, and footer.
+  
+  Usage:
+  Copy this template as the starting point for new pages.
+  Customize the main content section for each page.
+  Update the page title, meta description, and other head elements.
+  
+  Structure:
+  - HTML5 doctype and language
+  - Meta tags for SEO and social sharing
+  - CSS imports (design tokens, reset, global, page-specific)
+  - Skip to main content link (accessibility)
+  - Navbar component
+  - Main content area
+  - Footer component
+  - JavaScript imports (deferred)
+  
+  Accessibility:
+  - Semantic HTML structure
+  - Proper heading hierarchy
+  - Skip to main content link
+  - ARIA labels where needed
+  - Keyboard navigation support
+  
+  Performance:
+  - Critical CSS inline (optional, for above-the-fold content)
+  - Deferred CSS for non-critical styles
+  - Deferred JavaScript
+  - Preconnect to external domains
+  - Preload critical resources
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Character Encoding -->
+  <meta charset="UTF-8">
+  
+  <!-- Viewport Configuration -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Page description for search engines">
+  <meta name="keywords" content="relevant, keywords, for, seo">
+  <meta name="author" content="Infinite Interior Decor">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Page Title -->
+  <title>Page Title - Infinite Interior Decor</title>
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://infiniteinterior.com/page/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://infiniteinterior.com/page/">
+  <meta property="og:title" content="Page Title - Infinite Interior Decor">
+  <meta property="og:description" content="Page description for social sharing">
+  <meta property="og:image" content="https://infiniteinterior.com/assets/images/og-image.jpg">
+  <meta property="og:site_name" content="Infinite Interior Decor">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://infiniteinterior.com/page/">
+  <meta property="twitter:title" content="Page Title - Infinite Interior Decor">
+  <meta property="twitter:description" content="Page description for social sharing">
+  <meta property="twitter:image" content="https://infiniteinterior.com/assets/images/twitter-image.jpg">
+  
+  <!-- Preconnect to External Domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Google Fonts (Optional - uncomment if needed) -->
+  <!-- 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap">
+  -->
+  
+  <!-- CSS Files - Critical Path -->
+  <link rel="stylesheet" href="../config/design-tokens.css">
+  <link rel="stylesheet" href="../config/breakpoints.css">
+  <link rel="stylesheet" href="../config/reset.css">
+  <link rel="stylesheet" href="../css/global.css">
+  
+  <!-- Page-Specific CSS (Deferred) -->
+  <link rel="preload" href="../css/home.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="../css/home.css"></noscript>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../assets/icons/favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/icons/favicon-16x16.png">
+  <link rel="manifest" href="../assets/icons/site.webmanifest">
+  
+  <!-- Theme Color (for mobile browsers) -->
+  <meta name="theme-color" content="#9a7d3e">
+  
+  <!-- Additional Head Elements (page-specific) -->
+  <!-- Add page-specific meta tags, styles, or scripts here -->
+</head>
+<body>
+  <!-- Skip to Main Content (Accessibility) -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Navbar Component -->
+  <!-- Include the navbar component -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <!-- Navbar content will be here -->
+    <!-- Copy from components/navbar.html -->
+  </nav>
+  
+  <!-- Main Content Area -->
+  <main id="main-content" role="main">
+    <!-- Page Content -->
+    <!-- Add your page-specific content here -->
+    
+    <!-- Example Section -->
+    <section class="section">
+      <div class="container">
+        <h1 class="section__title">Page Title</h1>
+        <p class="section__description">Page description text goes here.</p>
+        
+        <!-- Page content -->
+      </div>
+    </section>
+  </main>
+  
+  <!-- Footer Component -->
+  <!-- Include the footer component -->
+  <footer class="footer" role="contentinfo">
+    <!-- Footer content will be here -->
+    <!-- Copy from components/footer.html -->
+  </footer>
+  
+  <!-- JavaScript Files (Deferred) -->
+  <script src="../js/app.js" defer></script>
+  <script src="../js/animation.js" defer></script>
+  
+  <!-- Page-Specific JavaScript (Optional) -->
+  <!-- 
+  <script src="../js/page-specific.js" defer></script>
+  -->
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Page Title",
+    "description": "Page description",
+    "url": "https://infiniteinterior.com/page/",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Infinite Interior Decor",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://infiniteinterior.com/assets/images/logo.png"
+      }
+    }
+  }
+  </script>
+</body>
+</html>

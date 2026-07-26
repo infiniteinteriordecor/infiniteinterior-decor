@@ -1,0 +1,253 @@
+/**
+ * Responsive Breakpoints
+ * 
+ * This file defines all responsive breakpoints for the Infinite Interior Decor website.
+ * Mobile-first approach with progressive enhancement.
+ * 
+ * Usage:
+ * - Import this file after design-tokens.css
+ * - Use media queries with these breakpoints
+ * - Always design mobile-first, then enhance for larger screens
+ * 
+ * Breakpoint Strategy:
+ * - Mobile First: Default styles are for mobile
+ * - Progressive Enhancement: Add styles for larger screens
+ * - Fluid Typography: Use clamp() for smooth scaling
+ * - Container Queries: Use for component-level responsiveness
+ */
+
+/* ============================================
+   BREAKPOINT DEFINITIONS
+   ============================================ */
+
+/**
+ * Breakpoint Values (in pixels)
+ * 
+ * Mobile:     0 - 639px
+ * Tablet:     640px - 1023px
+ * Desktop:    1024px - 1279px
+ * Wide:       1280px - 1535px
+ * Ultrawide:  1536px+
+ */
+
+:root {
+  /* Breakpoint values for use in calc() and JS */
+  --breakpoint-mobile: 0;
+  --breakpoint-tablet: 640px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1280px;
+  --breakpoint-ultrawide: 1536px;
+  
+  /* Container max-widths at each breakpoint */
+  --container-max-mobile: 100%;
+  --container-max-tablet: 640px;
+  --container-max-desktop: 1024px;
+  --container-max-wide: 1280px;
+  --container-max-ultrawide: 1536px;
+}
+
+/* ============================================
+   MEDIA QUERY MIXINS (as CSS classes)
+   ============================================ */
+
+/**
+ * These classes can be used to show/hide content at specific breakpoints
+ * Add to HTML elements like: class="hidden-mobile"
+ */
+
+/* Mobile Only (0 - 639px) */
+@media (max-width: 639px) {
+  .mobile-only {
+    display: block !important;
+  }
+  .tablet-hidden,
+  .desktop-hidden,
+  .wide-hidden {
+    display: none !important;
+  }
+}
+
+/* Tablet and Up (640px+) */
+@media (min-width: 640px) {
+  .tablet-up {
+    display: block !important;
+  }
+  .mobile-hidden {
+    display: none !important;
+  }
+}
+
+/* Tablet Only (640px - 1023px) */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .tablet-only {
+    display: block !important;
+  }
+}
+
+/* Desktop and Up (1024px+) */
+@media (min-width: 1024px) {
+  .desktop-up {
+    display: block !important;
+  }
+  .tablet-hidden {
+    display: none !important;
+  }
+}
+
+/* Desktop Only (1024px - 1279px) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+/* Wide and Up (1280px+) */
+@media (min-width: 1280px) {
+  .wide-up {
+    display: block !important;
+  }
+  .desktop-hidden {
+    display: none !important;
+  }
+}
+
+/* Wide Only (1280px - 1535px) */
+@media (min-width: 1280px) and (max-width: 1535px) {
+  .wide-only {
+    display: block !important;
+  }
+}
+
+/* Ultrawide and Up (1536px+) */
+@media (min-width: 1536px) {
+  .ultrawide-up {
+    display: block !important;
+  }
+  .wide-hidden {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   CONTAINER QUERIES
+   ============================================ */
+
+/**
+ * Container queries for component-level responsiveness
+ * Use these when a component should adapt based on its container size
+ * 
+ * Example usage:
+ * .my-component {
+ *   container-type: inline-size;
+ * }
+ * 
+ * @container (min-width: 320px) {
+ *   .my-component {
+ *     // Styles for containers 320px and wider
+ *   }
+ * }
+ */
+
+/* ============================================
+   TYPOGRAPHY SCALING
+   ============================================ */
+
+/**
+ * Fluid typography using clamp()
+ * Automatically scales between breakpoints
+ */
+
+:root {
+  /* Base font size that scales with viewport */
+  --font-size-fluid-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --font-size-fluid-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --font-size-fluid-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --font-size-fluid-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --font-size-fluid-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+  --font-size-fluid-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+  --font-size-fluid-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3.5rem);
+  --font-size-fluid-5xl: clamp(3rem, 2rem + 5vw, 5rem);
+}
+
+/* ============================================
+   GRID BREAKPOINTS
+   ============================================ */
+
+/**
+ * Grid column counts at different breakpoints
+ * Use with CSS Grid for responsive layouts
+ */
+
+:root {
+  --grid-columns-mobile: 1;
+  --grid-columns-tablet: 2;
+  --grid-columns-desktop: 3;
+  --grid-columns-wide: 4;
+  --grid-columns-ultrawide: 6;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --grid-columns: var(--grid-columns-tablet);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --grid-columns: var(--grid-columns-desktop);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --grid-columns: var(--grid-columns-wide);
+  }
+}
+
+@media (min-width: 1536px) {
+  :root {
+    --grid-columns: var(--grid-columns-ultrawide);
+  }
+}
+
+/* ============================================
+   SPACING BREAKPOINTS
+   ============================================ */
+
+/**
+ * Responsive spacing that increases with viewport size
+ */
+
+:root {
+  --spacing-responsive-sm: var(--spacing-4);
+  --spacing-responsive-md: var(--spacing-6);
+  --spacing-responsive-lg: var(--spacing-8);
+  --spacing-responsive-xl: var(--spacing-12);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --spacing-responsive-sm: var(--spacing-6);
+    --spacing-responsive-md: var(--spacing-8);
+    --spacing-responsive-lg: var(--spacing-12);
+    --spacing-responsive-xl: var(--spacing-16);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --spacing-responsive-sm: var(--spacing-8);
+    --spacing-responsive-md: var(--spacing-12);
+    --spacing-responsive-lg: var(--spacing-16);
+    --spacing-responsive-xl: var(--spacing-24);
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --spacing-responsive-sm: var(--spacing-12);
+    --spacing-responsive-md: var(--spacing-16);
+    --spacing-responsive-lg: var(--spacing-24);
+    --spacing-responsive-xl: var(--spacing-32);
+  }
+}

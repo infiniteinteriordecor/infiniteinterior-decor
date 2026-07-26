@@ -1,0 +1,814 @@
+/**
+ * Hero Section Styles
+ * 
+ * Awwwards-quality luxury hero section with cinematic CSS-only animated background.
+ * Features mesh gradients, spotlight effects, floating light blobs, grain texture,
+ * gold ambient glow, mouse-follow radial light, and premium micro-interactions.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with hero section HTML structure
+ * - Requires JavaScript for mouse-follow effect
+ */
+
+/* ============================================
+   HERO SECTION
+   ============================================ */
+
+/**
+ * Main hero container
+ */
+.hero {
+  position: relative;
+  
+  /* Full screen height */
+  min-height: 100vh;
+  
+  /* Flex layout for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Overflow hidden for background effects */
+  overflow: hidden;
+  
+  /* Premium luxury interior background with placeholder */
+  background-color: var(--color-charcoal-900);
+  background-image: url('../../assets/images/hero/hero.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Dark overlay for readability */
+}
+
+/**
+ * Hero overlay for dark background
+ * Premium dark gradient for text readability over hero image
+ */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to bottom, rgba(26, 26, 26, 0.4) 0%, rgba(26, 26, 26, 0.7) 100%);
+}
+
+/* ============================================
+   HERO BACKGROUND LAYERS
+   ============================================ */
+
+/**
+ * Base background layer
+ */
+.hero__background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  
+  /* Premium luxury interior background image */
+  background-color: var(--color-charcoal-900);
+  background-image: url('../../assets/images/hero/hero.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/**
+ * Mesh gradient overlay
+ * Creates luxury mesh effect with multiple color stops
+ */
+.hero__mesh {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(184, 134, 11, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 105, 20, 0.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 30%, rgba(184, 134, 11, 0.06) 0%, transparent 40%);
+  
+  animation: heroMeshBreath 8s ease-in-out infinite;
+}
+
+/**
+ * Soft moving spotlight
+ * Creates cinematic spotlight effect
+ */
+.hero__spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  
+  background: 
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  
+  animation: heroSpotlightMove 12s ease-in-out infinite;
+}
+
+/**
+ * Floating light blobs
+ * Creates depth with blurred light elements
+ */
+.hero__blobs {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.4;
+}
+
+.hero__blob--1 {
+  width: clamp(300px, 40vw, 600px);
+  height: clamp(300px, 40vw, 600px);
+  top: 10%;
+  left: 5%;
+  background: rgba(212, 175, 55, 0.3);
+  animation: heroBlobFloat1 20s ease-in-out infinite;
+}
+
+.hero__blob--2 {
+  width: clamp(250px, 35vw, 500px);
+  height: clamp(250px, 35vw, 500px);
+  top: 60%;
+  right: 5%;
+  background: rgba(184, 134, 11, 0.25);
+  animation: heroBlobFloat2 25s ease-in-out infinite;
+}
+
+.hero__blob--3 {
+  width: clamp(200px, 30vw, 400px);
+  height: clamp(200px, 30vw, 400px);
+  bottom: 15%;
+  left: 25%;
+  background: rgba(139, 105, 20, 0.2);
+  animation: heroBlobFloat3 22s ease-in-out infinite;
+}
+
+.hero__blob--4 {
+  width: clamp(180px, 25vw, 350px);
+  height: clamp(180px, 25vw, 350px);
+  top: 30%;
+  right: 20%;
+  background: rgba(212, 175, 55, 0.15);
+  animation: heroBlobFloat4 18s ease-in-out infinite;
+}
+
+/**
+ * Grain texture overlay
+ * Adds premium film grain effect
+ */
+.hero__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  
+  /* SVG noise pattern */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  opacity: 0.03;
+}
+
+/**
+ * Gold ambient glow
+ * Creates warm gold ambient lighting
+ */
+.hero__glow {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  
+  background: 
+    radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+  
+  animation: heroGlowPulse 6s ease-in-out infinite;
+}
+
+/**
+ * Mouse follow radial light
+ * Interactive light that follows mouse cursor
+ */
+.hero__mouse-light {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  
+  background: radial-gradient(
+    circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(212, 175, 55, 0.06) 0%,
+    transparent 100%
+  );
+  
+  transition: background 0.3s ease-out;
+}
+
+/* ============================================
+   HERO CONTENT
+   ============================================ */
+
+/**
+ * Content container
+ */
+.hero__content {
+  position: relative;
+  z-index: 10;
+  
+  /* Container */
+  max-width: var(--container-5xl);
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3rem);
+  
+  /* Text alignment */
+  text-align: center;
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(40px);
+  
+  /* Animation */
+  animation: heroContentEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+/**
+ * Hero brand heading (company name)
+ */
+.hero__brand {
+  font-family: var(--font-family-secondary);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(1.1, 1.15, 1.2);
+  letter-spacing: clamp(-0.03em, -0.01em, 0);
+  color: #ffffff;
+  margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
+  
+  /* Premium champagne gold gradient */
+  background: linear-gradient(180deg, #f4d03f 0%, #d4af37 50%, #c4a074 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+/**
+ * Hero tagline
+ */
+.hero__tagline {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-primary);
+  font-size: clamp(0.875rem, 1.25vw, 1rem);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: clamp(0.2em, 0.3vw, 0.25em);
+  text-transform: uppercase;
+  color: var(--color-champagne-300);
+  
+  /* Spacing */
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+}
+
+/**
+ * Hero title (primary h1)
+ * Premium serif font with elegant white gradient
+ */
+.hero__title {
+  font-family: var(--font-family-secondary);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: var(--font-weight-bold);
+  line-height: clamp(1.1, 1.15, 1.2);
+  letter-spacing: clamp(-0.03em, -0.01em, 0);
+  color: #ffffff;
+  margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
+  
+  /* Elegant white gradient for luxury feel */
+  background: linear-gradient(180deg, #ffffff 0%, #f5f0e6 50%, #e8e0d0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+/**
+ * Hero description
+ */
+.hero__description {
+  font-family: var(--font-family-primary);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-weight: var(--font-weight-regular);
+  line-height: clamp(1.5, 1.6, 1.7);
+  letter-spacing: 0.01em;
+  color: var(--color-charcoal-200);
+  margin: 0 0 clamp(2rem, 4vw, 3rem) 0;
+  max-width: clamp(20rem, 60vw, 40rem);
+  margin-left: auto;
+  margin-right: auto;
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+/**
+ * Hero CTA buttons
+ */
+.hero__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.75rem, 1.5vw, 1rem);
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+}
+
+@media (min-width: 640px) {
+  .hero__cta {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/**
+ * Hero button styling
+ */
+.hero__button--primary,
+.hero__button--secondary {
+  min-width: clamp(160px, 25vw, 200px);
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+
+/**
+ * Elegant scroll indicator
+ */
+.hero__scroll {
+  position: absolute;
+  bottom: clamp(2rem, 5vw, 4rem);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  
+  /* Animation */
+  opacity: 0;
+  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+}
+
+/**
+ * Scroll line
+ */
+.hero__scroll-line {
+  width: 1px;
+  height: clamp(40px, 8vw, 60px);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+/**
+ * Scroll dot
+ */
+.hero__scroll-dot {
+  width: 6px;
+  height: 6px;
+  background: rgba(212, 175, 55, 0.8);
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: heroScrollDot 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+/**
+ * Mesh breathing animation
+ */
+@keyframes heroMeshBreath {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/**
+ * Spotlight movement
+ */
+@keyframes heroSpotlightMove {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(5%, 5%);
+  }
+  50% {
+    transform: translate(-5%, 10%);
+  }
+  75% {
+    transform: translate(-10%, -5%);
+  }
+}
+
+/**
+ * Blob float animations
+ */
+@keyframes heroBlobFloat1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -20px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 30px) scale(0.9);
+  }
+}
+
+@keyframes heroBlobFloat2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-40px, 30px) scale(1.15);
+  }
+  66% {
+    transform: translate(20px, -40px) scale(0.85);
+  }
+}
+
+@keyframes heroBlobFloat3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(25px, 40px) scale(1.1);
+  }
+  66% {
+    transform: translate(-35px, -25px) scale(0.95);
+  }
+}
+
+@keyframes heroBlobFloat4 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-30px, -35px) scale(1.2);
+  }
+  66% {
+    transform: translate(40px, 20px) scale(0.9);
+  }
+}
+
+/**
+ * Gold glow pulse
+ */
+@keyframes heroGlowPulse {
+  0%, 100% {
+    opacity: 0.08;
+  }
+  50% {
+    opacity: 0.12;
+  }
+}
+
+/**
+ * Gold gradient animation
+ */
+@keyframes heroGoldGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/**
+ * Content enter animation
+ */
+@keyframes heroContentEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Scroll dot animation
+ */
+@keyframes heroScrollDot {
+  0% {
+    top: 0;
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .hero__button--primary,
+  .hero__button--secondary {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .hero__mesh,
+  .hero__spotlight,
+  .hero__blob,
+  .hero__grain,
+  .hero__glow,
+  .hero__mouse-light,
+  .hero__button--primary,
+  .hero__button--primary::before,
+  .hero__button--secondary,
+  .hero__scroll-dot {
+    animation: none;
+    transition: none;
+  }
+  
+  .hero__content,
+  .hero__eyebrow,
+  .hero__title,
+  .hero__subtitle,
+  .hero__cta,
+  .hero__scroll {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  
+  .hero__button--primary:hover,
+  .hero__button--secondary:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   LUXURY BRAND INTRO ANIMATION
+   ============================================ */
+
+/**
+ * Brand intro overlay
+ * Full-screen white background for luxury brand introduction
+ */
+.brand-intro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: var(--z-index-modal);
+  
+  /* Premium white background */
+  background-color: #faf8f5;
+  
+  /* Flex layout for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Transition for fade out */
+  opacity: 1;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/**
+ * Brand intro hidden state (after animation completes)
+ */
+.brand-intro--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/**
+ * Brand intro content container
+ */
+.brand-intro__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  text-align: center;
+}
+
+/**
+ * Brand intro words
+ * Each word animates in sequence
+ */
+.brand-intro__word {
+  display: block;
+  
+  /* Premium serif typography */
+  font-family: var(--font-family-secondary);
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: clamp(1.1, 1.15, 1.2);
+  letter-spacing: clamp(-0.02em, -0.01em, 0);
+  
+  /* Premium walnut/teak wood tones */
+  color: #5c4a32;
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px);
+  
+  /* Animation timing */
+  animation-duration: 0.8s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/**
+ * First word: Infinite
+ */
+.brand-intro__word--1 {
+  animation-delay: 0.3s;
+  animation-name: brandIntroWordEnter;
+}
+
+/**
+ * Second word: Interior
+ */
+.brand-intro__word--2 {
+  animation-delay: 0.9s;
+  animation-name: brandIntroWordEnter;
+}
+
+/**
+ * Third word: Decor
+ */
+.brand-intro__word--3 {
+  animation-delay: 1.5s;
+  animation-name: brandIntroWordEnter;
+}
+
+/**
+ * Luxury accent line
+ * Thin elegant line beneath brand
+ */
+.brand-intro__accent {
+  width: clamp(60px, 15vw, 120px);
+  height: 1px;
+  
+  /* Gold accent color */
+  background-color: #d4af37;
+  
+  /* Initial state */
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  
+  /* Animation */
+  animation: brandIntroAccentEnter 0.6s cubic-bezier(0.16, 1, 0.3, 1) 2.1s forwards;
+}
+
+/**
+ * Word enter animation
+ * Smooth fade and upward motion
+ */
+@keyframes brandIntroWordEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Accent line enter animation
+ * Smooth scale from center
+ */
+@keyframes brandIntroAccentEnter {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .brand-intro {
+    transition: none;
+  }
+  
+  .brand-intro__word {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  
+  .brand-intro__accent {
+    animation: none;
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .hero {
+    min-height: auto;
+    padding: clamp(3rem, 5vw, 4rem) 0;
+    background-color: #ffffff;
+  }
+  
+  .hero__background,
+  .hero__mesh,
+  .hero__spotlight,
+  .hero__blobs,
+  .hero__blob,
+  .hero__grain,
+  .hero__glow,
+  .hero__mouse-light,
+  .hero__scroll {
+    display: none;
+  }
+  
+  .hero__content {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  
+  .hero__title {
+    color: #000000;
+    -webkit-text-fill-color: #000000;
+  }
+  
+  .hero__subtitle {
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .hero__eyebrow {
+    color: #b8860b;
+  }
+}

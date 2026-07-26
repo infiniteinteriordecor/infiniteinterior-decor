@@ -1,0 +1,385 @@
+/**
+ * Gallery Section Styles
+ * 
+ * Premium gallery preview section with hover animations and responsive grid.
+ * Features development placeholder images that will be replaced by real content.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with gallery section HTML structure
+ * - Requires JavaScript for dynamic rendering
+ */
+
+/* ============================================
+   GALLERY SECTION
+   ============================================ */
+
+/**
+ * Main gallery container
+ */
+.gallery {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  
+  /* Background */
+  background-color: var(--color-gray-50);
+}
+
+@media (prefers-color-scheme: dark) {
+  .gallery {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   GALLERY CONTAINER
+   ============================================ */
+
+/**
+ * Gallery inner container
+ */
+.gallery__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-4); /* 20px on mobile */
+}
+
+@media (min-width: 640px) {
+  .gallery__container {
+    padding: 0 var(--spacing-6); /* 30px on tablet */
+  }
+}
+
+/* ============================================
+   GALLERY HEADER
+   ============================================ */
+
+/**
+ * Header section
+ */
+.gallery__header {
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+/**
+ * Section label
+ */
+.gallery__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+}
+
+/**
+ * Section title
+ */
+.gallery__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .gallery__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * Section description
+ */
+.gallery__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-6) 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/**
+ * View all link
+ */
+.gallery__view-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-link);
+  text-decoration: none;
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--ease-luxury),
+              transform var(--transition-fast) var(--ease-luxury);
+}
+
+.gallery__view-all:hover {
+  color: var(--color-text-link-hover);
+  transform: translateX(4px);
+}
+
+.gallery__view-all svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   GALLERY GRID
+   ============================================ */
+
+/**
+ * Gallery grid layout
+ */
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-4);
+}
+
+@media (min-width: 640px) {
+  .gallery__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-8);
+  }
+}
+
+@media (min-width: 1280px) {
+  .gallery__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   GALLERY CARD
+   ============================================ */
+
+/**
+ * Gallery card container
+ */
+.gallery__card {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--ease-luxury),
+              box-shadow var(--transition-base) var(--ease-luxury);
+}
+
+.gallery__card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+/**
+ * Gallery image container
+ */
+.gallery__image {
+  position: relative;
+  aspect-ratio: 3/2;
+  overflow: hidden;
+}
+
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  
+  /* Transition */
+  transition: transform var(--transition-luxury);
+}
+
+.gallery__card:hover .gallery__img {
+  transform: scale(1.05);
+}
+
+/**
+ * Gallery overlay
+ */
+.gallery__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    transparent 100%
+  );
+  
+  /* Flex layout for content */
+  display: flex;
+  align-items: flex-end;
+  padding: var(--spacing-6);
+  
+  /* Transition */
+  opacity: 0;
+  transition: opacity var(--transition-base) var(--ease-luxury);
+}
+
+.gallery__card:hover .gallery__overlay {
+  opacity: 1;
+}
+
+/**
+ * Gallery content
+ */
+.gallery__content {
+  color: var(--color-white);
+}
+
+/**
+ * Gallery title
+ */
+.gallery__title-text {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  margin: 0 0 var(--spacing-2) 0;
+}
+
+/**
+ * Gallery category
+ */
+.gallery__category {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/**
+ * Gallery view button
+ */
+.gallery__view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+  text-decoration: none;
+  
+  /* Spacing */
+  margin-top: var(--spacing-4);
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--ease-luxury),
+              transform var(--transition-fast) var(--ease-luxury);
+}
+
+.gallery__view-btn:hover {
+  color: var(--color-primary-300);
+  transform: translateX(4px);
+}
+
+.gallery__view-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .gallery__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .gallery__description {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.gallery__card:focus-within {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .gallery__card,
+  .gallery__img,
+  .gallery__overlay,
+  .gallery__view-all {
+    transition: none;
+  }
+  
+  .gallery__card:hover {
+    transform: none;
+  }
+  
+  .gallery__card:hover .gallery__img {
+    transform: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .gallery {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .gallery__overlay {
+    display: none;
+  }
+  
+  .gallery__title {
+    color: var(--color-black);
+  }
+  
+  .gallery__description {
+    color: var(--color-text-secondary);
+  }
+}

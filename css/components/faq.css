@@ -1,0 +1,310 @@
+/**
+ * FAQ Section Styles
+ * 
+ * Premium accordion-style FAQ section with smooth animations.
+ * Features responsive design and keyboard accessibility.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with FAQ section HTML structure
+ */
+
+/* ============================================
+   FAQ SECTION
+   ============================================ */
+
+/**
+ * Main FAQ container
+ */
+.faq {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  
+  /* Background */
+  background-color: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  .faq {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   FAQ CONTAINER
+   ============================================ */
+
+/**
+ * FAQ inner container
+ */
+.faq__container {
+  max-width: var(--container-5xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .faq__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/**
+ * Section header
+ */
+.faq__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/**
+ * Section label
+ */
+.faq__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+}
+
+/**
+ * Section title
+ */
+.faq__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .faq__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * Section description
+ */
+.faq__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   FAQ LIST
+   ============================================ */
+
+/**
+ * FAQ list container
+ */
+.faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* ============================================
+   FAQ ITEM
+   ============================================ */
+
+/**
+ * FAQ item container
+ */
+.faq__item {
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-white);
+  overflow: hidden;
+  
+  /* Transition */
+  transition: border-color var(--transition-base) var(--transition-ease-out);
+}
+
+.faq__item:hover {
+  border-color: var(--color-primary-300);
+}
+
+@media (prefers-color-scheme: dark) {
+  .faq__item {
+    background-color: var(--color-gray-800);
+  }
+}
+
+/**
+ * FAQ button (question)
+ */
+.faq__button {
+  width: 100%;
+  
+  /* Flex layout */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  
+  /* Spacing */
+  padding: var(--spacing-6);
+  
+  /* Reset button styles */
+  background: none;
+  border: none;
+  cursor: pointer;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  text-align: left;
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--transition-ease-out);
+}
+
+.faq__button:hover {
+  color: var(--color-primary-600);
+}
+
+/**
+ * FAQ button icon
+ */
+.faq__button-icon {
+  flex-shrink: 0;
+  
+  /* Size */
+  width: 24px;
+  height: 24px;
+  
+  /* Color */
+  color: var(--color-primary-500);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out);
+}
+
+.faq__item[aria-expanded="true"] .faq__button-icon {
+  transform: rotate(180deg);
+}
+
+/**
+ * FAQ answer
+ */
+.faq__answer {
+  max-height: 0;
+  overflow: hidden;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  
+  /* Transition */
+  transition: max-height var(--transition-base) var(--transition-ease-out),
+              padding var(--transition-base) var(--transition-ease-out);
+}
+
+.faq__item[aria-expanded="true"] .faq__answer {
+  max-height: 500px;
+  padding: 0 var(--spacing-6) var(--spacing-6);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .faq__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .faq__description {
+    font-size: var(--font-size-base);
+  }
+  
+  .faq__button {
+    font-size: var(--font-size-base);
+    padding: var(--spacing-4);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.faq__button:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: -2px;
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .faq__answer,
+  .faq__button-icon {
+    transition: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .faq {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .faq__item {
+    background-color: var(--color-white);
+    border: 1px solid #e0e0e0;
+  }
+  
+  .faq__answer {
+    max-height: none;
+    padding: 0 var(--spacing-6) var(--spacing-6);
+  }
+  
+  .faq__button-icon {
+    display: none;
+  }
+  
+  .faq__title {
+    color: var(--color-black);
+  }
+  
+  .faq__description,
+  .faq__answer {
+    color: var(--color-text-secondary);
+  }
+}

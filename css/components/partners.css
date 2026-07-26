@@ -1,0 +1,274 @@
+/**
+ * Partners Section Styles
+ * 
+ * Premium partner logo grid with hover effects.
+ * Features responsive layout and development placeholders.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with partners section HTML structure
+ */
+
+/* ============================================
+   PARTNERS SECTION
+   ============================================ */
+
+/**
+ * Main partners container
+ */
+.partners {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  
+  /* Background */
+  background-color: var(--color-gray-50);
+}
+
+@media (prefers-color-scheme: dark) {
+  .partners {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   PARTNERS CONTAINER
+   ============================================ */
+
+/**
+ * Partners inner container
+ */
+.partners__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .partners__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/**
+ * Section header
+ */
+.partners__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/**
+ * Section label
+ */
+.partners__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+}
+
+/**
+ * Section title
+ */
+.partners__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .partners__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * Section description
+ */
+.partners__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   PARTNERS GRID
+   ============================================ */
+
+/**
+ * Grid layout
+ */
+.partners__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .partners__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .partners__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (min-width: 1280px) {
+  .partners__grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* ============================================
+   PARTNER LOGO
+   ============================================ */
+
+/**
+ * Partner logo item
+ */
+.partners__logo {
+  position: relative;
+  
+  /* Flex layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Aspect ratio */
+  aspect-ratio: 16/9;
+  
+  /* Border */
+  border: 1px solid var(--color-border-light);
+  
+  /* Border radius */
+  border-radius: var(--radius-lg);
+  
+  /* Background */
+  background-color: var(--color-white);
+  
+  /* Shadow */
+  box-shadow: var(--shadow-sm);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out),
+              border-color var(--transition-base) var(--transition-ease-out);
+  
+  /* Overflow */
+  overflow: hidden;
+}
+
+.partners__logo:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-300);
+}
+
+@media (prefers-color-scheme: dark) {
+  .partners__logo {
+    background-color: var(--color-gray-800);
+  }
+}
+
+/**
+ * Logo image
+ */
+.partners__logo img {
+  max-width: 80%;
+  max-height: 80%;
+  object-fit: contain;
+  opacity: 0.7;
+  
+  /* Transition */
+  transition: opacity var(--transition-base) var(--transition-ease-out);
+}
+
+.partners__logo:hover img {
+  opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .partners__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .partners__description {
+    font-size: var(--font-size-base);
+  }
+  
+  .partners__grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.partners__logo:focus-within {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .partners__logo {
+    transition: none;
+  }
+  
+  .partners__logo:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .partners {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .partners__logo {
+    background-color: var(--color-white);
+    border: 1px solid #e0e0e0;
+    box-shadow: none;
+  }
+}

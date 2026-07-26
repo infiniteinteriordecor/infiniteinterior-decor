@@ -1,0 +1,13 @@
+# robots.txt for Infinite Interior Decor
+# https://infiniteinterior.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /private/
+Disallow: /config/
+
+# Sitemap location
+Sitemap: https://infiniteinterior.com/sitemap.xml

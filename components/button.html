@@ -1,0 +1,229 @@
+<!--
+  Button Component
+  
+  A versatile button component with multiple variants, sizes, and states.
+  Designed for accessibility and consistent styling across the application.
+  
+  Usage:
+  Copy the appropriate button HTML structure based on your needs.
+  Ensure button CSS is loaded.
+  
+  Variants:
+  - Primary: Main call-to-action buttons
+  - Secondary: Secondary actions
+  - Outline: Bordered buttons with transparent background
+  - Ghost: Minimal buttons with no background
+  - Link: Link-style buttons
+  
+  Sizes:
+  - Small: Compact buttons
+  - Medium: Default size
+  - Large: Prominent buttons
+  - Extra Large: Hero section buttons
+  
+  States:
+  - Default: Normal state
+  - Hover: Mouse hover state
+  - Focus: Keyboard focus state
+  - Active: Pressed state
+  - Disabled: Disabled state
+  
+  Accessibility:
+  - Proper ARIA attributes
+  - Keyboard navigation support
+  - Focus visible indicators
+  - Screen reader support
+-->
+
+<!-- Primary Button - Medium Size -->
+<button 
+  type="button" 
+  class="button button--primary button--medium"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Primary Button - Large Size -->
+<button 
+  type="button" 
+  class="button button--primary button--large"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Primary Button with Icon -->
+<button 
+  type="button" 
+  class="button button--primary button--medium"
+>
+  <span class="button__icon button__icon--left">
+    <!-- Left icon SVG -->
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+      <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+    </svg>
+  </span>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Primary Button with Right Icon -->
+<button 
+  type="button" 
+  class="button button--primary button--medium"
+>
+  <span class="button__text">Button Text</span>
+  <span class="button__icon button__icon--right">
+    <!-- Right icon SVG -->
+    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20" aria-hidden="true">
+      <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+    </svg>
+  </span>
+</button>
+
+<!-- Secondary Button -->
+<button 
+  type="button" 
+  class="button button--secondary button--medium"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Outline Button -->
+<button 
+  type="button" 
+  class="button button--outline button--medium"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Ghost Button -->
+<button 
+  type="button" 
+  class="button button--ghost button--medium"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Link Button -->
+<button 
+  type="button" 
+  class="button button--link"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Small Button -->
+<button 
+  type="button" 
+  class="button button--primary button--small"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Extra Large Button -->
+<button 
+  type="button" 
+  class="button button--primary button--xl"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Full Width Button -->
+<button 
+  type="button" 
+  class="button button--primary button--medium button--full-width"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Disabled Button -->
+<button 
+  type="button" 
+  class="button button--primary button--medium"
+  disabled
+  aria-disabled="true"
+>
+  <span class="button__text">Button Text</span>
+</button>
+
+<!-- Loading Button -->
+<button 
+  type="button" 
+  class="button button--primary button--medium button--loading"
+  disabled
+  aria-disabled="true"
+  aria-busy="true"
+>
+  <span class="button__spinner" aria-hidden="true">
+    <!-- Loading spinner SVG -->
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" width="20" height="20">
+      <circle cx="12" cy="12" r="10" stroke-width="4" stroke-opacity="0.3"/>
+      <path d="M12 2a10 10 0 0 1 10 10" stroke-width="4" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="1s" repeatCount="indefinite"/>
+      </path>
+    </svg>
+  </span>
+  <span class="button__text">Loading...</span>
+</button>
+
+<!-- Button as Link (for navigation) -->
+<a 
+  href="/page/" 
+  class="button button--primary button--medium"
+  role="button"
+>
+  <span class="button__text">Button Text</span>
+</a>
+
+<!-- Submit Button (for forms) -->
+<button 
+  type="submit" 
+  class="button button--primary button--medium"
+  form="form-id"
+>
+  <span class="button__text">Submit</span>
+</button>
+
+<!-- Reset Button (for forms) -->
+<button 
+  type="reset" 
+  class="button button--secondary button--medium"
+  form="form-id"
+>
+  <span class="button__text">Reset</span>
+</button>
+
+<!-- Icon Only Button -->
+<button 
+  type="button" 
+  class="button button--ghost button--icon-only"
+  aria-label="Close"
+>
+  <span class="button__icon" aria-hidden="true">
+    <!-- Close icon SVG -->
+    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+      <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    </svg>
+  </span>
+</button>
+
+<!-- Button Group -->
+<div class="button-group" role="group" aria-label="Button group">
+  <button 
+    type="button" 
+    class="button button--primary button--medium"
+  >
+    <span class="button__text">First</span>
+  </button>
+  <button 
+    type="button" 
+    class="button button--secondary button--medium"
+  >
+    <span class="button__text">Second</span>
+  </button>
+  <button 
+    type="button" 
+    class="button button--secondary button--medium"
+  >
+    <span class="button__text">Third</span>
+  </button>
+</div>

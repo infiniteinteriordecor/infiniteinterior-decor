@@ -1,0 +1,405 @@
+/**
+ * CTA Section Styles
+ * 
+ * Luxury dark call-to-action section with premium styling.
+ * Encourages visitors to take action with compelling design.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with CTA section HTML structure
+ * - Dark theme with elegant gradients
+ */
+
+/* ============================================
+   CTA SECTION
+   ============================================ */
+
+/**
+ * Main CTA section container
+ */
+.cta {
+  position: relative;
+  
+  /* Spacing */
+  padding: var(--spacing-24) 0;
+  
+  /* Background */
+  background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-gray-800) 50%, var(--color-gray-900) 100%);
+  
+  /* Overflow */
+  overflow: hidden;
+}
+
+/**
+ * CTA section with accent gradient
+ */
+.cta--accent {
+  background: linear-gradient(135deg, var(--color-gray-900) 0%, var(--color-primary-900) 50%, var(--color-gray-900) 100%);
+}
+
+/* ============================================
+   CTA BACKGROUND EFFECTS
+   ============================================ */
+
+/**
+ * Subtle gradient overlay
+ */
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  
+  /* Gradient overlay */
+  background: radial-gradient(ellipse at 30% 20%, rgba(154, 125, 62, 0.1) 0%, transparent 50%),
+              radial-gradient(ellipse at 70% 80%, rgba(176, 154, 101, 0.08) 0%, transparent 50%);
+  
+  /* Pointer events */
+  pointer-events: none;
+}
+
+/**
+ * Animated light effect
+ */
+.cta::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  
+  /* Gradient */
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 60%);
+  
+  /* Animation */
+  animation: ctaLightMove 20s linear infinite;
+  
+  /* Pointer events */
+  pointer-events: none;
+}
+
+@keyframes ctaLightMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30%, 30%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+/* ============================================
+   CTA CONTAINER
+   ============================================ */
+
+/**
+ * Inner container
+ */
+.cta__container {
+  position: relative;
+  z-index: 1;
+  
+  max-width: var(--container-5xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+  
+  /* Text alignment */
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .cta__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/* ============================================
+   CTA CONTENT
+   ============================================ */
+
+/**
+ * CTA content wrapper
+ */
+.cta__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+/**
+ * CTA badge/label
+ */
+.cta__badge {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Background */
+  background: rgba(154, 125, 62, 0.15);
+  
+  /* Spacing */
+  padding: var(--spacing-2) var(--spacing-4);
+  
+  /* Border radius */
+  border-radius: var(--radius-full);
+  
+  /* Border */
+  border: 1px solid rgba(154, 125, 62, 0.3);
+}
+
+/**
+ * CTA title
+ */
+.cta__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-white);
+  margin: 0;
+  max-width: 900px;
+}
+
+@media (min-width: 640px) {
+  .cta__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * CTA description
+ */
+.cta__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  max-width: 700px;
+}
+
+/**
+ * CTA buttons
+ */
+.cta__buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-4);
+  
+  /* Margin top */
+  margin-top: var(--spacing-4);
+}
+
+@media (min-width: 640px) {
+  .cta__buttons {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+/**
+ * CTA button styling
+ */
+.cta__buttons .button {
+  min-width: 200px;
+}
+
+/**
+ * Secondary button styling for CTA
+ */
+.cta__buttons .button--secondary {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--color-white);
+}
+
+.cta__buttons .button--secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: var(--color-white);
+}
+
+/* ============================================
+   CTA FEATURES
+   ============================================ */
+
+/**
+ * Optional features list below CTA
+ */
+.cta__features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-8);
+  
+  /* Margin top */
+  margin-top: var(--spacing-12);
+}
+
+/**
+ * CTA feature item
+ */
+.cta__feature {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/**
+ * Feature check icon
+ */
+.cta__feature-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Size */
+  width: 20px;
+  height: 20px;
+  
+  /* Color */
+  color: var(--color-primary-400);
+  
+  /* Flex shrink */
+  flex-shrink: 0;
+}
+
+.cta__feature-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ============================================
+   CTA WITH IMAGE
+   ============================================ */
+
+/**
+ * CTA with image layout variant
+ */
+.cta--split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+@media (min-width: 1024px) {
+  .cta--split {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/**
+ * CTA image side
+ */
+.cta__image {
+  position: relative;
+  
+  /* Aspect ratio */
+  aspect-ratio: 16/9;
+  
+  /* Overflow */
+  overflow: hidden;
+  
+  /* Background */
+  background: linear-gradient(135deg, var(--color-primary-200) 0%, var(--color-primary-300) 100%);
+}
+
+/**
+ * Image placeholder gradient
+ */
+.cta__image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  
+  /* Abstract pattern */
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(154, 125, 62, 0.3) 0%, transparent 50%);
+}
+
+/**
+ * CTA content side in split layout
+ */
+.cta--split .cta__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Full height */
+  min-height: 500px;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .cta::after {
+    animation: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .cta {
+    padding: var(--spacing-16) 0;
+    background: var(--color-gray-100);
+  }
+  
+  .cta::before,
+  .cta::after {
+    display: none;
+  }
+  
+  .cta__title {
+    color: var(--color-black);
+  }
+  
+  .cta__description {
+    color: var(--color-text-secondary);
+  }
+  
+  .cta__badge {
+    background: var(--color-primary-100);
+    color: var(--color-primary);
+    border-color: var(--color-primary-300);
+  }
+  
+  .cta__feature {
+    color: var(--color-text-secondary);
+  }
+  
+  .cta__feature-icon {
+    color: var(--color-primary);
+  }
+  
+  .cta--split {
+    display: block;
+  }
+  
+  .cta__image {
+    display: none;
+  }
+}

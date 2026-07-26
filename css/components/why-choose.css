@@ -1,0 +1,347 @@
+/**
+ * Why Choose Section Styles
+ * 
+ * Premium icon cards highlighting company strengths.
+ * Features responsive grid and hover effects.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with why-choose section HTML structure
+ */
+
+/* ============================================
+   WHY CHOOSE SECTION
+   ============================================ */
+
+/**
+ * Main why choose container
+ */
+.why-choose {
+  position: relative;
+  
+  /* Spacing */
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  
+  /* Background */
+  background-color: var(--color-gray-50);
+}
+
+@media (prefers-color-scheme: dark) {
+  .why-choose {
+    background-color: var(--color-gray-900);
+  }
+}
+
+/* ============================================
+   WHY CHOOSE CONTAINER
+   ============================================ */
+
+/**
+ * Why choose inner container
+ */
+.why-choose__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .why-choose__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/**
+ * Section header
+ */
+.why-choose__header {
+  text-align: center;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+/**
+ * Section label
+ */
+.why-choose__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary-300);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+}
+
+/**
+ * Section title
+ */
+.why-choose__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-fluid-4xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .why-choose__title {
+    font-size: var(--font-size-5xl);
+  }
+}
+
+/**
+ * Section description
+ */
+.why-choose__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   WHY CHOOSE GRID
+   ============================================ */
+
+/**
+ * Grid layout
+ */
+.why-choose__grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .why-choose__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-8);
+  }
+}
+
+@media (min-width: 1024px) {
+  .why-choose__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   WHY CHOOSE CARD
+   ============================================ */
+
+/**
+ * Card container
+ */
+.why-choose__card {
+  position: relative;
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  
+  /* Spacing */
+  padding: var(--spacing-8);
+  
+  /* Background */
+  background-color: var(--color-white);
+  
+  /* Border */
+  border: 1px solid var(--color-border-light);
+  
+  /* Border radius */
+  border-radius: var(--radius-2xl);
+  
+  /* Shadow */
+  box-shadow: var(--shadow-sm);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out),
+              border-color var(--transition-base) var(--transition-ease-out);
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.why-choose__card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-300);
+}
+
+@media (prefers-color-scheme: dark) {
+  .why-choose__card {
+    background-color: var(--color-gray-800);
+  }
+}
+
+/* ============================================
+   CARD ICON
+   ============================================ */
+
+/**
+ * Icon container
+ */
+.why-choose__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Size */
+  width: clamp(64px, 10vw, 80px);
+  height: clamp(64px, 10vw, 80px);
+  
+  /* Backgroundgradient */
+  background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-200) 100%);
+  
+  /* Border radius */
+  border-radius: var(--radius-xl);
+  
+  /* Color */
+  color: var(--color-primary-700);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-6);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              background var(--transition-base) var(--transition-ease-out);
+}
+
+.why-choose__card:hover .why-choose__icon {
+  transform: scale(1.1);
+  background: linear-gradient(135deg, var(--color-primary-200) 0%, var(--color-primary-300) 100%);
+}
+
+@media (prefers-color-scheme: dark) {
+  .why-choose__icon {
+    background: linear-gradient(135deg, rgba(154, 125, 62, 0.15) 0%, rgba(154, 125, 62, 0.25) 100%);
+    color: var(--color-primary-300);
+  }
+  
+  .why-choose__card:hover .why-choose__icon {
+    background: linear-gradient(135deg, rgba(154, 125, 62, 0.25) 0%, rgba(154, 125, 62, 0.35) 100%);
+  }
+}
+
+/**
+ * Icon SVG
+ */
+.why-choose__icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* ============================================
+   CARD CONTENT
+   ============================================ */
+
+/**
+ * Card title
+ */
+.why-choose__card-title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+/**
+ * Card description
+ */
+.why-choose__card-description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+/**
+ * Mobile adjustments
+ */
+@media (max-width: 639px) {
+  .why-choose__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .why-choose__description {
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.why-choose__card:focus-within {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .why-choose__card,
+  .why-choose__icon {
+    transition: none;
+  }
+  
+  .why-choose__card:hover {
+    transform: none;
+  }
+  
+  .why-choose__card:hover .why-choose__icon {
+    transform: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .why-choose {
+    padding: var(--spacing-8) 0;
+    background-color: var(--color-white);
+  }
+  
+  .why-choose__card {
+    background-color: var(--color-white);
+    border: 1px solid #e0e0e0;
+    box-shadow: none;
+  }
+  
+  .why-choose__title {
+    color: var(--color-black);
+  }
+  
+  .why-choose__description {
+    color: var(--color-text-secondary);
+  }
+}

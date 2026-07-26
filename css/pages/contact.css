@@ -1,0 +1,534 @@
+/**
+ * Contact Page Styles
+ * 
+ * Premium contact page with contact information, form,
+ * map, and action buttons. Luxury dark + gold design language.
+ */
+
+/* ============================================
+   CONTACT HERO SECTION
+   ============================================ */
+
+.contact-hero {
+  position: relative;
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-black) 0%, var(--color-gray-900) 100%);
+  overflow: hidden;
+}
+
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.contact-hero__container {
+  position: relative;
+  width: 100%;
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+  z-index: 1;
+}
+
+.contact-hero__content {
+  max-width: 800px;
+}
+
+.contact-hero__label {
+  display: inline-block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--spacing-4);
+}
+
+.contact-hero__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-white);
+  line-height: 1.1;
+  margin-bottom: var(--spacing-6);
+  font-family: var(--font-display);
+}
+
+.contact-hero__description {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-300);
+  line-height: 1.6;
+}
+
+/* ============================================
+   CONTACT INFO SECTION
+   ============================================ */
+
+.contact-info {
+  padding: var(--spacing-16) 0;
+  background: var(--color-white);
+}
+
+.contact-info__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+.contact-info__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+  .contact-info__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .contact-info__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.contact-info__card {
+  background: var(--color-gray-50);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-6);
+  text-align: center;
+  transition: box-shadow var(--transition-base) var(--transition-ease-out),
+              transform var(--transition-base) var(--transition-ease-out);
+}
+
+.contact-info__card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.contact-info__icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-4);
+  color: var(--color-white);
+}
+
+.contact-info__title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-black);
+  margin-bottom: var(--spacing-3);
+}
+
+.contact-info__text {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-4);
+}
+
+.contact-info__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: color var(--transition-base) var(--transition-ease-out);
+}
+
+.contact-info__link:hover {
+  color: var(--color-gold-dark);
+}
+
+/* ============================================
+   CONTACT FORM & MAP SECTION
+   ============================================ */
+
+.contact-main {
+  padding: var(--spacing-16) 0;
+  background: var(--color-gray-50);
+}
+
+.contact-main__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+.contact-main__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-12);
+}
+
+@media (min-width: 1024px) {
+  .contact-main__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Contact Form */
+.contact-form {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-8);
+  box-shadow: var(--shadow-md);
+}
+
+.contact-form__header {
+  margin-bottom: var(--spacing-6);
+}
+
+.contact-form__title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin-bottom: var(--spacing-3);
+  font-family: var(--font-display);
+}
+
+.contact-form__description {
+  font-size: var(--font-size-base);
+  color: var(--color-gray-600);
+  line-height: 1.6;
+}
+
+.contact-form__group {
+  margin-bottom: var(--spacing-6);
+}
+
+.contact-form__label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  margin-bottom: var(--spacing-2);
+}
+
+.contact-form__input,
+.contact-form__textarea {
+  width: 100%;
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-900);
+  background: var(--color-white);
+  transition: border-color var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out);
+  font-family: inherit;
+}
+
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  outline: none;
+  border-color: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.contact-form__textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.contact-form__submit {
+  width: 100%;
+  padding: var(--spacing-4) var(--spacing-6);
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out);
+}
+
+.contact-form__submit:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.contact-form__submit:active {
+  transform: translateY(0);
+}
+
+/* Map Section */
+.contact-map {
+  background: var(--color-white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.contact-map__header {
+  padding: var(--spacing-6);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.contact-map__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-black);
+}
+
+.contact-map__placeholder {
+  aspect-ratio: 16/9;
+  background: var(--color-gray-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+}
+
+/* ============================================
+   ACTION BUTTONS SECTION
+   ============================================ */
+
+.contact-actions {
+  padding: var(--spacing-16) 0;
+  background: var(--color-white);
+}
+
+.contact-actions__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+.contact-actions__header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto var(--spacing-12);
+}
+
+.contact-actions__label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: var(--spacing-4);
+}
+
+.contact-actions__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-4);
+  font-family: var(--font-display);
+}
+
+.contact-actions__description {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-600);
+  line-height: 1.6;
+}
+
+.contact-actions__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (min-width: 640px) {
+  .contact-actions__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.contact-actions__button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-6);
+  background: var(--color-gray-50);
+  border: 2px solid var(--color-gray-200);
+  border-radius: var(--border-radius-lg);
+  text-decoration: none;
+  transition: all var(--transition-base) var(--transition-ease-out);
+}
+
+.contact-actions__button--whatsapp:hover {
+  background: #25D366;
+  border-color: #25D366;
+}
+
+.contact-actions__button--whatsapp:hover .contact-actions__button-icon,
+.contact-actions__button--whatsapp:hover .contact-actions__button-text {
+  color: var(--color-white);
+}
+
+.contact-actions__button--email:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+}
+
+.contact-actions__button--email:hover .contact-actions__button-icon,
+.contact-actions__button--email:hover .contact-actions__button-text {
+  color: var(--color-white);
+}
+
+.contact-actions__button--call:hover {
+  background: var(--color-black);
+  border-color: var(--color-black);
+}
+
+.contact-actions__button--call:hover .contact-actions__button-icon,
+.contact-actions__button--call:hover .contact-actions__button-text {
+  color: var(--color-white);
+}
+
+.contact-actions__button-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-gray-700);
+  transition: color var(--transition-base) var(--transition-ease-out);
+}
+
+.contact-actions__button-text {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color var(--transition-base) var(--transition-ease-out);
+}
+
+/* ============================================
+   WORKING HOURS SECTION
+   ============================================ */
+
+.contact-hours {
+  padding: var(--spacing-16) 0;
+  background: var(--color-black);
+}
+
+.contact-hours__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+.contact-hours__content {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-hours__icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-dark) 100%);
+  border-radius: var(--border-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-6);
+  color: var(--color-white);
+}
+
+.contact-hours__title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-4);
+}
+
+.contact-hours__text {
+  font-size: var(--font-size-lg);
+  color: var(--color-gray-300);
+  line-height: 1.6;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 767px) {
+  .contact-hero {
+    min-height: 30vh;
+  }
+  
+  .contact-hero__container {
+    padding: var(--spacing-6) var(--spacing-4);
+  }
+  
+  .contact-info,
+  .contact-main,
+  .contact-actions,
+  .contact-hours {
+    padding: var(--spacing-12) 0;
+  }
+  
+  .contact-info__grid,
+  .contact-main__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-actions__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-info__card,
+  .contact-form__input,
+  .contact-form__textarea,
+  .contact-form__submit,
+  .contact-actions__button {
+    transition: none;
+  }
+}
+
+.contact-form__input:focus,
+.contact-form__textarea:focus {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .contact-hero,
+  .contact-hours {
+    background: var(--color-white) !important;
+  }
+  
+  .contact-hero__title,
+  .contact-hero__description,
+  .contact-hours__title,
+  .contact-hours__text {
+    color: var(--color-black) !important;
+  }
+  
+  .contact-map__placeholder {
+    display: none;
+  }
+}

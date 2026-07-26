@@ -1,0 +1,398 @@
+/**
+ * Design Tokens - CSS Custom Properties
+ * 
+ * This file contains all design tokens for the Infinite Interior Decor website.
+ * Design tokens are the single source of truth for design decisions.
+ * 
+ * Usage:
+ * - Import this file first in your CSS
+ * - Use variables like: var(--color-primary)
+ * - Never hardcode values in component styles
+ * 
+ * Categories:
+ * - Colors
+ * - Typography
+ * - Font Scale
+ * - Spacing
+ * - Radius
+ * - Shadows
+ * - Z-index
+ * - Transitions
+ * - Container Width
+ */
+
+/* ============================================
+   COLORS
+   ============================================ */
+
+/* Primary Colors - Luxury Brand Identity */
+:root {
+  /* Walnut Brown */
+  --color-walnut-50: #f8f5f0;
+  --color-walnut-100: #ebe4d8;
+  --color-walnut-200: #d4c4a8;
+  --color-walnut-300: #bfa378;
+  --color-walnut-400: #a88258;
+  --color-walnut-500: #8b6b47;
+  --color-walnut-600: #6d5438;
+  --color-walnut-700: #54442d;
+  --color-walnut-800: #423625;
+  --color-walnut-900: #362d20;
+  
+  /* Champagne Gold */
+  --color-champagne-50: #fdfcf8;
+  --color-champagne-100: #f9f6ed;
+  --color-champagne-200: #f1e9d6;
+  --color-champagne-300: #e5d4b8;
+  --color-champagne-400: #d4b896;
+  --color-champagne-500: #c4a074;
+  --color-champagne-600: #a8855c;
+  --color-champagne-700: #8c6b4a;
+  --color-champagne-800: #73563f;
+  --color-champagne-900: #5e4635;
+  
+  /* Bronze */
+  --color-bronze-50: #f8f6f3;
+  --color-bronze-100: #ebe4d8;
+  --color-bronze-200: #d4c4a8;
+  --color-bronze-300: #bfa378;
+  --color-bronze-400: #a88258;
+  --color-bronze-500: #8b6b47;
+  --color-bronze-600: #6d5438;
+  --color-bronze-700: #54442d;
+  --color-bronze-800: #423625;
+  --color-bronze-900: #362d20;
+  
+  /* Charcoal */
+  --color-charcoal-50: #f5f5f5;
+  --color-charcoal-100: #e5e5e5;
+  --color-charcoal-200: #d4d4d4;
+  --color-charcoal-300: #a3a3a3;
+  --color-charcoal-400: #737373;
+  --color-charcoal-500: #525252;
+  --color-charcoal-600: #404040;
+  --color-charcoal-700: #262626;
+  --color-charcoal-800: #171717;
+  --color-charcoal-900: #0a0a0a;
+  
+  /* Warm White */
+  --color-warm-white: #faf8f5;
+  
+  /* Primary brand color (Walnut Brown) */
+  --color-primary: var(--color-walnut-600);
+  --color-primary-light: var(--color-walnut-400);
+  --color-primary-dark: var(--color-walnut-800);
+  
+  /* Accent color (Champagne Gold) */
+  --color-accent: var(--color-champagne-500);
+  --color-accent-light: var(--color-champagne-300);
+  --color-accent-dark: var(--color-champagne-700);
+}
+
+/* Secondary Colors - Accent */
+:root {
+  --color-secondary-50: #faf9f7;
+  --color-secondary-100: #f5f2ed;
+  --color-secondary-200: #ebe4d8;
+  --color-secondary-300: #d9cbb5;
+  --color-secondary-400: #c4ad8e;
+  --color-secondary-500: #b09a66;
+  --color-secondary-600: #8e7c52;
+  --color-secondary-700: #726342;
+  --color-secondary-800: #5c5036;
+  --color-secondary-900: #4b422d;
+  
+  --color-secondary: var(--color-secondary-500);
+  --color-secondary-light: var(--color-secondary-300);
+  --color-secondary-dark: var(--color-secondary-700);
+}
+
+/* Neutral Colors - Text and Backgrounds */
+:root {
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f5f5f5;
+  --color-neutral-200: #e5e5e5;
+  --color-neutral-300: #d4d4d4;
+  --color-neutral-400: #a3a3a3;
+  --color-neutral-500: #737373;
+  --color-neutral-600: #525252;
+  --color-neutral-700: #404040;
+  --color-neutral-800: #262626;
+  --color-neutral-900: #171717;
+  --color-neutral-950: #0a0a0a;
+  
+  --color-white: var(--color-neutral-0);
+  --color-black: var(--color-neutral-950);
+  --color-gray-50: var(--color-neutral-50);
+  --color-gray-100: var(--color-neutral-100);
+  --color-gray-200: var(--color-neutral-200);
+  --color-gray-300: var(--color-neutral-300);
+  --color-gray-400: var(--color-neutral-400);
+  --color-gray-500: var(--color-neutral-500);
+  --color-gray-600: var(--color-neutral-600);
+  --color-gray-700: var(--color-neutral-700);
+  --color-gray-800: var(--color-neutral-800);
+  --color-gray-900: var(--color-neutral-900);
+}
+
+/* Semantic Colors - Status and Feedback */
+:root {
+  /* Success */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  
+  /* Error */
+  --color-error-50: #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-300: #fca5a5;
+  --color-error-400: #f87171;
+  --color-error-500: #ef4444;
+  --color-error-600: #dc2626;
+  --color-error-700: #b91c1c;
+  --color-error-800: #991b1b;
+  --color-error-900: #7f1d1d;
+  
+  /* Warning */
+  --color-warning-50: #fffbeb;
+  --color-warning-100: #fef3c7;
+  --color-warning-200: #fde68a;
+  --color-warning-300: #fcd34d;
+  --color-warning-400: #fbbf24;
+  --color-warning-500: #f59e0b;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-800: #92400e;
+  --color-warning-900: #78350f;
+  
+  /* Info */
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+  --color-info-800: #1e40af;
+  --color-info-900: #1e3a8a;
+}
+
+/* Text Colors - Minimalist Luxury Palette */
+:root {
+  --color-text-primary: #1A1A1A;  /* Rich Charcoal */
+  --color-text-secondary: #4A4A4A;
+  --color-text-tertiary: #6A6A6A;
+  --color-text-inverse: #F9F9F6;
+  --color-text-link: #8C7A6B;  /* Warm Taupe accent */
+  --color-text-link-hover: #6B5A4B;
+}
+
+/* Background Colors - Minimalist Luxury Palette */
+:root {
+  --color-bg-primary: #F9F9F6;  /* Warm Alabaster */
+  --color-bg-secondary: #F5F5F2;
+  --color-bg-tertiary: #EFEFEC;
+  --color-bg-inverse: #1A1A1A;
+  --color-bg-accent: #8C7A6B;  /* Warm Taupe */
+}
+
+/* Border Colors - Minimalist Luxury Palette */
+:root {
+  --color-border-light: rgba(26, 26, 26, 0.08);
+  --color-border-medium: rgba(26, 26, 26, 0.1);
+  --color-border-dark: rgba(26, 26, 26, 0.15);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+/* Font Families */
+:root {
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+  --font-family-primary: var(--font-body);
+  --font-family-secondary: var(--font-heading);
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  --font-family-base: var(--font-family-primary);
+}
+
+/* Font Weights */
+:root {
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
+
+/* Font Sizes - Fluid Typography with clamp() */
+:root {
+  /* Fluid typography scaling from 320px mobile to 1920px desktop */
+  --font-size-xs: clamp(0.7rem, 0.65rem + 0.25vw, 0.875rem);
+  --font-size-sm: clamp(0.8rem, 0.75rem + 0.25vw, 1rem);
+  --font-size-base: clamp(0.9rem, 0.85rem + 0.25vw, 1.125rem);
+  --font-size-lg: clamp(1rem, 0.95rem + 0.25vw, 1.25rem);
+  --font-size-xl: clamp(1.1rem, 1rem + 0.5vw, 1.5rem);
+  --font-size-2xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.875rem);
+  --font-size-3xl: clamp(1.5rem, 1.25rem + 1.25vw, 2.5rem);
+  --font-size-4xl: clamp(1.75rem, 1.5rem + 1.25vw, 3rem);
+  --font-size-5xl: clamp(2rem, 1.75rem + 1.25vw, 3.75rem);
+  --font-size-6xl: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
+  --font-size-7xl: clamp(3rem, 2.5rem + 2.5vw, 5.5rem);
+  --font-size-8xl: clamp(3.5rem, 3rem + 2.5vw, 6.5rem);
+  --font-size-9xl: clamp(4rem, 3.5rem + 2.5vw, 8rem);
+}
+
+/* Line Heights */
+:root {
+  --line-height-none: 1;
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+}
+
+/* Letter Spacing - Editorial Luxury */
+:root {
+  --letter-spacing-tighter: -0.05em;
+  --letter-spacing-tight: -0.02em;  /* Editorial heading tightness */
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+  --letter-spacing-widest: 0.1em;   /* Uppercase subheadings */
+  
+  /* Editorial-specific letter spacing */
+  --letter-spacing-heading: -0.02em;  /* Slightly negative for headings */
+  --letter-spacing-subheading: 0.1em; /* Tracking-wide for uppercase subheadings */
+}
+
+/* ============================================
+   SPACING
+   ============================================ */
+
+/* Spacing Scale - 4px base unit (increased by 25% for luxury breathing room) */
+:root {
+  --spacing-0: 0;
+  --spacing-1: 0.3125rem;  /* 5px */
+  --spacing-2: 0.625rem;   /* 10px */
+  --spacing-3: 0.9375rem;  /* 15px */
+  --spacing-4: 1.25rem;     /* 20px */
+  --spacing-5: 1.5625rem;  /* 25px */
+  --spacing-6: 1.875rem;   /* 30px */
+  --spacing-8: 2.5rem;     /* 40px */
+  --spacing-10: 3.125rem;  /* 50px */
+  --spacing-12: 3.75rem;   /* 60px */
+  --spacing-16: 5rem;      /* 80px */
+  --spacing-20: 6.25rem;    /* 100px */
+  --spacing-24: 7.5rem;     /* 120px */
+  --spacing-32: 10rem;      /* 160px */
+  --spacing-40: 12.5rem;    /* 200px */
+  --spacing-48: 15rem;      /* 240px */
+  --spacing-56: 14rem;   /* 224px */
+  --spacing-64: 16rem;   /* 256px */
+}
+
+/* ============================================
+   BORDER RADIUS
+   ============================================ */
+
+:root {
+  --radius-none: 0;
+  --radius-sm: 0.125rem;   /* 2px */
+  --radius-base: 0.25rem;  /* 4px */
+  --radius-md: 0.375rem;   /* 6px */
+  --radius-lg: 0.5rem;     /* 8px */
+  --radius-xl: 0.75rem;    /* 12px */
+  --radius-2xl: 1rem;      /* 16px */
+  --radius-3xl: 1.5rem;    /* 24px */
+  --radius-full: 9999px;
+}
+
+/* ============================================
+   SHADOWS
+   ============================================ */
+
+:root {
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-2xl: 0 50px 100px -20px rgba(0, 0, 0, 0.25), 0 30px 60px -30px rgba(0, 0, 0, 0.3);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  --shadow-none: none;
+}
+
+/* ============================================
+   Z-INDEX SCALE
+   ============================================ */
+
+:root {
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-top: 9999;
+}
+
+/* ============================================
+   TRANSITIONS
+   ============================================ */
+
+:root {
+  --transition-fastest: 150ms;
+  --transition-fast: 200ms;
+  --transition-base: 300ms;
+  --transition-slow: 500ms;
+  --transition-slower: 700ms;
+  
+  --transition-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --transition-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --transition-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Luxury easing curve for premium feel */
+  --ease-luxury: cubic-bezier(0.76, 0, 0.24, 1);
+  
+  --transition-base-all: var(--transition-base) var(--transition-ease-in-out);
+  --transition-fast-all: var(--transition-fast) var(--transition-ease-out);
+  --transition-luxury: 1.2s var(--ease-luxury);
+}
+
+/* ============================================
+   CONTAINER WIDTH
+   ============================================ */
+
+:root {
+  --container-xs: 20rem;    /* 320px */
+  --container-sm: 24rem;    /* 384px */
+  --container-md: 28rem;    /* 448px */
+  --container-lg: 32rem;    /* 512px */
+  --container-xl: 36rem;    /* 576px */
+  --container-2xl: 42rem;   /* 672px */
+  --container-3xl: 48rem;   /* 768px */
+  --container-4xl: 56rem;   /* 896px */
+  --container-5xl: 64rem;   /* 1024px */
+  --container-6xl: 72rem;   /* 1152px */
+  --container-7xl: 80rem;   /* 1280px */
+  --container-full: 100%;
+}

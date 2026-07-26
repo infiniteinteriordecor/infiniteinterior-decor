@@ -1,0 +1,391 @@
+/**
+ * Trust Section Styles
+ * 
+ * Animated counters section showcasing company achievements.
+ * Features smooth number animations and elegant card design.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with trust section HTML structure
+ * - Requires JavaScript for counter animation
+ */
+
+/* ============================================
+   TRUST SECTION
+   ============================================ */
+
+/**
+ * Main trust section container
+ */
+.trust {
+  position: relative;
+  
+  /* Spacing */
+  padding: var(--spacing-20) 0;
+  
+  /* Background */
+  background-color: var(--color-bg-primary);
+}
+
+/**
+ * Trust section with dark background
+ */
+.trust--dark {
+  background-color: var(--color-gray-900);
+}
+
+/* ============================================
+   TRUST CONTAINER
+   ============================================ */
+
+/**
+ * Inner container
+ */
+.trust__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .trust__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/* ============================================
+   TRUST HEADER
+   ============================================ */
+
+/**
+ * Section header
+ */
+.trust__header {
+  text-align: center;
+  margin-bottom: var(--spacing-12);
+}
+
+/**
+ * Section label
+ */
+.trust__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-3);
+}
+
+/**
+ * Section title
+ */
+.trust__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .trust__title {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.trust--dark .trust__title {
+  color: var(--color-white);
+}
+
+/**
+ * Section description
+ */
+.trust__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.trust--dark .trust__description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   TRUST GRID
+   ============================================ */
+
+/**
+ * Counter cards grid
+ */
+.trust__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .trust__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-8);
+  }
+}
+
+/* ============================================
+   TRUST CARD
+   ============================================ */
+
+/**
+ * Individual counter card
+ */
+.trust__card {
+  position: relative;
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  
+  /* Spacing */
+  padding: var(--spacing-8);
+  
+  /* Background */
+  background-color: var(--color-bg-secondary);
+  
+  /* Border and radius */
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-2xl);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out),
+              border-color var(--transition-base) var(--transition-ease-out);
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/**
+ * Card hover effect
+ */
+.trust__card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary-300);
+}
+
+.trust--dark .trust__card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.trust--dark .trust__card:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary-400);
+}
+
+/* ============================================
+   TRUST CARD ICON
+   ============================================ */
+
+/**
+ * Icon container
+ */
+.trust__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Size */
+  width: 64px;
+  height: 64px;
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-4);
+  
+  /* Background */
+  background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-200) 100%);
+  
+  /* Border radius */
+  border-radius: var(--radius-xl);
+  
+  /* Color */
+  color: var(--color-primary-700);
+}
+
+.trust--dark .trust__icon {
+  background: linear-gradient(135deg, rgba(154, 125, 62, 0.2) 0%, rgba(154, 125, 62, 0.3) 100%);
+  color: var(--color-primary-300);
+}
+
+/**
+ * Icon SVG
+ */
+.trust__icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* ============================================
+   TRUST COUNTER
+   ============================================ */
+
+/**
+ * Counter number
+ */
+.trust__counter {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-5xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-2) 0;
+  
+  /* Animation */
+  transition: color var(--transition-fast) var(--transition-ease-out);
+}
+
+.trust__card:hover .trust__counter {
+  color: var(--color-primary);
+}
+
+.trust--dark .trust__counter {
+  color: var(--color-white);
+}
+
+.trust--dark .trust__card:hover .trust__counter {
+  color: var(--color-primary-300);
+}
+
+/**
+ * Counter suffix (e.g., "+", "years")
+ */
+.trust__suffix {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+}
+
+.trust--dark .trust__suffix {
+  color: var(--color-primary-300);
+}
+
+/* ============================================
+   TRUST LABEL
+   ============================================ */
+
+/**
+ * Counter label
+ */
+.trust__label-text {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.trust--dark .trust__label-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   ANIMATION DELAYS
+   ============================================ */
+
+/**
+ * Staggered animation delays for cards
+ */
+.trust__card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.trust__card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.trust__card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.trust__card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .trust__card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .trust__card:hover {
+    transform: none;
+  }
+  
+  .trust__counter {
+    transition: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .trust {
+    padding: var(--spacing-12) 0;
+    background-color: var(--color-white);
+  }
+  
+  .trust__card {
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+    border: 1px solid var(--color-gray-300);
+    page-break-inside: avoid;
+  }
+  
+  .trust__counter {
+    color: var(--color-black);
+  }
+  
+  .trust--dark {
+    background-color: var(--color-white);
+  }
+  
+  .trust--dark .trust__card {
+    background-color: var(--color-gray-50);
+    border-color: var(--color-gray-300);
+  }
+  
+  .trust--dark .trust__title,
+  .trust--dark .trust__description,
+  .trust--dark .trust__counter,
+  .trust--dark .trust__label-text {
+    color: var(--color-black);
+  }
+}

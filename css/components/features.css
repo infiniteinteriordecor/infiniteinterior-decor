@@ -1,0 +1,559 @@
+/**
+ * Features Section Styles
+ * 
+ * Premium features section with glass effect cards and hover animations.
+ * Showcases key differentiators and value propositions.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with features section HTML structure
+ * - Glassmorphism effect with backdrop-filter
+ */
+
+/* ============================================
+   FEATURES SECTION
+   ============================================ */
+
+/**
+ * Main features section container
+ */
+.features {
+  position: relative;
+  
+  /* Spacing */
+  padding: var(--spacing-24) 0;
+  
+  /* Background */
+  background-color: var(--color-bg-primary);
+}
+
+/**
+ * Features section with gradient background
+ */
+.features--gradient {
+  background: linear-gradient(180deg, var(--color-bg-primary) 0%, var(--color-gray-50) 100%);
+}
+
+/**
+ * Dark features variant
+ */
+.features--dark {
+  background-color: var(--color-gray-900);
+}
+
+/* ============================================
+   FEATURES CONTAINER
+   ============================================ */
+
+/**
+ * Inner container
+ */
+.features__container {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .features__container {
+    padding: 0 var(--spacing-8);
+  }
+}
+
+/* ============================================
+   FEATURES HEADER
+   ============================================ */
+
+/**
+ * Section header
+ */
+.features__header {
+  text-align: center;
+  margin-bottom: var(--spacing-16);
+}
+
+/**
+ * Section label
+ */
+.features__label {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-primary);
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-3);
+}
+
+/**
+ * Section title
+ */
+.features__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-4) 0;
+}
+
+@media (min-width: 640px) {
+  .features__title {
+    font-size: var(--font-size-4xl);
+  }
+}
+
+.features--dark .features__title {
+  color: var(--color-white);
+}
+
+/**
+ * Section description
+ */
+.features__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features--dark .features__description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   FEATURES GRID
+   ============================================ */
+
+/**
+ * Feature cards grid
+ */
+.features__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 640px) {
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .features__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================
+   FEATURE CARD
+   ============================================ */
+
+/**
+ * Individual feature card with glass effect
+ */
+.feature__card {
+  position: relative;
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* Spacing */
+  padding: var(--spacing-8);
+  
+  /* Glass effect background */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  
+  /* Border */
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  
+  /* Border radius */
+  border-radius: var(--radius-2xl);
+  
+  /* Shadow */
+  box-shadow: var(--shadow-sm);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              box-shadow var(--transition-base) var(--transition-ease-out),
+              border-color var(--transition-base) var(--transition-ease-out),
+              background var(--transition-base) var(--transition-ease-out);
+  
+  /* Initial state for animation */
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/**
+ * Card hover effect
+ */
+.feature__card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--color-primary-300);
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/**
+ * Dark variant glass effect
+ */
+.features--dark .feature__card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.features--dark .feature__card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary-400);
+}
+
+/* ============================================
+   FEATURE ICON
+   ============================================ */
+
+/**
+ * Icon container
+ */
+.feature__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Size */
+  width: 72px;
+  height: 72px;
+  
+  /* Spacing */
+  margin-bottom: var(--spacing-6);
+  
+  /* Background gradient */
+  background: linear-gradient(135deg, var(--color-primary-100) 0%, var(--color-primary-200) 100%);
+  
+  /* Border radius */
+  border-radius: var(--radius-xl);
+  
+  /* Color */
+  color: var(--color-primary-700);
+  
+  /* Transition */
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              background var(--transition-base) var(--transition-ease-out);
+}
+
+.feature__card:hover .feature__icon {
+  transform: scale(1.1) rotate(5deg);
+  background: linear-gradient(135deg, var(--color-primary-200) 0%, var(--color-primary-300) 100%);
+}
+
+/**
+ * Dark variant icon
+ */
+.features--dark .feature__icon {
+  background: linear-gradient(135deg, rgba(154, 125, 62, 0.2) 0%, rgba(154, 125, 62, 0.3) 100%);
+  color: var(--color-primary-300);
+}
+
+.features--dark .feature__card:hover .feature__icon {
+  background: linear-gradient(135deg, rgba(154, 125, 62, 0.3) 0%, rgba(154, 125, 62, 0.4) 100%);
+}
+
+/**
+ * Icon SVG
+ */
+.feature__icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* ============================================
+   FEATURE CONTENT
+   ============================================ */
+
+/**
+ * Feature title
+ */
+.feature__title {
+  font-family: var(--font-family-secondary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-3) 0;
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--transition-ease-out);
+}
+
+.feature__card:hover .feature__title {
+  color: var(--color-primary);
+}
+
+.features--dark .feature__title {
+  color: var(--color-white);
+}
+
+.features--dark .feature__card:hover .feature__title {
+  color: var(--color-primary-300);
+}
+
+/**
+ * Feature description
+ */
+.feature__description {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+  color: var(--color-text-secondary);
+  margin: 0;
+  
+  /* Flex to push content */
+  flex: 1;
+}
+
+.features--dark .feature__description {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ============================================
+   FEATURE LINK
+   ============================================ */
+
+/**
+ * Optional link at bottom of card
+ */
+.feature__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary);
+  
+  /* Spacing */
+  margin-top: var(--spacing-6);
+  
+  /* Text decoration */
+  text-decoration: none;
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--transition-ease-out),
+              transform var(--transition-fast) var(--transition-ease-out);
+}
+
+.feature__link:hover {
+  color: var(--color-primary-dark);
+  transform: translateX(4px);
+}
+
+.features--dark .feature__link {
+  color: var(--color-primary-300);
+}
+
+.features--dark .feature__link:hover {
+  color: var(--color-primary-400);
+}
+
+/**
+ * Link arrow icon
+ */
+.feature__link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--transition-fast) var(--transition-ease-out);
+}
+
+.feature__link:hover svg {
+  transform: translateX(2px);
+}
+
+/* ============================================
+   FEATURE BADGE
+   ============================================ */
+
+/**
+ * Optional badge for featured features
+ */
+.feature__badge {
+  display: inline-block;
+  
+  /* Typography */
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-white);
+  
+  /* Background */
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  
+  /* Spacing */
+  padding: var(--spacing-1) var(--spacing-3);
+  
+  /* Border radius */
+  border-radius: var(--radius-full);
+  
+  /* Position */
+  position: absolute;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+}
+
+/* ============================================
+   ANIMATION DELAYS
+   ============================================ */
+
+/**
+ * Staggered animation delays for cards
+ */
+.feature__card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.feature__card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.feature__card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.feature__card:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+.feature__card:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+.feature__card:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .feature__card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .feature__card:hover {
+    transform: none;
+  }
+  
+  .feature__icon {
+    transition: none;
+  }
+  
+  .feature__card:hover .feature__icon {
+    transform: none;
+  }
+  
+  .feature__link {
+    transition: none;
+  }
+  
+  .feature__link:hover {
+    transform: none;
+  }
+}
+
+/* ============================================
+   BROWSER SUPPORT
+   ============================================ */
+
+/**
+ * Fallback for browsers without backdrop-filter support
+ */
+@supports not (backdrop-filter: blur(20px)) {
+  .feature__card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  .features--dark .feature__card {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .features {
+    padding: var(--spacing-16) 0;
+    background-color: var(--color-white);
+  }
+  
+  .feature__card {
+    opacity: 1;
+    transform: none;
+    background: var(--color-white);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    border: 1px solid var(--color-gray-300);
+    page-break-inside: avoid;
+  }
+  
+  .feature__card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  
+  .feature__icon {
+    background: var(--color-gray-100);
+    color: var(--color-primary);
+  }
+  
+  .feature__title {
+    color: var(--color-black);
+  }
+  
+  .feature__description {
+    color: var(--color-text-secondary);
+  }
+  
+  .features--dark {
+    background-color: var(--color-white);
+  }
+  
+  .features--dark .feature__card {
+    background: var(--color-gray-50);
+    border-color: var(--color-gray-300);
+  }
+  
+  .features--dark .feature__title,
+  .features--dark .feature__description {
+    color: var(--color-black);
+  }
+  
+  .feature__badge {
+    background: var(--color-primary);
+  }
+}

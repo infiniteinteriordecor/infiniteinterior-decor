@@ -1,0 +1,598 @@
+/**
+ * Navbar Component Styles
+ * 
+ * Premium navigation with glassmorphism effect on scroll.
+ * Features transparent initial state, smooth transitions, and mobile menu.
+ * 
+ * Usage:
+ * - Import this file after global styles
+ * - Use with navbar.html component
+ * - Requires JavaScript for scroll detection and mobile menu toggle
+ */
+
+/* ============================================
+   NAVBAR BASE STYLES
+   ============================================ */
+
+/**
+ * Main navbar container
+ */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-index-sticky);
+  
+  /* Premium frosted white glass background */
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  /* Height ~80px */
+  height: 80px;
+  
+  /* Transition for smooth interactions */
+  transition: background-color var(--transition-slow) var(--transition-ease-out),
+              backdrop-filter var(--transition-slow) var(--transition-ease-out),
+              box-shadow var(--transition-slow) var(--transition-ease-out),
+              height var(--transition-slow) var(--transition-ease-out);
+  
+  /* Border bottom for visual separation */
+  border-bottom: 1px solid rgba(109, 84, 56, 0.1);
+}
+
+/**
+ * Navbar scrolled state - glassmorphism effect
+ */
+.navbar--scrolled {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--shadow-sm);
+}
+
+/**
+ * Dark navbar variant for dark backgrounds
+ */
+.navbar--dark {
+  background-color: transparent;
+}
+
+.navbar--dark.navbar--scrolled {
+  background-color: rgba(0, 0, 0, 0.85);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================
+   NAVBAR CONTAINER
+   ============================================ */
+
+/**
+ * Navbar container
+ */
+.navbar__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  max-width: 100%var(--container-7xl);
+  margin: 0 auto;
+  padding: 0 20var(--spacing-6);
+  height: 100%;
+}
+
+@media (min-width: 640px) {
+  .navbar__container {
+    padding: 0 20var(--spacing-8);
+  }
+}
+
+/* ============================================
+   NAVBAR BRAND/LOGO
+   ============================================ */
+
+/**
+ * Brand section
+ */
+.navbar__brand {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+
+/**
+ * Logo link
+ */
+.navbar__logo-link {
+  display: block;
+  text-decoration: none;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: opacity var(--transition-fast) var(--transition-ease-out);
+}
+
+.navbar__logo-link:hover {
+  opacity: 0.8;
+}
+
+/**
+ * Logo container
+ */
+.navbar__logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+/**
+ * Navbar logo text (for brand intro transformation)
+ */
+.navbar__logo-text {
+  font-family: var(--font-family-secondary);
+  font-size: 1.25rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-walnut-600);
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.navbar__logo-text--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/**
+ * Navbar logo image
+ * Premium sizing with sharp, proportional display
+ */
+.navbar__logo-image {
+  display: block !important;
+  width: auto;
+  max-height: 90px;
+  height: auto;
+  object-fit: contain;
+  opacity: 1 !important;
+  visibility: visible !important;
+  background-color: transparent !important;
+  margin: 0;
+  padding: 0;
+  transition: transform var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Failsafe: Force all navbar images to be visible */
+.navbar img {
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+  background-color: transparent !important;
+}
+
+.navbar__logo-link:hover .navbar__logo-image {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   NAVBAR NAVIGATION
+   ============================================ */
+
+/**
+ * Navigation list
+ */
+.navbar__nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: var(--spacing-6);
+}
+
+/**
+ * Navigation item
+ */
+.navbar__item {
+  position: relative;
+}
+
+/**
+ * Navigation link
+ */
+.navbar__link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-2) var(--spacing-3);
+  
+  /* Typography */
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  color: var(--color-charcoal-700);
+  text-decoration: none;
+  position: relative;
+  
+  /* Transition */
+  transition: color var(--transition-fast) var(--transition-ease-out),
+              background-color var(--transition-fast) var(--transition-ease-out);
+  
+  /* Border radius */
+  border-radius: var(--radius-base);
+}
+
+/**
+ * Smooth underline animation
+ */
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-walnut-600);
+  border-radius: var(--radius-full);
+  transform-origin: center;
+  transition: transform var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/**
+ * Link hover state
+ */
+.navbar__link:hover {
+  color: var(--color-walnut-600);
+  background-color: rgba(109, 84, 56, 0.05);
+}
+
+.navbar__link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/**
+ * Active link state
+ */
+.navbar__link--active {
+  color: var(--color-walnut-600);
+  font-weight: var(--font-weight-semibold);
+}
+
+.navbar__link--active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/**
+ * Dark navbar link colors
+ */
+.navbar--dark .navbar__link {
+  color: var(--color-white);
+}
+
+.navbar--dark .navbar__link::after {
+  background-color: rgba(212, 175, 55, 0.8);
+}
+
+.navbar--dark .navbar__link:hover {
+  color: rgba(212, 175, 55, 0.9);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar--dark .navbar__link--active {
+  color: rgba(212, 175, 55, 0.9);
+}
+
+.navbar--dark .navbar__link--active::after {
+  background-color: rgba(212, 175, 55, 0.9);
+}
+
+/* ============================================
+   DESKTOP NAVIGATION
+   ============================================ */
+
+/**
+ * Desktop navigation - visible on tablet and up
+ */
+.navbar__nav--desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .navbar__nav--desktop {
+    display: flex;
+  }
+}
+
+/* ============================================
+   MOBILE MENU TOGGLE
+   ============================================ */
+
+/**
+ * Mobile menu toggle button
+ */
+.navbar__toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-1);
+  
+  /* Size */
+  width: 44px;
+  height: 44px;
+  padding: var(--spacing-2);
+  
+  /* Reset button styles */
+  background: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  
+  /* Transition */
+  transition: background-color var(--transition-fast) var(--transition-ease-out);
+}
+
+.navbar__toggle:hover {
+  background-color: rgba(154, 125, 62, 0.1);
+}
+
+.navbar__toggle:focus {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Hide toggle on desktop
+ */
+@media (min-width: 1024px) {
+  .navbar__toggle {
+    display: none;
+  }
+}
+
+/**
+ * Toggle icon container
+ */
+.navbar__toggle-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 24px;
+  height: 18px;
+}
+
+/**
+ * Toggle lines (hamburger)
+ */
+.navbar__toggle-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-charcoal-700);
+  border-radius: var(--radius-full);
+  transition: transform var(--transition-base) var(--transition-ease-out),
+              opacity var(--transition-base) var(--transition-ease-out),
+              background-color var(--transition-fast) var(--transition-ease-out);
+}
+
+/**
+ * Toggle active state (X animation)
+ */
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-line:nth-child(1) {
+  transform: translateY(11px) rotate(45deg);
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-line:nth-child(2) {
+  opacity: 0;
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-line:nth-child(3) {
+  transform: translateY(-11px) rotate(-45deg);
+}
+
+/**
+ * Toggle text
+ */
+.navbar__toggle-text {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-charcoal-700);
+  transition: color var(--transition-fast) var(--transition-ease-out);
+}
+
+.navbar__toggle[aria-expanded="true"] .navbar__toggle-text {
+  display: none;
+}
+
+/* ============================================
+   MOBILE MENU DRAWER
+   ============================================ */
+
+/**
+ * Mobile menu container
+ */
+.navbar__menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: var(--z-index-modal);
+  
+  /* Background */
+  background-color: var(--color-white);
+  
+  /* Layout */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-12) var(--spacing-6);
+  
+  /* Transform for slide animation */
+  transform: translateX(100%);
+  
+  /* Transition */
+  transition: transform var(--transition-slow) var(--transition-ease-out);
+  
+  /* Hide by default */
+  visibility: hidden;
+}
+
+/**
+ * Mobile menu open state
+ */
+.navbar__menu[aria-hidden="false"] {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+/**
+ * Dark mobile menu
+ */
+.navbar--dark .navbar__menu {
+  background-color: var(--color-gray-900);
+}
+
+/**
+ * Mobile navigation
+ */
+.navbar__nav--mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/**
+ * Hide mobile nav on desktop
+ */
+@media (min-width: 1024px) {
+  .navbar__nav--mobile {
+    display: none;
+  }
+  
+  .navbar__menu {
+    display: none;
+  }
+}
+
+/**
+ * Mobile link styling
+ */
+.navbar__nav--mobile .navbar__link {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-4) var(--spacing-6);
+}
+
+/* ============================================
+   SKIP LINK
+   ============================================ */
+
+/**
+ * Skip to main content link
+ * Hidden until focused for accessibility
+ */
+.navbar__skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--spacing-4);
+  z-index: var(--z-index-top);
+  
+  padding: var(--spacing-3) var(--spacing-6);
+  
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-white);
+  background-color: var(--color-primary);
+  text-decoration: none;
+  border-radius: var(--radius-base);
+  
+  transition: top var(--transition-fast) var(--transition-ease-out);
+}
+
+.navbar__skip-link:focus {
+  top: var(--spacing-4);
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Focus visible for keyboard navigation
+ */
+.navbar__link:focus-visible,
+.navbar__toggle:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/**
+ * Reduced motion support
+ */
+@media (prefers-reduced-motion: reduce) {
+  .navbar {
+    transition: none;
+  }
+  
+  .navbar__link {
+    transition: none;
+  }
+  
+  .navbar__toggle {
+    transition: none;
+  }
+  
+  .navbar__toggle-line {
+    transition: none;
+  }
+  
+  .navbar__menu {
+    transition: none;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .navbar {
+    position: static;
+    background-color: var(--color-white);
+    box-shadow: none;
+    padding: var(--spacing-4) 0;
+  }
+  
+  .navbar__nav--desktop {
+    display: flex;
+  }
+  
+  .navbar__toggle {
+    display: none;
+  }
+  
+  .navbar__menu {
+    display: none;
+  }
+  
+  .navbar__link {
+    color: var(--color-black);
+  }
+  
+  .navbar__link:hover {
+    color: var(--color-black);
+    background-color: transparent;
+  }
+}

@@ -1,0 +1,590 @@
+{
+  "company": {
+    "name": "Infinite Interior Decor",
+    "headOffice": "Bhimtal, Uttarakhand, India",
+    "established": "2015",
+    "operations": "Pan India",
+    "business": "Premium Interior Design & Turnkey Execution",
+    "email": "infiniteinteriordecor@gmail.com",
+    "phone": "+91 6398038550"
+  },
+  "about": {
+    "description": "Infinite Interior Decor is a premium interior design and turnkey execution company headquartered in Bhimtal, Uttarakhand. Since 2015, we have been transforming spaces across India with our commitment to quality craftsmanship, innovative design, and exceptional service.",
+    "mission": "To create timeless, functional, and aesthetically stunning interiors that enhance the quality of life for our clients while maintaining the highest standards of craftsmanship and sustainability.",
+    "vision": "To be India's most trusted interior design company, known for delivering exceptional spaces that blend luxury with functionality, and innovation with tradition.",
+    "values": [
+      {
+        "title": "Quality First",
+        "description": "We never compromise on quality materials, craftsmanship, or service delivery"
+      },
+      {
+        "title": "Client-Centric",
+        "description": "Every design is tailored to our client's unique vision, lifestyle, and requirements"
+      },
+      {
+        "title": "Innovation",
+        "description": "We embrace modern design trends while respecting timeless design principles"
+      },
+      {
+        "title": "Integrity",
+        "description": "Transparent pricing, honest communication, and ethical business practices"
+      },
+      {
+        "title": "Sustainability",
+        "description": "We prioritize eco-friendly materials and sustainable design solutions"
+      }
+    ],
+    "industries": [
+      "Residential Interiors",
+      "Commercial Spaces",
+      "Retail & Showrooms",
+      "Hospitality",
+      "Office Workspaces",
+      "Salon & Spa",
+      "Restaurant & Cafe",
+      "Healthcare Facilities"
+    ]
+  },
+  "statistics": [
+    {
+      "value": "9+",
+      "label": "Years Experience"
+    },
+    {
+      "value": "100+",
+      "label": "Projects Completed"
+    },
+    {
+      "value": "Pan India",
+      "label": "Service Area"
+    },
+    {
+      "value": "100%",
+      "label": "Client Satisfaction"
+    }
+  ],
+  "services": [
+    {
+      "id": "residential-interior",
+      "title": "Residential Interior",
+      "description": "Transform your home into a sanctuary of comfort and style. From luxury villas to cozy apartments, we create personalized living spaces that reflect your personality.",
+      "features": [
+        "Space Planning & Layout Design",
+        "3D Visualization & Rendering",
+        "Material Selection & Procurement",
+        "Furniture Design & Customization",
+        "Lighting Design Solutions",
+        "False Ceiling & Wall Treatments",
+        "Modular Kitchen & Wardrobes",
+        "Complete Turnkey Execution"
+      ],
+      "icon": "home"
+    },
+    {
+      "id": "commercial-interior",
+      "title": "Commercial Interior",
+      "description": "Create productive and inspiring workspaces that boost employee morale and impress clients. We design offices that balance functionality with aesthetic appeal.",
+      "features": [
+        "Office Space Planning",
+        "Workstation Design",
+        "Conference Room Solutions",
+        "Reception & Lobby Design",
+        "Acoustic Solutions",
+        "Ergonomic Furniture",
+        "Branding Integration",
+        "Project Management"
+      ],
+      "icon": "building"
+    },
+    {
+      "id": "office-interior",
+      "title": "Office Interior",
+      "description": "Modern office interiors that enhance productivity and reflect your brand identity. We create workspaces that inspire creativity and collaboration.",
+      "features": [
+        "Open Office Layouts",
+        "Private Cabin Design",
+        "Collaborative Spaces",
+        "Break Room & Cafeteria",
+        "IT Infrastructure Planning",
+        "Storage Solutions",
+        "Fire Safety Compliance",
+        "Maintenance Support"
+      ],
+      "icon": "briefcase"
+    },
+    {
+      "id": "retail-interior",
+      "title": "Retail Interior",
+      "description": "Design retail spaces that attract customers and drive sales. From boutiques to large showrooms, we create environments that enhance the shopping experience.",
+      "features": [
+        "Store Layout Design",
+        "Display & Fixture Design",
+        "Lighting for Merchandise",
+        "Brand Integration",
+        "Customer Flow Optimization",
+        "Storage & Back Office",
+        "Signage & Graphics",
+        "Visual Merchandising"
+      ],
+      "icon": "shopping-bag"
+    },
+    {
+      "id": "salon-interior",
+      "title": "Salon Interior",
+      "description": "Create luxurious and functional salon spaces that provide an exceptional client experience. We design beauty spaces that combine comfort with style.",
+      "features": [
+        "Station Design & Layout",
+        "Wash Area Planning",
+        "Treatment Room Design",
+        "Reception & Waiting Area",
+        "Lighting & Ambience",
+        "Storage Solutions",
+        "Product Display",
+        "HVAC & Ventilation"
+      ],
+      "icon": "scissors"
+    },
+    {
+      "id": "restaurant-interior",
+      "title": "Restaurant Interior",
+      "description": "Design dining spaces that create memorable culinary experiences. We create restaurants that combine functionality with atmosphere and style.",
+      "features": [
+        "Dining Area Layout",
+        "Kitchen Design Planning",
+        "Bar & Lounge Design",
+        "Lighting & Ambience",
+        "Acoustic Treatment",
+        "Outdoor Seating Design",
+        "Theme Development",
+        "Compliance & Safety"
+      ],
+      "icon": "utensils"
+    },
+    {
+      "id": "hospitality-interior",
+      "title": "Hospitality Interior",
+      "description": "Create welcoming and luxurious hospitality spaces that delight guests. From hotels to resorts, we design spaces that ensure comfort and elegance.",
+      "features": [
+        "Lobby & Reception Design",
+        "Guest Room Design",
+        "Suite Planning",
+        "Public Area Design",
+        "Restaurant & Bar Design",
+        "Spa & Wellness Areas",
+        "Outdoor Spaces",
+        "Brand Integration"
+      ],
+      "icon": "hotel"
+    },
+    {
+      "id": "furniture-design",
+      "title": "Furniture Design",
+      "description": "Custom furniture design and manufacturing tailored to your space and style. We create unique pieces that complement your interior design perfectly.",
+      "features": [
+        "Custom Furniture Design",
+        "Bespoke Cabinetry",
+        "Modular Furniture Systems",
+        "Upholstery Work",
+        "Woodwork & Joinery",
+        "Metal Fabrication",
+        "Restoration Services",
+        "Installation & Setup"
+      ],
+      "icon": "chair"
+    },
+    {
+      "id": "custom-furniture",
+      "title": "Custom Furniture",
+      "description": "Handcrafted custom furniture pieces made to your exact specifications. We bring your furniture vision to life with expert craftsmanship.",
+      "features": [
+        "Design Consultation",
+        "Material Selection",
+        "3D Modeling",
+        "Precision Manufacturing",
+        "Quality Finishing",
+        "On-Site Assembly",
+        "Warranty Support",
+        "Maintenance Services"
+      ],
+      "icon": "hammer"
+    },
+    {
+      "id": "modular-kitchen",
+      "title": "Modular Kitchen",
+      "description": "Modern modular kitchens that combine style with functionality. We design kitchens that make cooking a pleasure and entertaining a joy.",
+      "features": [
+        "Layout Planning",
+        "Cabinet Design",
+        "Countertop Selection",
+        "Appliance Integration",
+        "Storage Solutions",
+        "Lighting Design",
+        "Plumbing & Electrical",
+        "Installation & Service"
+      ],
+      "icon": "chef-hat"
+    },
+    {
+      "id": "wardrobe",
+      "title": "Wardrobe",
+      "description": "Custom wardrobe solutions that maximize storage and enhance your bedroom aesthetics. We create organized and stylish storage spaces.",
+      "features": [
+        "Space Optimization",
+        "Custom Configurations",
+        "Drawer & Shelf Design",
+        "Door Styles & Finishes",
+        "Accessory Integration",
+        "Lighting Solutions",
+        "Walk-in Wardrobes",
+        "Sliding Door Options"
+      ],
+      "icon": "hanger"
+    },
+    {
+      "id": "false-ceiling",
+      "title": "False Ceiling",
+      "description": "Elegant false ceiling designs that add depth and character to your spaces. We create ceiling solutions that enhance lighting and acoustics.",
+      "features": [
+        "Gypsum Ceiling Design",
+        "POP Work",
+        "PVC Ceilings",
+        "Metal Ceiling Systems",
+        "Cove Lighting",
+        "Acoustic Treatment",
+        "Fire Rated Options",
+        "Maintenance Services"
+      ],
+      "icon": "layers"
+    },
+    {
+      "id": "lighting-design",
+      "title": "Lighting Design",
+      "description": "Comprehensive lighting design that transforms spaces and creates ambiance. We design lighting solutions that are both functional and beautiful.",
+      "features": [
+        "Natural Light Optimization",
+        "Artificial Lighting Design",
+        "LED Solutions",
+        "Smart Lighting Systems",
+        "Accent Lighting",
+        "Task Lighting",
+        "Outdoor Lighting",
+        "Energy Efficient Options"
+      ],
+      "icon": "lightbulb"
+    },
+    {
+      "id": "3d-design",
+      "title": "3D Design",
+      "description": "Photorealistic 3D visualization that brings your design vision to life before construction begins. See your space in stunning detail.",
+      "features": [
+        "3D Modeling",
+        "Photorealistic Rendering",
+        "Virtual Walkthroughs",
+        "Material Visualization",
+        "Lighting Simulation",
+        "Multiple Design Options",
+        "Revisions & Refinements",
+        "High-Res Outputs"
+      ],
+      "icon": "cube"
+    },
+    {
+      "id": "turnkey-execution",
+      "title": "Turnkey Execution",
+      "description": "Complete end-to-end project execution from design to handover. We handle everything so you can focus on what matters most.",
+      "features": [
+        "Complete Project Management",
+        "Vendor Coordination",
+        "Quality Control",
+        "Timeline Management",
+        "Budget Control",
+        "Site Supervision",
+        "Documentation",
+        "Post-Handover Support"
+      ],
+      "icon": "key"
+    },
+    {
+      "id": "renovation",
+      "title": "Renovation",
+      "description": "Transform existing spaces with our expert renovation services. We breathe new life into old spaces with modern design and quality workmanship.",
+      "features": [
+        "Space Assessment",
+        "Structural Modifications",
+        "Electrical & Plumbing Updates",
+        "Flooring Replacement",
+        "Wall Treatments",
+        "Fixture Upgrades",
+        "Modernization",
+        "Minimal Disruption"
+      ],
+      "icon": "refresh-cw"
+    }
+  ],
+  "projects": [
+    {
+      "id": "baithke-bihari-jehanabad-2023",
+      "title": "Baithke Bihari Cafe",
+      "slug": "baithke-bihari-jehanabad-2023",
+      "category": "Hospitality",
+      "location": "Jehanabad, Bihar",
+      "year": "2023",
+      "area": "1200 sq ft",
+      "status": "Completed",
+      "image": "assets/images/projects/baithke-bihari-jehanabad-2023/hero.webp",
+      "thumbnail": "assets/images/projects/baithke-bihari-jehanabad-2023/thumbnail.webp",
+      "gallery": [
+        "assets/images/projects/baithke-bihari-jehanabad-2023/gallery/image-01.webp",
+        "assets/images/projects/baithke-bihari-jehanabad-2023/gallery/image-02.webp",
+        "assets/images/projects/baithke-bihari-jehanabad-2023/gallery/image-03.webp",
+        "assets/images/projects/baithke-bihari-jehanabad-2023/gallery/image-04.webp"
+      ],
+      "featured": true,
+      "description": "A vibrant cafe interior designed to create a welcoming atmosphere for guests. The design incorporates local cultural elements with modern aesthetics.",
+      "scopeOfWork": [
+        "Complete Interior Design",
+        "Seating Area Layout",
+        "Counter Design",
+        "Lighting Design",
+        "Wall Decor",
+        "Furniture Design"
+      ],
+      "materials": [
+        "Wood",
+        "Metal",
+        "Glass",
+        "Stone"
+      ],
+      "services": [
+        "Interior Design",
+        "Furniture Design",
+        "Lighting Design",
+        "Turnkey Execution"
+      ]
+    },
+    {
+      "id": "monte-carlo-jehanabad-2023",
+      "title": "Monte Carlo Home Store",
+      "slug": "monte-carlo-jehanabad-2023",
+      "category": "Retail",
+      "location": "Jehanabad, Bihar",
+      "year": "2023",
+      "area": "2500 sq ft",
+      "status": "Completed",
+      "image": "assets/images/projects/monte-carlo-jehanabad-2023/hero.webp",
+      "thumbnail": "assets/images/projects/monte-carlo-jehanabad-2023/thumbnail.webp",
+      "gallery": [
+        "assets/images/projects/monte-carlo-jehanabad-2023/gallery/image-01.webp",
+        "assets/images/projects/monte-carlo-jehanabad-2023/gallery/image-02.webp",
+        "assets/images/projects/monte-carlo-jehanabad-2023/gallery/image-03.webp"
+      ],
+      "featured": true,
+      "description": "A premium home store showcasing furniture and home decor. The design focuses on product display and customer experience.",
+      "scopeOfWork": [
+        "Retail Space Design",
+        "Display Systems",
+        "Storage Solutions",
+        "Lighting Design",
+        "Brand Integration"
+      ],
+      "materials": [
+        "MDF",
+        "Glass",
+        "Metal",
+        "Laminate"
+      ],
+      "services": [
+        "Retail Interior",
+        "Furniture Design",
+        "Lighting Design",
+        "Turnkey Execution"
+      ]
+    },
+    {
+      "id": "modern-residential-bhimtal-2022",
+      "title": "Modern Residential Apartment",
+      "slug": "modern-residential-bhimtal-2022",
+      "category": "Residential",
+      "location": "Bhimtal, Uttarakhand",
+      "year": "2022",
+      "area": "1800 sq ft",
+      "status": "Completed",
+      "image": "assets/images/projects/modern-residential-bhimtal-2022/hero.webp",
+      "thumbnail": "assets/images/projects/modern-residential-bhimtal-2022/thumbnail.webp",
+      "gallery": [
+        "assets/images/projects/modern-residential-bhimtal-2022/gallery/image-01.webp",
+        "assets/images/projects/modern-residential-bhimtal-2022/gallery/image-02.webp",
+        "assets/images/projects/modern-residential-bhimtal-2022/gallery/image-03.webp"
+      ],
+      "featured": true,
+      "description": "A contemporary apartment design that maximizes space and natural light. The design creates a warm and inviting living environment.",
+      "scopeOfWork": [
+        "Living Room Design",
+        "Kitchen Design",
+        "Bedroom Design",
+        "Modular Wardrobes",
+        "False Ceiling",
+        "Lighting Design"
+      ],
+      "materials": [
+        "Wood",
+        "Marble",
+        "Glass",
+        "Plywood"
+      ],
+      "services": [
+        "Residential Interior",
+        "Modular Kitchen",
+        "Wardrobe Design",
+        "False Ceiling"
+      ]
+    },
+    {
+      "id": "the-salon-company-bhimtal-2022",
+      "title": "The Salon Company",
+      "slug": "the-salon-company-bhimtal-2022",
+      "category": "Salon",
+      "location": "Bhimtal, Uttarakhand",
+      "year": "2022",
+      "area": "800 sq ft",
+      "status": "Completed",
+      "image": "assets/images/projects/the-salon-company-bhimtal-2022/hero.webp",
+      "thumbnail": "assets/images/projects/the-salon-company-bhimtal-2022/thumbnail.webp",
+      "gallery": [
+        "assets/images/projects/the-salon-company-bhimtal-2022/gallery/image-01.webp",
+        "assets/images/projects/the-salon-company-bhimtal-2022/gallery/image-02.webp",
+        "assets/images/projects/the-salon-company-bhimtal-2022/gallery/image-03.webp"
+      ],
+      "featured": true,
+      "description": "A modern salon designed for comfort and functionality. The layout optimizes workflow while creating a relaxing client experience.",
+      "scopeOfWork": [
+        "Salon Layout Design",
+        "Station Design",
+        "Wash Area Design",
+        "Reception Area",
+        "Lighting Design",
+        "Storage Solutions"
+      ],
+      "materials": [
+        "Wood",
+        "Mirror",
+        "Ceramic",
+        "Metal"
+      ],
+      "services": [
+        "Salon Interior",
+        "Furniture Design",
+        "Lighting Design",
+        "Turnkey Execution"
+      ]
+    }
+  ],
+  "gallery": [],
+  "clients": [],
+  "whyChoose": [
+    {
+      "title": "Premium Craftsmanship",
+      "description": "Expert artisans delivering exceptional quality in every detail",
+      "iconPath": "M12 2L1 21h22L12 2zm0 3.99L19.53 19H4.47L12 5.99zM11 16h2v2h-2zm0-6h2v4h-2z"
+    },
+    {
+      "title": "Turnkey Solutions",
+      "description": "Complete end-to-end interior design and execution services",
+      "iconPath": "M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14h-2v-4h2v4zm0-6h-2V7h2v4z"
+    },
+    {
+      "title": "Pan India Operations",
+      "description": "Serving clients across India with seamless project management",
+      "iconPath": "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
+    },
+    {
+      "title": "Custom Design",
+      "description": "Tailored solutions that reflect your unique vision and lifestyle",
+      "iconPath": "M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"
+    }
+  ],
+  "process": [
+    {
+      "step": 1,
+      "title": "Consultation",
+      "description": "Initial meeting to understand your vision, requirements, and budget"
+    },
+    {
+      "step": 2,
+      "title": "Planning",
+      "description": "Detailed project planning, space analysis, and concept development"
+    },
+    {
+      "step": 3,
+      "title": "Design",
+      "description": "3D visualization, material selection, and detailed design documentation"
+    },
+    {
+      "step": 4,
+      "title": "Execution",
+      "description": "Professional implementation with quality control and timeline management"
+    },
+    {
+      "step": 5,
+      "title": "Handover",
+      "description": "Final inspection, documentation, and seamless project delivery"
+    }
+  ],
+  "partners": [],
+  "faq": [
+    {
+      "question": "What areas do you serve?",
+      "answer": "We serve clients across India with our headquarters in Bhimtal, Uttarakhand. Our team can travel to any location within India for project execution."
+    },
+    {
+      "question": "Do you provide 3D design services?",
+      "answer": "Yes, we provide comprehensive 3D design and visualization services to help you visualize your space before construction begins."
+    },
+    {
+      "question": "What is your typical project timeline?",
+      "answer": "Project timelines vary based on scope and complexity. Residential projects typically take 2-4 months, while commercial projects may take 4-8 months. We provide detailed timelines during the planning phase."
+    },
+    {
+      "question": "Do you handle turnkey projects?",
+      "answer": "Yes, we specialize in turnkey execution, handling everything from design to final handover, including procurement, installation, and project management."
+    },
+    {
+      "question": "What materials do you work with?",
+      "answer": "We work with a wide range of premium materials including wood, marble, glass, metal, laminates, and sustainable materials based on your preferences and budget."
+    }
+  ],
+  "contact": {
+    "phone": "+91 6398038550",
+    "email": "infiniteinteriordecor@gmail.com",
+    "address": "Bhimtal, Uttarakhand, India",
+    "workingHours": "Monday - Saturday: 9:00 AM - 7:00 PM",
+    "social": {
+      "facebook": "",
+      "instagram": "",
+      "linkedin": "",
+      "twitter": ""
+    },
+    "serviceAreas": [
+      "Bhimtal",
+      "Nainital",
+      "Bhowali",
+      "Haldwani",
+      "Kathgodam",
+      "Rudrapur",
+      "Kashipur",
+      "Almora",
+      "Ranikhet",
+      "Mukteshwar",
+      "Ramnagar",
+      "Kichha",
+      "Sitarganj",
+      "Pantnagar",
+      "Lalkuan"
+    ]
+  },
+  "seo": {
+    "title": "Infinite Interior Decor - Premium Interior Design & Turnkey Execution in Bhimtal, Uttarakhand",
+    "description": "Transform your spaces with Infinite Interior Decor. Premium interior design and turnkey execution services across India. Specializing in residential, commercial, retail, and hospitality interiors.",
+    "keywords": "interior design Bhimtal, interior design Uttarakhand, interior designer Nainital, home interior design, commercial interior design, turnkey interior execution, modular kitchen, false ceiling, furniture design"
+  }
+}

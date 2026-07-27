@@ -2,10 +2,6 @@ backend:
   name: github
   repo: infiniteinteriordecor/infiniteinterior-decor
   branch: main
-  # Using external OAuth provider for GitHub Pages
-  # You will need to set up a GitHub OAuth App (see instructions below)
-  # For now, we'll use the identity_token method which works with GitHub Pages
-  # If you prefer OAuth, uncomment the lines below and configure your OAuth app
   client_id: "Ov23liqOxMuUDHRE1TLB"
   client_secret: "95dc21dd50c6d1b0c4e7adf8c80c83b605424655"
 

@@ -1,0 +1,123 @@
+backend:
+  name: github
+  repo: infiniteinteriordecor/infiniteinterior-decor
+  branch: main
+  # Using external OAuth provider for GitHub Pages
+  # You will need to set up a GitHub OAuth App (see instructions below)
+  # For now, we'll use the identity_token method which works with GitHub Pages
+  # If you prefer OAuth, uncomment the lines below and configure your OAuth app
+  client_id: "Ov23liqOxMuUDHRE1TLB"
+  client_secret: "95dc21dd50c6d1b0c4e7adf8c80c83b605424655"
+
+media_folder: "assets/images"
+public_folder: "/assets/images"
+
+site_url: https://infiniteinteriordecor.github.io
+display_url: https://infiniteinteriordecor.github.io
+
+logo_url: /assets/images/logo/company-logo.png
+
+collections:
+  - name: "hero"
+    label: "Hero Section"
+    label_singular: "Hero"
+    description: "Manage the homepage hero section"
+    folder: "data"
+    create: false
+    slug: "database"
+    path: "{{slug}}.json"
+    editor:
+      edit: false
+    fields:
+      - label: "Company Name"
+        name: "company"
+        widget: "object"
+        fields:
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Head Office", name: "headOffice", widget: "string" }
+          - { label: "Established", name: "established", widget: "string" }
+          - { label: "Operations", name: "operations", widget: "string" }
+          - { label: "Business", name: "business", widget: "string" }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Phone", name: "phone", widget: "string" }
+
+  - name: "clients"
+    label: "Client Logos"
+    label_singular: "Client"
+    description: "Manage client logos and information"
+    folder: "data"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}.json"
+    editor:
+      edit: false
+    fields:
+      - { label: "Client Name", name: "name", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image", media_library: { config: { max_file_size: 10485760 } } }
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["Sportswear", "Fashion", "Ethnic Wear", "Footwear", "Hospitality", "Food & Beverage", "Salon"] }
+
+  - name: "projects"
+    label: "Projects"
+    label_singular: "Project"
+    description: "Manage portfolio projects"
+    folder: "data"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}.json"
+    editor:
+      edit: false
+    fields:
+      - { label: "Project Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Residential", "Commercial", "Retail", "Hospitality", "Salon", "Restaurant"] }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Year", name: "year", widget: "string" }
+      - { label: "Area", name: "area", widget: "string" }
+      - { label: "Status", name: "status", widget: "select", options: ["Completed", "In Progress", "Upcoming"] }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Hero Image", name: "image", widget: "image", media_library: { config: { max_file_size: 10485760 } } }
+      - { label: "Thumbnail", name: "thumbnail", widget: "image", media_library: { config: { max_file_size: 10485760 } } }
+      - label: "Gallery Images"
+        name: "gallery"
+        widget: "list"
+        field: { label: "Image", name: "image", widget: "image", media_library: { config: { max_file_size: 10485760 } } }
+      - { label: "Link", name: "link", widget: "string", required: false }
+
+  - name: "services"
+    label: "Services"
+    label_singular: "Service"
+    description: "Manage service offerings"
+    folder: "data"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}.json"
+    editor:
+      edit: false
+    fields:
+      - { label: "Service Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - label: "Features"
+        name: "features"
+        widget: "list"
+        field: { label: "Feature", name: "feature", widget: "string" }
+      - { label: "Icon", name: "icon", widget: "string", required: false }
+      - { label: "Image", name: "image", widget: "image", required: false, media_library: { config: { max_file_size: 10485760 } } }
+      - { label: "Price", name: "price", widget: "string", required: false }
+      - { label: "Link", name: "link", widget: "string", required: false }
+
+  - name: "gallery"
+    label: "Gallery"
+    label_singular: "Gallery Item"
+    description: "Manage general gallery images"
+    folder: "data"
+    create: true
+    slug: "{{slug}}"
+    path: "{{slug}}.json"
+    editor:
+      edit: false
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Residential", "Commercial", "Hospitality", "Retail"] }
+      - { label: "Image", name: "image", widget: "image", media_library: { config: { max_file_size: 10485760 } } }
+      - { label: "Link", name: "link", widget: "string", required: false }

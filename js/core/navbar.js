@@ -11,8 +11,39 @@
   console.log("navbar.js loaded");
 
   /**
-   * Render navbar logo with correct relative path
-   * Automatically detects page depth and adjusts path accordingly
+   * Get the base URL for assets based on the deployment environment
+   * Detects GitHub Pages subpath and returns appropriate base URL
+   * @returns {string} Base URL for assets (e.g., '/infiniteinterior-decor/' or '')
+   */
+  function getBaseUrl() {
+    const pathname = window.location.pathname;
+    
+    // Check if we're on GitHub Pages with the subpath
+    if (pathname.includes('/infiniteinterior-decor/')) {
+      return '/infiniteinterior-decor/';
+    }
+    
+    // Local development or root deployment
+    return '/';
+  }
+
+  /**
+   * Resolve an asset path to the full URL based on the current environment
+   * @param {string} assetPath - Relative asset path (e.g., 'assets/images/logo/logo.png')
+   * @returns {string} Full asset URL with correct base
+   */
+  function resolveAssetPath(assetPath) {
+    const baseUrl = getBaseUrl();
+    
+    // Remove leading slash if present to avoid double slashes
+    const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
+    
+    return baseUrl + cleanPath;
+  }
+
+  /**
+   * Render navbar logo with correct absolute path
+   * Uses dynamic base URL resolution for GitHub Pages compatibility
    */
   function renderLogo() {
     console.log("renderLogo() called");
@@ -25,12 +56,9 @@
       return;
     }
 
-    // Get relative path prefix for current page depth
-    const prefix = getRelativePathPrefix();
-    
-    // Use Base64 data URI from external file to bypass file protocol restrictions
-    // Otherwise use relative path with prefix
-    const logoPath = (typeof LOGO_BASE64 !== 'undefined') ? LOGO_BASE64 : prefix + 'assets/images/logo/logo.png';
+    // Use Base64 data URI from external file if available
+    // Otherwise use dynamic base URL resolution
+    const logoPath = (typeof LOGO_BASE64 !== 'undefined') ? LOGO_BASE64 : resolveAssetPath('assets/images/logo/logo.png');
     
     console.log("Using logo source:", logoPath.substring(0, 50) + '...');
 

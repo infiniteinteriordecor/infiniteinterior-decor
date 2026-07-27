@@ -10,7 +10,7 @@
 // ============================================
 
 const CONFIG = {
-  dataPath: '../../data/database.json',
+  dataPath: 'data/database.json',
   projectsPerPage: 6,
   debounceDelay: 300
 };
@@ -48,11 +48,42 @@ let state = {
 // ============================================
 
 /**
+ * Get the base URL for assets based on the deployment environment
+ * Detects GitHub Pages subpath and returns appropriate base URL
+ * @returns {string} Base URL for assets (e.g., '/infiniteinterior-decor/' or '/')
+ */
+function getBaseUrl() {
+  const pathname = window.location.pathname;
+  
+  // Check if we're on GitHub Pages with the subpath
+  if (pathname.includes('/infiniteinterior-decor/')) {
+    return '/infiniteinterior-decor/';
+  }
+  
+  // Local development or root deployment
+  return '/';
+}
+
+/**
+ * Resolve an asset path to the full URL based on the current environment
+ * @param {string} assetPath - Relative asset path (e.g., 'assets/images/logo/logo.png')
+ * @returns {string} Full asset URL with correct base
+ */
+function resolveAssetPath(assetPath) {
+  const baseUrl = getBaseUrl();
+  
+  // Remove leading slash if present to avoid double slashes
+  const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
+  
+  return baseUrl + cleanPath;
+}
+
+/**
  * Load data from JSON file
  */
 async function loadData(path) {
   try {
-    const response = await fetch(path);
+    const response = await fetch(resolveAssetPath(path));
     if (!response.ok) {
       console.warn(`HTTP error! status: ${response.status}`);
       return null;
@@ -142,18 +173,17 @@ function renderProjectCard(project) {
   card.setAttribute('data-category', project.category || 'all');
   card.setAttribute('data-id', project.id || '');
   
-  // Project image with placeholder fallback
+  // Project image with actual image
   const imageContainer = document.createElement('div');
   imageContainer.className = 'project-card__image';
   
-  // Use placeholder for all images since actual images aren't uploaded yet
-  const placeholder = createImagePlaceholder(
-    (project.name || 'PRJ').substring(0, 3).toUpperCase(),
-    400,
-    300
-  );
-  placeholder.classList.add('project-card__img');
-  imageContainer.appendChild(placeholder);
+  // Use actual image from project data
+  const img = document.createElement('img');
+  img.src = resolveAssetPath(project.image || project.thumbnail || '');
+  img.alt = project.title || project.name || 'Project Image';
+  img.className = 'project-card__img';
+  img.loading = 'lazy';
+  imageContainer.appendChild(img);
   
   // Overlay with view button
   const overlay = document.createElement('div');
@@ -186,7 +216,7 @@ function renderProjectCard(project) {
   // Title
   const title = document.createElement('h3');
   title.className = 'project-card__title';
-  title.textContent = project.name || 'Project Name';
+  title.textContent = project.title || project.name || 'Project Name';
   content.appendChild(title);
   
   // Location
@@ -291,7 +321,7 @@ function filterProjects() {
   if (state.currentSearch.trim() !== '') {
     const searchTerm = state.currentSearch.toLowerCase();
     filtered = filtered.filter(project => 
-      project.name.toLowerCase().includes(searchTerm) ||
+      (project.title || project.name || '').toLowerCase().includes(searchTerm) ||
       (project.location && project.location.toLowerCase().includes(searchTerm)) ||
       project.category.toLowerCase().includes(searchTerm)
     );

@@ -280,6 +280,37 @@
   <script src="../../../js/image-placeholder.js"></script>
   <script src="../../../js/navbar.js"></script>
   <script>
+    /**
+     * Get the base URL for assets based on the deployment environment
+     * Detects GitHub Pages subpath and returns appropriate base URL
+     * @returns {string} Base URL for assets (e.g., '/infiniteinterior-decor/' or '')
+     */
+    function getBaseUrl() {
+      const pathname = window.location.pathname;
+      
+      // Check if we're on GitHub Pages with the subpath
+      if (pathname.includes('/infiniteinterior-decor/')) {
+        return '/infiniteinterior-decor/';
+      }
+      
+      // Local development or root deployment
+      return '/';
+    }
+
+    /**
+     * Resolve an asset path to the full URL based on the current environment
+     * @param {string} assetPath - Relative asset path (e.g., 'assets/images/logo/logo.png')
+     * @returns {string} Full asset URL with correct base
+     */
+    function resolveAssetPath(assetPath) {
+      const baseUrl = getBaseUrl();
+      
+      // Remove leading slash if present to avoid double slashes
+      const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
+      
+      return baseUrl + cleanPath;
+    }
+
     // Load project data
     async function loadProjectData() {
       try {
@@ -287,7 +318,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const projectId = urlParams.get('id') || '1';
         
-        const response = await fetch('../../../data/database.json');
+        const response = await fetch(resolveAssetPath('data/database.json'));
         const data = await response.json();
         
         // Find project
@@ -326,7 +357,7 @@
             const item = document.createElement('div');
             item.className = 'project-detail-gallery__item';
             item.innerHTML = `
-              <div class="image-placeholder" data-text="Gallery Image ${index + 1}" data-width="800" data-height="600"></div>
+              <img src="${resolveAssetPath(image)}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__img">
             `;
             galleryGrid.appendChild(item);
           });
@@ -346,7 +377,7 @@
             item.className = 'project-card';
             item.innerHTML = `
               <div class="project-card__image">
-                <div class="image-placeholder" data-text="${related.title}" data-width="400" data-height="300"></div>
+                <img src="${resolveAssetPath(related.image)}" alt="${related.title}" class="project-card__img">
               </div>
               <div class="project-card__content">
                 <span class="project-card__category">${related.category}</span>

@@ -25,8 +25,12 @@
       return;
     }
 
+    // Get relative path prefix for current page depth
+    const prefix = getRelativePathPrefix();
+    
     // Use Base64 data URI from external file to bypass file protocol restrictions
-    const logoPath = (typeof LOGO_BASE64 !== 'undefined') ? LOGO_BASE64 : 'assets/images/logo/logo.png';
+    // Otherwise use relative path with prefix
+    const logoPath = (typeof LOGO_BASE64 !== 'undefined') ? LOGO_BASE64 : prefix + 'assets/images/logo/logo.png';
     
     console.log("Using logo source:", logoPath.substring(0, 50) + '...');
 

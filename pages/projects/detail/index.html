@@ -291,7 +291,7 @@
         const data = await response.json();
         
         // Find project
-        const project = data.projects.find(p => p.id === parseInt(projectId));
+        const project = data.projects.find(p => p.id === projectId);
         
         if (!project) {
           console.error('Project not found');

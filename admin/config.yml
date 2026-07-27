@@ -22,6 +22,7 @@ collections:
     create: false
     slug: "database"
     path: "{{slug}}.json"
+    summary: "{{company.name}}"
     editor:
       edit: false
     fields:

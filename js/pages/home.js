@@ -548,14 +548,17 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
     const dimensions = {
       project: { width: 1920, height: 1080 },
       service: { width: 600, height: 375 },
-      logo: { width: 120, height: 40 },
+      logo: { width: 200, height: 100 },
       gallery: { width: 1200, height: 900 },
       hero: { width: 1920, height: 1080 }
     };
     const dims = dimensions[placeholderType] || dimensions.project;
     
+    // Ensure path starts with ./ for relative path resolution
+    const srcPath = imagePath.startsWith('./') || imagePath.startsWith('/') ? imagePath : `./${imagePath}`;
+    
     return `<img 
-      src="${imagePath}" 
+      src="${srcPath}" 
       alt="${altText}" 
       class="${className}" 
       loading="${loading}"

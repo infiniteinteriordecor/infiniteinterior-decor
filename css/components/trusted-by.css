@@ -2,7 +2,8 @@
  * Trusted By Section Styles
  * 
  * Premium client logo marquee with pause on hover.
- * Features responsive design and smooth animations.
+ * Features grayscale-to-color hover effect, responsive design,
+ * and smooth animations for a luxury aesthetic.
  * 
  * Usage:
  * - Import this file after global styles
@@ -20,15 +21,15 @@
   position: relative;
   
   /* Spacing */
-  padding: clamp(2rem, 4vw, 4rem) 0;
+  padding: clamp(3rem, 5vw, 5rem) 0;
   
   /* Background */
-  background-color: var(--color-white);
+  background: linear-gradient(180deg, #faf8f5 0%, #ffffff 100%);
 }
 
 @media (prefers-color-scheme: dark) {
   .trusted-by {
-    background-color: var(--color-gray-900);
+    background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
   }
 }
 
@@ -56,7 +57,7 @@
  */
 .trusted-by__header {
   text-align: center;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 
 /**
@@ -66,15 +67,15 @@
   display: inline-block;
   
   /* Typography */
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-sm);
+  font-family: var(--font-family-primary);
+  font-size: clamp(0.75rem, 1vw, 0.875rem);
   font-weight: var(--font-weight-medium);
-  letter-spacing: var(--letter-spacing-wider);
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-text-secondary);
+  color: var(--color-champagne-600);
   
   /* Spacing */
-  margin-bottom: var(--spacing-2);
+  margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
 }
 
 /**
@@ -82,10 +83,11 @@
  */
 .trusted-by__title {
   font-family: var(--font-family-secondary);
-  font-size: var(--font-size-fluid-2xl);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-tight);
-  color: var(--color-text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--color-charcoal-900);
   margin: 0;
 }
 
@@ -122,10 +124,10 @@
  */
 .trusted-by__track {
   display: flex;
-  gap: clamp(2rem, 4vw, 4rem);
+  gap: clamp(3rem, 5vw, 5rem);
   
   /* Animation */
-  animation: marquee 30s linear infinite;
+  animation: marquee 40s linear infinite;
   
   /* Pause on hover */
 }
@@ -152,53 +154,72 @@
 
 /**
  * Client logo item
+ * Premium styling with grayscale-to-color hover effect
  */
 .trusted-by__logo {
   flex-shrink: 0;
   
-  /* Size */
-  width: clamp(120px, 15vw, 180px);
-  height: clamp(60px, 8vw, 90px);
+  /* Size - uniform dimensions */
+  width: clamp(140px, 16vw, 200px);
+  height: clamp(70px, 9vw, 100px);
   
   /* Flex layout */
   display: flex;
   align-items: center;
   justify-content: center;
   
-  /* Border */
-  border: 1px solid var(--color-border-light);
+  /* Border - subtle luxury border */
+  border: 1px solid rgba(212, 175, 55, 0.15);
   
-  /* Border radius */
-  border-radius: var(--radius-lg);
+  /* Border radius - elegant rounded corners */
+  border-radius: 12px;
   
-  /* Background */
-  background-color: var(--color-gray-50);
+  /* Background - premium off-white */
+  background-color: #ffffff;
   
-  /* Transition */
-  transition: border-color var(--transition-base) var(--transition-ease-out),
-              background-color var(--transition-base) var(--transition-ease-out);
+  /* Shadow - subtle depth */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  
+  /* Transition - smooth luxury transitions */
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .trusted-by__logo:hover {
-  border-color: var(--color-primary-300);
-  background-color: var(--color-white);
+  border-color: rgba(212, 175, 55, 0.4);
+  background-color: #faf8f5;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.12);
+  transform: translateY(-4px);
 }
 
 /**
  * Logo image
+ * Grayscale-to-color hover effect with mixed format support
  */
 .trusted-by__logo img {
-  max-width: 80%;
-  max-height: 80%;
-  object-fit: contain;
-  opacity: 0.6;
+  /* Explicit dimensions for visibility */
+  width: 80%;
+  height: 80%;
+  max-width: 160px;
+  max-height: 80px;
+  min-width: 60px;
+  min-height: 30px;
   
-  /* Transition */
-  transition: opacity var(--transition-base) var(--transition-ease-out);
+  object-fit: contain;
+  
+  /* Ensure visibility */
+  opacity: 1;
+  display: block;
+  
+  /* Grayscale filter for initial state */
+  filter: grayscale(100%);
+  
+  /* Transition - smooth color transition */
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .trusted-by__logo:hover img {
-  opacity: 1;
+  /* Full color on hover */
+  filter: grayscale(0%);
 }
 
 /* ============================================

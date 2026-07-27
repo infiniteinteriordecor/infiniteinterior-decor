@@ -480,7 +480,74 @@
     }
   ],
   "gallery": [],
-  "clients": [],
+  "clients": [
+    {
+      "name": "Reebok",
+      "logo": "assets/images/clients/reebok.svg",
+      "website": "https://www.reebok.com",
+      "category": "Sportswear"
+    },
+    {
+      "name": "Adidas",
+      "logo": "assets/images/clients/adidas.svg",
+      "website": "https://www.adidas.com",
+      "category": "Sportswear"
+    },
+    {
+      "name": "Blackberrys",
+      "logo": "assets/images/clients/blackberrys.png",
+      "website": "https://www.blackberrys.com",
+      "category": "Fashion"
+    },
+    {
+      "name": "Monte Carlo",
+      "logo": "assets/images/clients/monte-carlo.png",
+      "website": "https://www.montecarlo.in",
+      "category": "Fashion"
+    },
+    {
+      "name": "Manyavar",
+      "logo": "assets/images/clients/manyavar.png",
+      "website": "https://www.manyavar.com",
+      "category": "Ethnic Wear"
+    },
+    {
+      "name": "Red Tape",
+      "logo": "assets/images/clients/red-tape.jpg",
+      "website": "https://www.redtape.co.in",
+      "category": "Footwear"
+    },
+    {
+      "name": "Van Heusen",
+      "logo": "assets/images/clients/van-heusen.png",
+      "website": "https://www.vanheusenindia.com",
+      "category": "Fashion"
+    },
+    {
+      "name": "Nazeer",
+      "logo": "assets/images/clients/nazeer.png",
+      "website": "https://www.nazeer.com",
+      "category": "Hospitality"
+    },
+    {
+      "name": "Baithke Bihari Cafe",
+      "logo": "assets/images/clients/baithke-bihari-cafe.png",
+      "website": "#",
+      "category": "Food & Beverage"
+    },
+    {
+      "name": "Hairmasters",
+      "logo": "assets/images/clients/hairmasters.png",
+      "website": "#",
+      "category": "Salon"
+    },
+    {
+      "name": "The Salons Company",
+      "logo": "assets/images/clients/the-salons-company.jpg",
+      "website": "#",
+      "category": "Salon"
+    }
+  ],
   "whyChoose": [
     {
       "title": "Premium Craftsmanship",

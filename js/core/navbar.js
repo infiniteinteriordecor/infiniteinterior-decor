@@ -124,20 +124,28 @@
   function getRelativePathPrefix() {
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
-    const depth = pathSegments.length;
     
-    if (depth === 0 || (depth === 1 && pathSegments[0].endsWith('.html'))) {
+    // Remove GitHub Pages subpath if present
+    const repoIndex = pathSegments.indexOf('infiniteinterior-decor');
+    let effectiveSegments = pathSegments;
+    if (repoIndex !== -1) {
+      effectiveSegments = pathSegments.slice(repoIndex + 1);
+    }
+    
+    const depth = effectiveSegments.length;
+    
+    if (depth === 0 || (depth === 1 && effectiveSegments[0].endsWith('.html'))) {
       // Root level
       return '';
-    } else if (depth === 2) {
-      // pages/about/index.html
+    } else if (depth === 1) {
+      // pages/about/ (index.html)
       return '../';
-    } else if (depth === 3) {
-      // pages/projects/detail/index.html
+    } else if (depth === 2) {
+      // pages/projects/detail/ (index.html)
       return '../../';
     } else {
       // Fallback for deeper levels
-      return '../'.repeat(depth - 1);
+      return '../'.repeat(depth);
     }
   }
 

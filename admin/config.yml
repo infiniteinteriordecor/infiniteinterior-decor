@@ -23,9 +23,11 @@ collections:
     slug: "database"
     path: "{{slug}}.json"
     summary: "{{company.name}}"
+    identifier_field: "title"
     editor:
       edit: false
     fields:
+      - { label: "Title", name: "title", widget: "string", default: "Hero Settings" }
       - label: "Company Name"
         name: "company"
         widget: "object"
@@ -46,6 +48,7 @@ collections:
     create: true
     slug: "{{slug}}"
     path: "{{slug}}.json"
+    identifier_field: "name"
     editor:
       edit: false
     fields:

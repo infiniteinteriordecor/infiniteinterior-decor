@@ -333,7 +333,7 @@
             const item = document.createElement('div');
             item.className = 'project-detail-gallery__item';
             item.innerHTML = `
-              <img src="${resolvedImage}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__img">
+              <img src="${resolvedImage}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__image" loading="lazy">
             `;
             galleryGrid.appendChild(item);
           });

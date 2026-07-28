@@ -575,8 +575,10 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
     };
     const dims = dimensions[placeholderType] || dimensions.project;
     
-    // Ensure path starts with ./ for relative path resolution
-    const srcPath = imagePath.startsWith('./') || imagePath.startsWith('/') ? imagePath : `./${imagePath}`;
+    // Use global resolver for GitHub Pages compatibility
+    const srcPath = typeof window !== 'undefined' && typeof window.resolveAssetPath === 'function' 
+      ? window.resolveAssetPath(imagePath) 
+      : (imagePath.startsWith('./') || imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
     
     return `<img 
       src="${srcPath}" 

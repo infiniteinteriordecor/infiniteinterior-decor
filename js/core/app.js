@@ -9,6 +9,27 @@
   'use strict';
 
   /**
+   * Bulletproof base URL detection for GitHub Pages
+   * Works universally across all environments
+   */
+  window.getBaseUrl = function() {
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    return isGitHubPages ? '/infiniteinterior-decor/' : '/';
+  };
+
+  /**
+   * Bulletproof asset path resolution
+   * Prevents all forms of subpath duplication
+   */
+  window.resolveAssetPath = function(assetPath) {
+    if (!assetPath) return '';
+    const baseUrl = window.getBaseUrl();
+    // Strip existing base URL if it was accidentally hardcoded to prevent duplication
+    let cleanPath = assetPath.replace(/^(\/infiniteinterior-decor\/|\/)/, '');
+    return baseUrl + cleanPath;
+  };
+
+  /**
    * Core module loader
    * Dynamically loads modules based on current page
    */

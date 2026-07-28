@@ -48,52 +48,11 @@ let state = {
 // ============================================
 
 /**
- * Get the base URL for assets based on the deployment environment
- * Detects GitHub Pages subpath and returns appropriate base URL
- * @returns {string} Base URL for assets (e.g., '/infiniteinterior-decor/' or '/')
- */
-function getBaseUrl() {
-  const pathname = window.location.pathname;
-  
-  // Check if we're on GitHub Pages with the subpath
-  // Only return the subpath if we're not already on a path that includes it
-  if (pathname.startsWith('/infiniteinterior-decor/')) {
-    // Extract the subpath from the current URL
-    const match = pathname.match(/^\/infiniteinterior-decor/);
-    if (match) {
-      return '/infiniteinterior-decor/';
-    }
-  }
-  
-  // Local development or root deployment
-  return '/';
-}
-
-/**
- * Resolve an asset path to the full URL based on the current environment
- * @param {string} assetPath - Relative asset path (e.g., 'assets/images/logo/logo.png')
- * @returns {string} Full asset URL with correct base
- */
-function resolveAssetPath(assetPath) {
-  const baseUrl = getBaseUrl();
-  
-  // Remove leading slash if present to avoid double slashes
-  const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
-  
-  // Also remove the subpath if it's already in the asset path to prevent duplication
-  if (cleanPath.startsWith('infiniteinterior-decor/')) {
-    return '/' + cleanPath;
-  }
-  
-  return baseUrl + cleanPath;
-}
-
-/**
  * Load data from JSON file
  */
 async function loadData(path) {
   try {
-    const response = await fetch(resolveAssetPath(path));
+    const response = await fetch(window.resolveAssetPath(path));
     if (!response.ok) {
       console.warn(`HTTP error! status: ${response.status}`);
       return null;
@@ -189,7 +148,7 @@ function renderProjectCard(project) {
   
   // Use actual image from project data
   const img = document.createElement('img');
-  img.src = resolveAssetPath(project.image || project.thumbnail || '');
+  img.src = window.resolveAssetPath(project.image || project.thumbnail || '');
   img.alt = project.title || project.name || 'Project Image';
   img.className = 'project-card__img';
   img.loading = 'lazy';

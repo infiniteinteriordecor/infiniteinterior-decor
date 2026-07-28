@@ -293,6 +293,8 @@
         // Find project
         const project = data.projects.find(p => p.id === projectId);
         
+        console.log('DEBUG: Found project object:', project);
+        
         if (!project) {
           console.error('Project not found');
           return;
@@ -321,12 +323,17 @@
         
         // Load gallery
         const galleryGrid = document.getElementById('project-gallery');
+        console.log('DEBUG: Project gallery array:', project.gallery);
+        
         if (project.gallery && project.gallery.length > 0) {
           project.gallery.forEach((image, index) => {
+            const resolvedImage = window.resolveAssetPath(image);
+            console.log(`DEBUG: Gallery image ${index + 1} - Original: ${image}, Resolved: ${resolvedImage}`);
+            
             const item = document.createElement('div');
             item.className = 'project-detail-gallery__item';
             item.innerHTML = `
-              <img src="${window.resolveAssetPath(image)}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__img">
+              <img src="${resolvedImage}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__img">
             `;
             galleryGrid.appendChild(item);
           });

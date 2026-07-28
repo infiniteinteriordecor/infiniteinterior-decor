@@ -585,6 +585,7 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
       loading="${loading}"
       width="${dims.width}"
       height="${dims.height}"
+      onload="this.classList.add('loaded')"
       onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
     >`;
   }

@@ -152,6 +152,12 @@ function renderProjectCard(project) {
   img.alt = project.title || project.name || 'Project Image';
   img.className = 'project-card__img';
   img.loading = 'lazy';
+  
+  // Add loaded class when image loads for CSS visibility
+  img.onload = function() {
+    this.classList.add('loaded');
+  };
+  
   imageContainer.appendChild(img);
   
   // Overlay with view button

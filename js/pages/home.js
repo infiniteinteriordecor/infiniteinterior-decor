@@ -260,6 +260,9 @@ function initNavbar() {
  * Handle navbar scroll for glassmorphism effect
  */
 function handleNavbarScroll() {
+  // Null check to prevent crash if navbar doesn't exist
+  if (!DOM.navbar) return;
+  
   const scrollY = window.scrollY;
   const shouldBeScrolled = scrollY > CONFIG.navbarScrollThreshold;
   
@@ -269,7 +272,7 @@ function handleNavbarScroll() {
     if (shouldBeScrolled) {
       DOM.navbar.classList.add('navbar--scrolled');
     } else {
-      DOM.navbar.classList.classList.remove('navbar--scrolled');
+      DOM.navbar.classList.remove('navbar--scrolled');
     }
   }
   

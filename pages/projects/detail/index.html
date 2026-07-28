@@ -323,6 +323,7 @@
         
         // Load gallery
         const galleryGrid = document.getElementById('project-gallery');
+        console.log('DEBUG: Gallery grid DOM element:', galleryGrid);
         console.log('DEBUG: Project gallery array:', project.gallery);
         
         if (project.gallery && project.gallery.length > 0) {
@@ -332,11 +333,29 @@
             
             const item = document.createElement('div');
             item.className = 'project-detail-gallery__item';
-            item.innerHTML = `
-              <img src="${resolvedImage}" alt="Gallery Image ${index + 1}" class="project-detail-gallery__image" loading="lazy">
-            `;
+            
+            const img = document.createElement('img');
+            img.src = resolvedImage;
+            img.alt = `Gallery Image ${index + 1}`;
+            img.className = 'project-detail-gallery__image';
+            img.loading = 'lazy';
+            
+            // Add loaded class when image loads for CSS visibility
+            img.onload = function() {
+              this.classList.add('loaded');
+              console.log(`DEBUG: Gallery image ${index + 1} loaded successfully`);
+            };
+            img.onerror = function() {
+              console.error(`DEBUG: Gallery image ${index + 1} failed to load: ${resolvedImage}`);
+            };
+            
+            console.log(`DEBUG: Created img element with src: ${img.src}`);
+            
+            item.appendChild(img);
             galleryGrid.appendChild(item);
+            console.log(`DEBUG: Appended gallery item ${index + 1} to DOM`);
           });
+          console.log('DEBUG: Final gallery grid children count:', galleryGrid.children.length);
         } else {
           galleryGrid.innerHTML = '<p style="text-align: center; color: var(--color-gray-600);">Gallery images coming soon</p>';
         }
@@ -353,7 +372,7 @@
             item.className = 'project-card';
             item.innerHTML = `
               <div class="project-card__image">
-                <img src="${window.resolveAssetPath(related.image)}" alt="${related.title}" class="project-card__img">
+                <img src="${window.resolveAssetPath(related.image)}" alt="${related.title}" class="project-card__img" onload="this.classList.add('loaded')">
               </div>
               <div class="project-card__content">
                 <span class="project-card__category">${related.category}</span>

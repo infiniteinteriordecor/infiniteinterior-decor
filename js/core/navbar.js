@@ -15,38 +15,19 @@
    * Uses global window.resolveAssetPath for GitHub Pages compatibility
    */
   function renderLogo() {
-    console.log("renderLogo() called");
-    
     const logoContainer = document.getElementById('navbar-logo-container');
-    console.log("logoContainer:", logoContainer);
     
     if (!logoContainer) {
       console.error("navbar-logo-container not found in DOM");
       return;
     }
 
-    // Use Base64 data URI from external file if available
-    // Otherwise use global dynamic base URL resolution
-    const logoPath = (typeof LOGO_BASE64 !== 'undefined') ? LOGO_BASE64 : window.resolveAssetPath('assets/images/logo/logo.png');
-    
-    console.log("Using logo source:", logoPath.substring(0, 50) + '...');
+    // Use global dynamic base URL resolution for standard image file
+    const logoPath = window.resolveAssetPath('assets/images/logo/logo.png');
 
     // Insert logo image with standardized class
     const logoHTML = `<img src="${logoPath}" alt="Infinite Interior Decor" class="navbar__logo-image">`;
-    console.log("Generated logo HTML");
-    
     logoContainer.innerHTML = logoHTML;
-    
-    // Explicitly update img src attribute for verification
-    const logoImg = logoContainer.querySelector('img');
-    if (logoImg) {
-      console.log("Logo IMG element found and updated");
-      console.log("Logo SRC length:", logoImg.src.length);
-    } else {
-      console.error("Logo IMG element not found after insertion");
-    }
-    
-    console.log("Logo rendered successfully");
   }
 
   /**
@@ -116,17 +97,19 @@
 
   /**
    * Calculate relative path prefix based on current page depth
+   * Dynamically removes GitHub Pages subpath for portability
    * @returns {string} Relative path prefix (e.g., '', '../', '../../')
    */
   function getRelativePathPrefix() {
     const currentPath = window.location.pathname;
     const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
     
-    // Remove GitHub Pages subpath if present
-    const repoIndex = pathSegments.indexOf('infiniteinterior-decor');
+    // Remove GitHub Pages subpath if present (dynamic extraction)
+    const isGitHubPages = window.location.hostname.includes('github.io');
     let effectiveSegments = pathSegments;
-    if (repoIndex !== -1) {
-      effectiveSegments = pathSegments.slice(repoIndex + 1);
+    if (isGitHubPages && pathSegments.length > 0) {
+      // First segment is the repository name on GitHub Pages
+      effectiveSegments = pathSegments.slice(1);
     }
     
     const depth = effectiveSegments.length;

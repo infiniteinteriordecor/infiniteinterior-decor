@@ -576,9 +576,7 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
     const dims = dimensions[placeholderType] || dimensions.project;
     
     // Use global resolver for GitHub Pages compatibility
-    const srcPath = typeof window !== 'undefined' && typeof window.resolveAssetPath === 'function' 
-      ? window.resolveAssetPath(imagePath) 
-      : (imagePath.startsWith('./') || imagePath.startsWith('/') ? imagePath : `./${imagePath}`);
+    const srcPath = window.resolveAssetPath(imagePath);
     
     return `<img 
       src="${srcPath}" 

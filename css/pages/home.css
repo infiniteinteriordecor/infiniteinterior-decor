@@ -34,7 +34,7 @@
   
   /* Premium luxury interior background with placeholder */
   background-color: var(--color-charcoal-900);
-  background-image: url('../../assets/images/hero/hero.webp');
+  /* background-image set dynamically via JavaScript for GitHub Pages compatibility */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -68,7 +68,7 @@
   
   /* Premium luxury interior background image */
   background-color: var(--color-charcoal-900);
-  background-image: url('../../assets/images/hero/hero.webp');
+  /* background-image set dynamically via JavaScript for GitHub Pages compatibility */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

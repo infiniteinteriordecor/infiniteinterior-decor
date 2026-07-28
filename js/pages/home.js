@@ -35,6 +35,24 @@ const CONFIG = {
 };
 
 // ============================================
+// ASSET PATH RESOLUTION
+// ============================================
+
+/**
+ * Dynamically set hero background images using bulletproof path resolution
+ * This fixes CSS background-image issues on GitHub Pages
+ */
+function initHeroBackgrounds() {
+  // Set hero background for main hero section
+  const heroBackgrounds = document.querySelectorAll('.hero, .hero__background');
+  const heroImagePath = window.resolveAssetPath('assets/images/hero/hero.webp');
+  
+  heroBackgrounds.forEach(el => {
+    el.style.backgroundImage = `url('${heroImagePath}')`;
+  });
+}
+
+// ============================================
 // DOM ELEMENTS
 // ============================================
 
@@ -1221,7 +1239,10 @@ function initBrandIntro() {
  * Initialize all functionality when DOM is ready
  */
 function init() {
-  // Initialize brand intro first
+  // Initialize hero backgrounds first (for GitHub Pages compatibility)
+  initHeroBackgrounds();
+  
+  // Initialize brand intro
   initBrandIntro();
   
   // Initialize components

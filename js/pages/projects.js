@@ -56,8 +56,13 @@ function getBaseUrl() {
   const pathname = window.location.pathname;
   
   // Check if we're on GitHub Pages with the subpath
-  if (pathname.includes('/infiniteinterior-decor/')) {
-    return '/infiniteinterior-decor/';
+  // Only return the subpath if we're not already on a path that includes it
+  if (pathname.startsWith('/infiniteinterior-decor/')) {
+    // Extract the subpath from the current URL
+    const match = pathname.match(/^\/infiniteinterior-decor/);
+    if (match) {
+      return '/infiniteinterior-decor/';
+    }
   }
   
   // Local development or root deployment
@@ -74,6 +79,11 @@ function resolveAssetPath(assetPath) {
   
   // Remove leading slash if present to avoid double slashes
   const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
+  
+  // Also remove the subpath if it's already in the asset path to prevent duplication
+  if (cleanPath.startsWith('infiniteinterior-decor/')) {
+    return '/' + cleanPath;
+  }
   
   return baseUrl + cleanPath;
 }

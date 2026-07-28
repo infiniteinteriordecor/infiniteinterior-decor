@@ -142,7 +142,7 @@
    */
   function upgradeToRealImage(placeholder, imagePath) {
     const img = document.createElement('img');
-    img.src = imagePath;
+    img.src = window.resolveAssetPath(imagePath);
     img.alt = placeholder.dataset.text || 'Image';
     img.loading = 'lazy';
     

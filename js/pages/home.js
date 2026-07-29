@@ -619,6 +619,7 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
       class="${className} image-pending"
       width="${dims.width}"
       height="${dims.height}"
+      decoding="async"
       style="display:none;"
     >`;
   }
@@ -731,17 +732,31 @@ async function processPendingImages() {
 // ============================================
 
 /**
- * Load JSON data from file
+ * Load JSON data from file with sessionStorage caching
  * @param {string} path - Path to JSON file
  * @returns {Promise<Object>} Parsed JSON data
  */
 async function loadData(path) {
+  const cacheKey = `infinite-interior-${path}`;
+  
   try {
+    // Check sessionStorage first
+    const cachedData = sessionStorage.getItem(cacheKey);
+    if (cachedData) {
+      return JSON.parse(cachedData);
+    }
+    
+    // Fetch from network if not cached
     const response = await fetch(window.resolveAssetPath(path));
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return await response.json();
+    const data = await response.json();
+    
+    // Cache in sessionStorage
+    sessionStorage.setItem(cacheKey, JSON.stringify(data));
+    
+    return data;
   } catch (error) {
     console.error(`Error loading data from ${path}:`, error);
     return null;
@@ -797,8 +812,12 @@ function renderServices(services) {
     return;
   }
   
-  DOM.servicesGrid.innerHTML = services.map(service => `
-    <div class="service__card">
+  const fragment = document.createDocumentFragment();
+  
+  services.forEach(service => {
+    const card = document.createElement('div');
+    card.className = 'service__card';
+    card.innerHTML = `
       <div class="service__icon">
         <svg viewBox="0 0 24 24" fill="currentColor">
           <path d="${service.iconPath || 'M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'}"/>
@@ -836,8 +855,12 @@ function renderServices(services) {
           </svg>
         </a>
       </div>
-    </div>
-  `).join('');
+    `;
+    fragment.appendChild(card);
+  });
+  
+  DOM.servicesGrid.innerHTML = '';
+  DOM.servicesGrid.appendChild(fragment);
 }
 
 /**
@@ -850,8 +873,12 @@ function renderProjects(projects) {
     return;
   }
   
-  DOM.projectsGrid.innerHTML = projects.map(project => `
-    <div class="project__card">
+  const fragment = document.createDocumentFragment();
+  
+  projects.forEach(project => {
+    const card = document.createElement('div');
+    card.className = 'project__card';
+    card.innerHTML = `
       ${project.featured ? `
         <div class="project__badge">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -891,8 +918,12 @@ function renderProjects(projects) {
           ${project.area ? `<span class="project__area">${project.area}</span>` : ''}
         </div>
       </div>
-    </div>
-  `).join('');
+    `;
+    fragment.appendChild(card);
+  });
+  
+  DOM.projectsGrid.innerHTML = '';
+  DOM.projectsGrid.appendChild(fragment);
 }
 
 /**
@@ -1279,7 +1310,37 @@ async function initDataLoading() {
   setTimeout(() => {
     initScrollAnimations();
     handleScrollAnimations();
+    initScrollReveal();
   }, 100);
+}
+
+/**
+ * Initialize scroll reveal animations using IntersectionObserver
+ * More efficient than scroll event listeners
+ */
+function initScrollReveal() {
+  const revealElements = document.querySelectorAll('.reveal-up');
+  
+  if (revealElements.length === 0) return;
+  
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+  
+  revealElements.forEach(element => {
+    observer.observe(element);
+  });
 }
 
 // ============================================

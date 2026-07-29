@@ -25,6 +25,7 @@
  * - Cursor
  * - User Select
  * - Pointer Events
+ * - Animations
  */
 
 /* ============================================
@@ -1061,4 +1062,24 @@
   .u-tablet-up {
     display: none !important;
   }
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
+/**
+ * Reveal up animation - for scroll-triggered animations
+ * Elements start invisible and translate down, then animate up when active
+ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-up.active {
+  opacity: 1;
+  transform: translateY(0);
 }

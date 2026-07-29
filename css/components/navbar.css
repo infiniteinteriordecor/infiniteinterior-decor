@@ -412,7 +412,7 @@
    ============================================ */
 
 /**
- * Mobile menu container
+ * Mobile menu container - Full-screen overlay with fade animation
  */
 .navbar__menu {
   position: fixed;
@@ -422,32 +422,33 @@
   left: 0;
   z-index: var(--z-index-modal);
   
-  /* Background */
-  background-color: var(--color-white);
+  /* Background with subtle overlay */
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   
-  /* Layout */
+  /* Layout - perfectly centered */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-8);
+  gap: var(--spacing-10);
   padding: var(--spacing-12) var(--spacing-6);
   
-  /* Transform for slide animation */
-  transform: translateX(100%);
-  
-  /* Transition */
-  transition: transform var(--transition-slow) var(--transition-ease-out);
-  
-  /* Hide by default */
+  /* Fade animation */
+  opacity: 0;
   visibility: hidden;
+  
+  /* Buttery-smooth transition */
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /**
- * Mobile menu open state
+ * Mobile menu open state - fade in
  */
 .navbar__menu[aria-hidden="false"] {
-  transform: translateX(0);
+  opacity: 1;
   visibility: visible;
 }
 
@@ -455,20 +456,21 @@
  * Dark mobile menu
  */
 .navbar--dark .navbar__menu {
-  background-color: var(--color-gray-900);
+  background-color: rgba(10, 10, 10, 0.98);
 }
 
 /**
- * Mobile navigation
+ * Mobile navigation - elegant large typography
  */
 .navbar__nav--mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-6);
+  gap: var(--spacing-8);
   list-style: none;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 
 /**
@@ -485,12 +487,21 @@
 }
 
 /**
- * Mobile link styling
+ * Mobile link styling - large elegant typography
  */
 .navbar__nav--mobile .navbar__link {
-  font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-semibold);
-  padding: var(--spacing-4) var(--spacing-6);
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-tight);
+  padding: var(--spacing-6) var(--spacing-8);
+  color: var(--color-text-primary);
+  transition: color 0.3s ease;
+}
+
+.navbar__nav--mobile .navbar__link:hover {
+  color: var(--color-primary);
 }
 
 /* ============================================

@@ -251,3 +251,36 @@
     --spacing-responsive-xl: var(--spacing-32);
   }
 }
+
+/* ============================================
+   MOBILE LUXURY SPACING OVERRIDES
+   ============================================ */
+
+/**
+ * Increased whitespace for mobile luxury aesthetic
+ * More breathing room, elements never cramped against edges
+ */
+@media (max-width: 639px) {
+  :root {
+    /* Increase mobile container padding */
+    --spacing-responsive-sm: var(--spacing-6);
+    --spacing-responsive-md: var(--spacing-8);
+    --spacing-responsive-lg: var(--spacing-10);
+    --spacing-responsive-xl: var(--spacing-12);
+    
+    /* Mobile-specific section spacing */
+    --spacing-section-mobile: var(--spacing-12);
+  }
+  
+  /* Increase container padding on mobile */
+  .u-container {
+    padding-left: var(--spacing-6);
+    padding-right: var(--spacing-6);
+  }
+  
+  /* Section spacing on mobile */
+  section {
+    padding-top: var(--spacing-section-mobile);
+    padding-bottom: var(--spacing-section-mobile);
+  }
+}

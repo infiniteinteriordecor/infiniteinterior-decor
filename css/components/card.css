@@ -210,14 +210,17 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform var(--transition-slow) var(--transition-ease-out);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /**
- * Image zoom on hover
+ * Subtle image zoom on hover (desktop only)
+ * Static on mobile for pristine luxury feel
  */
-.card:hover .card__image img {
-  transform: scale(1.05);
+@media (min-width: 1024px) {
+  .card:hover .card__image img {
+    transform: scale(1.03);
+  }
 }
 
 /**
@@ -237,6 +240,17 @@
 
 .card__image--aspect-3-2 {
   aspect-ratio: 3 / 2;
+}
+
+/**
+ * Portrait aspect ratios for luxury mobile framing
+ */
+.card__image--aspect-4-5 {
+  aspect-ratio: 4 / 5;
+}
+
+.card__image--aspect-3-4 {
+  aspect-ratio: 3 / 4;
 }
 
 /**

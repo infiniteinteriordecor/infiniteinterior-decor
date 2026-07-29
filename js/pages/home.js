@@ -548,6 +548,35 @@ function initFooterYear() {
 // ============================================
 
 /**
+ * Get relative path depth based on current page location
+ * @returns {string} Relative path prefix (e.g., './' for root, '../../' for pages/)
+ */
+function getRelativePathPrefix() {
+  const pathname = window.location.pathname;
+  // Count how many directory levels deep we are
+  const depth = pathname.split('/').filter(segment => segment.length > 0).length;
+  // Root level (index.html) -> './'
+  // One level deep (pages/index.html) -> '../'
+  // Two levels deep (pages/services/index.html) -> '../../'
+  const prefix = depth <= 1 ? './' : '../'.repeat(depth - 1);
+  return prefix;
+}
+
+/**
+ * Preload image to check if it exists
+ * @param {string} imagePath - Path to the image
+ * @returns {Promise<boolean>} True if image exists, false otherwise
+ */
+function preloadImage(imagePath) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(true);
+    img.onerror = () => resolve(false);
+    img.src = imagePath;
+  });
+}
+
+/**
  * Render image with development placeholder fallback
  * @param {string} imagePath - Path to the real image
  * @param {string} altText - Alt text for accessibility
@@ -578,15 +607,19 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
     // Use global resolver for GitHub Pages compatibility
     const srcPath = window.resolveAssetPath(imagePath);
     
+    // Return img with data-src for async preloading
+    // The actual src will be set after preloading check
     return `<img 
-      src="${srcPath}" 
-      alt="${altText}" 
-      class="${className}" 
-      loading="${loading}"
+      data-src="${srcPath}"
+      data-alt="${altText}"
+      data-class="${className}"
+      data-loading="${loading}"
+      data-width="${dims.width}"
+      data-height="${dims.height}"
+      class="${className} image-pending"
       width="${dims.width}"
       height="${dims.height}"
-      onload="this.classList.add('loaded')"
-      onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      style="display:none;"
     >`;
   }
   
@@ -640,6 +673,57 @@ function renderImage(imagePath, altText, placeholderType = 'project', options = 
       </div>
     </div>
   `;
+}
+
+/**
+ * Process all pending images with preloading check
+ * Checks if images exist before displaying them
+ */
+async function processPendingImages() {
+  const pendingImages = document.querySelectorAll('img.image-pending');
+  
+  for (const img of pendingImages) {
+    const src = img.dataset.src;
+    if (!src) continue;
+    
+    try {
+      const exists = await preloadImage(src);
+      if (exists) {
+        // Image exists: set actual src and show it
+        img.src = src;
+        img.alt = img.dataset.alt || '';
+        img.classList.remove('image-pending');
+        img.classList.add('loaded');
+        img.style.display = '';
+        
+        // Add onload handler for CSS visibility
+        img.onload = function() {
+          this.classList.add('loaded');
+        };
+        
+        // If there's a placeholder sibling, hide it
+        const placeholder = img.nextElementSibling;
+        if (placeholder && placeholder.classList.contains('image-placeholder')) {
+          placeholder.style.display = 'none';
+        }
+      } else {
+        // Image doesn't exist: remove img element, keep placeholder
+        const placeholder = img.nextElementSibling;
+        if (placeholder && placeholder.classList.contains('image-placeholder')) {
+          placeholder.style.display = '';
+        }
+        img.remove();
+      }
+    } catch (error) {
+      console.error('Error preloading image:', src, error);
+      // On error, remove img and show placeholder
+      const placeholder = img.nextElementSibling;
+      if (placeholder && placeholder.classList.contains('image-placeholder')) {
+        placeholder.style.display = '';
+      }
+      img.remove();
+    }
+  }
 }
 
 // ============================================
@@ -1187,6 +1271,9 @@ async function initDataLoading() {
   if (database.contact) {
     renderContact(database.contact);
   }
+  
+  // Process pending images with preloading check
+  await processPendingImages();
   
   // Re-initialize scroll animations after content is loaded
   setTimeout(() => {

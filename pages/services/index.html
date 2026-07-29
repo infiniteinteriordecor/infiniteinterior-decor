@@ -249,6 +249,67 @@
   <script src="../../js/core/image-placeholder.js"></script>
   <script src="../../js/core/navbar.js"></script>
   <script>
+    // Get relative path depth based on current page location
+    function getRelativePathPrefix() {
+      const pathname = window.location.pathname;
+      const depth = pathname.split('/').filter(segment => segment.length > 0).length;
+      const prefix = depth <= 1 ? './' : '../'.repeat(depth - 1);
+      return prefix;
+    }
+
+    // Preload image to check if it exists
+    function preloadImage(imagePath) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = imagePath;
+      });
+    }
+
+    // Process all pending images with preloading check
+    async function processPendingImages() {
+      const pendingImages = document.querySelectorAll('img.image-pending');
+      
+      for (const img of pendingImages) {
+        const src = img.dataset.src;
+        if (!src) continue;
+        
+        try {
+          const exists = await preloadImage(src);
+          if (exists) {
+            img.src = src;
+            img.alt = img.dataset.alt || '';
+            img.classList.remove('image-pending');
+            img.classList.add('loaded');
+            img.style.display = '';
+            
+            img.onload = function() {
+              this.classList.add('loaded');
+            };
+            
+            const placeholder = img.nextElementSibling;
+            if (placeholder && placeholder.classList.contains('image-placeholder')) {
+              placeholder.style.display = 'none';
+            }
+          } else {
+            const placeholder = img.nextElementSibling;
+            if (placeholder && placeholder.classList.contains('image-placeholder')) {
+              placeholder.style.display = '';
+            }
+            img.remove();
+          }
+        } catch (error) {
+          console.error('Error preloading image:', src, error);
+          const placeholder = img.nextElementSibling;
+          if (placeholder && placeholder.classList.contains('image-placeholder')) {
+            placeholder.style.display = '';
+          }
+          img.remove();
+        }
+      }
+    }
+
     // Service icons mapping
     const serviceIcons = {
       'home': '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />',
@@ -306,8 +367,8 @@
           
           card.innerHTML = `
             <div class="service-card__image">
-              <img src="../../assets/images/services/service-${service.id}.webp" alt="${service.title || 'Service'}" class="service-card__img" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-              <div class="image-placeholder" data-text="${service.title || 'Service'}" data-width="400" data-height="250" style="display:none;"></div>
+              <img data-src="../../assets/images/services/service-${service.id}.webp" data-alt="${service.title || 'Service'}" class="service-card__img image-pending" loading="lazy" style="display:none;">
+              <div class="image-placeholder" data-text="${service.title || 'Service'}" data-width="400" data-height="250"></div>
             </div>
             <div class="service-card__content">
               <div class="service-card__icon">
@@ -352,6 +413,9 @@
             }
           });
         });
+        
+        // Process pending images with preloading check
+        await processPendingImages();
         
       } catch (error) {
         console.error('Error rendering services:', error);

@@ -821,7 +821,7 @@ function renderServices(services) {
         </ul>
       ` : ''}
       <div class="service__image">
-        ${renderImage(service.image || '', service.title, 'service', {
+        ${renderImage(`assets/images/services/service-${service.id}.webp`, service.title, 'service', {
           className: 'service__img',
           loading: 'lazy',
           showLabel: false

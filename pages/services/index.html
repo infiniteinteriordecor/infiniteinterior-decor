@@ -246,8 +246,8 @@
   </footer>
 
   <!-- JavaScript -->
-  <script src="../../js/image-placeholder.js"></script>
-  <script src="../../js/navbar.js"></script>
+  <script src="../../js/core/image-placeholder.js"></script>
+  <script src="../../js/core/navbar.js"></script>
   <script>
     // Service icons mapping
     const serviceIcons = {
@@ -306,7 +306,8 @@
           
           card.innerHTML = `
             <div class="service-card__image">
-              <div class="image-placeholder" data-text="${service.title || 'Service'}" data-width="400" data-height="250"></div>
+              <img src="../../assets/images/services/service-${service.id}.webp" alt="${service.title || 'Service'}" class="service-card__img" loading="lazy" onload="this.classList.add('loaded')" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+              <div class="image-placeholder" data-text="${service.title || 'Service'}" data-width="400" data-height="250" style="display:none;"></div>
             </div>
             <div class="service-card__content">
               <div class="service-card__icon">

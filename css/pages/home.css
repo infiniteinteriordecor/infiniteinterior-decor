@@ -559,6 +559,36 @@
   .hero__button--secondary {
     width: 100%;
   }
+  
+  /* Hero dark gradient overlay for mobile legibility */
+  .hero::before {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(15, 15, 15, 0.9) 100%);
+  }
+  
+  /* Ensure hero content has proper z-index */
+  .hero__content {
+    z-index: 10;
+    position: relative;
+  }
+  
+  /* Hero text colors for mobile */
+  .hero__title {
+    color: #F5F5DC;
+  }
+  
+  .hero__subtitle {
+    color: rgba(245, 245, 220, 0.9);
+  }
+  
+  /* Hide decorative background layers on mobile for cleaner look */
+  .hero__mesh,
+  .hero__spotlight,
+  .hero__blobs,
+  .hero__grain,
+  .hero__glow,
+  .hero__mouse-light {
+    display: none;
+  }
 }
 
 /* ============================================

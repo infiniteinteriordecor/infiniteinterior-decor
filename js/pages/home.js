@@ -848,8 +848,8 @@ function renderServices(services) {
       </div>
       <div class="service__footer">
         ${service.price ? `<span class="service__price">${service.price}</span>` : ''}
-        <a href="${service.link || 'pages/services/'}" class="service__link">
-          Details
+        <a href="${service.link || 'pages/services/'}" class="service__link service__link--explore">
+          Explore
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
           </svg>

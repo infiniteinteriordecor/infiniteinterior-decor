@@ -26,6 +26,13 @@
   background-color: var(--color-white);
 }
 
+/* Mobile luxury spacing */
+@media (max-width: 639px) {
+  .projects {
+    padding-block: 5rem;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .projects {
     background-color: var(--color-gray-900);
@@ -183,6 +190,29 @@
 @media (min-width: 1024px) {
   .projects__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile horizontal scroll-snap carousel */
+@media (max-width: 639px) {
+  .projects__grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .projects__grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .project__card {
+    flex: 0 0 85%;
+    scroll-snap-align: center;
   }
 }
 

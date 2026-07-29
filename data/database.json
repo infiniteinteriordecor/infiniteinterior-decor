@@ -319,6 +319,38 @@
         "Minimal Disruption"
       ],
       "icon": "refresh-cw"
+    },
+    {
+      "id": "mountain-villa",
+      "title": "Mountain Villas & Bungalows",
+      "description": "Specialized interior design for mountain properties that harmonize luxury living with the natural landscape. We create sophisticated retreats that embrace panoramic views while addressing the unique challenges of high-altitude architecture.",
+      "features": [
+        "Slope-Optimized Design",
+        "Panoramic Window Integration",
+        "Climate-Resilient Materials",
+        "Stone & Wood Aesthetics",
+        "Indoor-Outdoor Flow",
+        "Fireplace & Heating Design",
+        "Weatherproofing Solutions",
+        "Sustainable Mountain Living"
+      ],
+      "icon": "mountain"
+    },
+    {
+      "id": "boutique-homestay",
+      "title": "Boutique Homestays & Cottages",
+      "description": "Curated boutique interiors for mountain homestays and vacation cottages. We design intimate, character-rich spaces that offer guests an authentic luxury experience in the heart of nature.",
+      "features": [
+        "Local Craft Integration",
+        "Cozy Ambiance Design",
+        "Guest Experience Planning",
+        "Rustic-Luxury Aesthetics",
+        "Multi-Unit Coordination",
+        "Common Area Design",
+        "Privacy Optimization",
+        "Mountain Hospitality Standards"
+      ],
+      "icon": "home"
     }
   ],
   "projects": [
@@ -475,6 +507,50 @@
         "Salon Interior",
         "Furniture Design",
         "Lighting Design",
+        "Turnkey Execution"
+      ]
+    },
+    {
+      "id": "pahadi-ghonsla-bhimtal-2024",
+      "title": "Pahadi Ghonsla",
+      "slug": "pahadi-ghonsla-bhimtal-2024",
+      "category": "Hospitality",
+      "location": "Bhimtal, Uttarakhand",
+      "year": "2024",
+      "area": "3500 sq ft",
+      "status": "Completed",
+      "image": "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-01.webp",
+      "thumbnail": "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-01.webp",
+      "gallery": [
+        "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-01.webp",
+        "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-02.webp",
+        "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-03.webp",
+        "assets/images/projects/pahadi-ghonsla-bhimtal/gallery/image-04.webp"
+      ],
+      "featured": true,
+      "description": "A rustic mountain homestay and cafe nestled in the serene hills of Bhimtal. The design blends traditional Kumaoni architecture with modern luxury, featuring exposed stone walls, warm wood finishes, and panoramic lake views that create an authentic mountain retreat experience.",
+      "scopeOfWork": [
+        "Homestay Interior Design",
+        "Cafe & Dining Area",
+        "Guest Room Design",
+        "Common Lounge Areas",
+        "Outdoor Deck Design",
+        "Local Material Integration",
+        "Fireplace & Heating",
+        "Landscape Integration"
+      ],
+      "materials": [
+        "Local Stone",
+        "Reclaimed Wood",
+        "Copper Fixtures",
+        "Handwoven Textiles",
+        "Slate Flooring",
+        "Bamboo Elements"
+      ],
+      "services": [
+        "Mountain Villa Design",
+        "Boutique Homestay Design",
+        "Hospitality Interior",
         "Turnkey Execution"
       ]
     }

@@ -412,7 +412,7 @@
    ============================================ */
 
 /**
- * Mobile menu container - Full-screen overlay with fade animation
+ * Mobile menu container - Full-screen dark signature overlay
  */
 .navbar__menu {
   position: fixed;
@@ -422,10 +422,8 @@
   left: 0;
   z-index: 9999;
   
-  /* Background with subtle overlay */
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Solid luxury dark background - no blur */
+  background-color: #111;
   
   /* Layout - perfectly centered */
   display: flex;
@@ -452,24 +450,35 @@
 }
 
 /**
- * Dark mobile menu
+ * Mobile menu title - "MENU" in sophisticated serif
  */
-.navbar--dark .navbar__menu {
-  background-color: rgba(10, 10, 10, 0.98);
+.navbar__menu-title {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.2em;
+  color: #F5F5DC;
+  text-transform: uppercase;
 }
 
 /**
- * Mobile navigation - elegant large typography
+ * Mobile navigation - elegant stacked links with borders
  */
 .navbar__nav--mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-8);
+  gap: 0;
   list-style: none;
   margin: 0;
   padding: 0;
   text-align: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 /**
@@ -486,7 +495,7 @@
 }
 
 /**
- * Mobile link styling - large elegant typography
+ * Mobile link styling - elegant serif with subtle borders
  */
 .navbar__nav--mobile .navbar__link {
   font-family: var(--font-heading);
@@ -494,10 +503,16 @@
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-tight);
-  margin: 1rem 0;
-  padding: var(--spacing-6) var(--spacing-8);
+  padding: 1.5rem 2rem;
   color: #F5F5DC;
   transition: color 0.3s ease;
+  width: 100%;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+.navbar__nav--mobile .navbar__link:last-child {
+  border-bottom: none;
 }
 
 .navbar__nav--mobile .navbar__link:hover {

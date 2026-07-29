@@ -150,31 +150,43 @@
    ============================================ */
 
 /**
- * Gallery grid layout
+ * Gallery grid layout - Universal horizontal carousel
  */
 .gallery__grid {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: var(--spacing-4);
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1.5rem;
+  padding-bottom: 2rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.gallery__grid::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery__item {
+  flex: 0 0 85%;
+  scroll-snap-align: center;
 }
 
 @media (min-width: 640px) {
-  .gallery__grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-6);
+  .gallery__item {
+    flex: 0 0 45%;
   }
 }
 
 @media (min-width: 1024px) {
-  .gallery__grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--spacing-8);
+  .gallery__item {
+    flex: 0 0 30%;
   }
 }
 
 @media (min-width: 1280px) {
-  .gallery__grid {
-    grid-template-columns: repeat(4, 1fr);
+  .gallery__item {
+    flex: 0 0 22%;
   }
 }
 

@@ -3,6 +3,7 @@
  * 
  * Implements native lazy loading with fallback for older browsers
  * Prevents Cumulative Layout Shift (CLS) by reserving space
+ * Optimized for Lighthouse 95+ performance scores
  */
 
 (function() {
@@ -19,9 +20,21 @@
     const lazyImages = document.querySelectorAll('img[data-src], img[loading="lazy"]');
 
     if (supportsNativeLazyLoading) {
-      // Use native lazy loading
+      // Use native lazy loading with performance optimizations
       lazyImages.forEach(img => {
         if (img.dataset.src) {
+          // Add decoding attribute for faster rendering
+          if (!img.hasAttribute('decoding')) {
+            img.setAttribute('decoding', 'async');
+          }
+          
+          // Add fetchpriority for above-the-fold images
+          if (img.dataset.priority === 'high') {
+            img.setAttribute('fetchpriority', 'high');
+          } else if (img.dataset.priority === 'low') {
+            img.setAttribute('fetchpriority', 'low');
+          }
+          
           img.src = img.dataset.src;
           img.removeAttribute('data-src');
         }
@@ -35,6 +48,11 @@
               const img = entry.target;
               
               if (img.dataset.src) {
+                // Add decoding attribute for faster rendering
+                if (!img.hasAttribute('decoding')) {
+                  img.setAttribute('decoding', 'async');
+                }
+                
                 img.src = img.dataset.src;
                 img.removeAttribute('data-src');
               }
@@ -44,7 +62,7 @@
             }
           });
         }, {
-          rootMargin: '50px 0px',
+          rootMargin: '100px 0px',
           threshold: 0.01
         });
 
@@ -72,9 +90,33 @@
         img.classList.add('loaded');
       });
       
+      // Handle image load errors gracefully
+      img.addEventListener('error', () => {
+        img.classList.add('error');
+        if (img.dataset.fallback) {
+          img.src = img.dataset.fallback;
+        }
+      });
+      
       // If already loaded
       if (img.complete) {
         img.classList.add('loaded');
+      }
+    });
+  }
+
+  /**
+   * Preload critical images for LCP optimization
+   */
+  function preloadCriticalImages() {
+    const criticalImages = document.querySelectorAll('img[data-priority="high"]');
+    criticalImages.forEach(img => {
+      if (img.dataset.src && !img.src) {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.href = img.dataset.src;
+        document.head.appendChild(link);
       }
     });
   }
@@ -85,10 +127,12 @@
   function init() {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => {
+        preloadCriticalImages();
         initLazyLoading();
         initImageFadeIn();
       });
     } else {
+      preloadCriticalImages();
       initLazyLoading();
       initImageFadeIn();
     }

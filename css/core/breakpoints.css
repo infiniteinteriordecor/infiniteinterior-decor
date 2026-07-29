@@ -283,4 +283,56 @@
     padding-top: var(--spacing-section-mobile);
     padding-bottom: var(--spacing-section-mobile);
   }
+  
+  /* Disable complex animations on mobile for performance */
+  .hero__mesh,
+  .hero__spotlight,
+  .hero__blobs,
+  .hero__grain,
+  .hero__glow {
+    display: none;
+  }
+  
+  /* Simplified hero on mobile */
+  .hero__mouse-light {
+    background: radial-gradient(
+      circle 300px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(196, 160, 116, 0.05) 0%,
+      transparent 60%
+    );
+  }
+}
+
+/* Tablet refinements */
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* Optimized animations for tablet */
+  .hero__mesh {
+    animation-duration: 15s;
+  }
+  
+  .hero__mouse-light {
+    background: radial-gradient(
+      circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      rgba(196, 160, 116, 0.06) 0%,
+      rgba(168, 133, 92, 0.03) 30%,
+      transparent 65%
+    );
+  }
+}
+
+/* Desktop refinements */
+@media (min-width: 1024px) {
+  /* Full luxury animations on desktop */
+  .hero__mesh {
+    animation-duration: 12s;
+  }
+  
+  /* Enhanced hover effects on desktop */
+  .card:hover {
+    transform: translateY(-6px);
+  }
+  
+  .button:hover {
+    transform: translateY(-2px);
+  }
 }

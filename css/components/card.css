@@ -50,22 +50,28 @@
   /* Border and radius */
   border-radius: var(--radius-xl);
   
-  /* Shadow */
-  box-shadow: var(--shadow-base);
+  /* Premium luxury shadow */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.03);
   
-  /* Transition */
-  transition: var(--transition-base-all);
+  /* Luxury transition */
+  transition: box-shadow 0.5s var(--ease-luxury),
+              transform 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury);
   
   /* Position */
   position: relative;
+  
+  /* Luxury border */
+  border: 1px solid var(--color-border-light);
 }
 
 /**
  * Card hover effect
  */
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 16px 32px rgba(0, 0, 0, 0.06);
+  border-color: var(--color-border-gold);
 }
 
 /* ============================================
@@ -107,12 +113,12 @@
  * Larger shadow for emphasis
  */
 .card--elevated {
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08), 0 16px 32px rgba(0, 0, 0, 0.06);
 }
 
 .card--elevated:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-xl);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12), 0 24px 48px rgba(0, 0, 0, 0.08);
 }
 
 /**
@@ -120,14 +126,14 @@
  * Accent border and prominent styling
  */
 .card--featured {
-  border: 2px solid var(--color-primary);
-  box-shadow: var(--shadow-md);
+  border: 2px solid var(--color-champagne-400);
+  box-shadow: 0 4px 16px rgba(196, 160, 116, 0.15), 0 8px 24px rgba(196, 160, 116, 0.1);
 }
 
 .card--featured:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--color-primary-dark);
+  border-color: var(--color-champagne-300);
+  box-shadow: 0 8px 24px rgba(196, 160, 116, 0.2), 0 16px 32px rgba(196, 160, 116, 0.15);
+  transform: translateY(-4px);
 }
 
 /**

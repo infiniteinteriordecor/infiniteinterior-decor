@@ -94,40 +94,40 @@
 
 /**
  * Primary button
- * Elegant solid color with subtle hover
+ * Elegant solid color with luxury hover effects
  */
 .button--primary {
   background-color: var(--color-walnut-600);
   color: var(--color-white);
   border-color: var(--color-walnut-600);
   
-  /* Elegant shadow */
-  box-shadow: 0 2px 8px rgba(109, 84, 56, 0.15);
+  /* Premium luxury shadow */
+  box-shadow: 0 2px 12px rgba(109, 84, 56, 0.12), 0 4px 8px rgba(109, 84, 56, 0.08);
   
-  /* Transition */
-  transition: background-color var(--transition-fast) var(--transition-ease-out),
-              border-color var(--transition-fast) var(--transition-ease-out),
-              box-shadow var(--transition-fast) var(--transition-ease-out),
-              transform var(--transition-fast) var(--transition-ease-out);
+  /* Luxury transition */
+  transition: background-color 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury),
+              box-shadow 0.4s var(--ease-luxury),
+              transform 0.3s var(--ease-luxury);
 }
 
 .button--primary:hover {
   background-color: var(--color-walnut-700);
   border-color: var(--color-walnut-700);
-  box-shadow: 0 4px 12px rgba(109, 84, 56, 0.2);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(109, 84, 56, 0.15), 0 8px 16px rgba(109, 84, 56, 0.1);
+  transform: translateY(-2px);
 }
 
 .button--primary:active {
   background-color: var(--color-walnut-800);
   border-color: var(--color-walnut-800);
-  box-shadow: 0 2px 4px rgba(109, 84, 56, 0.15);
+  box-shadow: 0 2px 8px rgba(109, 84, 56, 0.12);
   transform: translateY(0);
 }
 
 .button--primary:focus {
   outline: 2px solid var(--color-walnut-400);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .button--primary:disabled,
@@ -142,36 +142,39 @@
 
 /**
  * Secondary button
- * Elegant outline style with luxury colors
+ * Elegant outline style with luxury champagne gold
  */
 .button--secondary {
   background-color: transparent;
   color: var(--color-white);
   border-color: var(--color-champagne-400);
   
-  /* Transition */
-  transition: background-color var(--transition-fast) var(--transition-ease-out),
-              border-color var(--transition-fast) var(--transition-ease-out),
-              color var(--transition-fast) var(--transition-ease-out),
-              transform var(--transition-fast) var(--transition-ease-out);
+  /* Luxury transition */
+  transition: background-color 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury),
+              color 0.4s var(--ease-luxury),
+              transform 0.3s var(--ease-luxury),
+              box-shadow 0.4s var(--ease-luxury);
 }
 
 .button--secondary:hover {
-  background-color: rgba(196, 160, 116, 0.1);
+  background-color: rgba(196, 160, 116, 0.12);
   border-color: var(--color-champagne-300);
   color: var(--color-champagne-200);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(196, 160, 116, 0.15);
 }
 
 .button--secondary:active {
-  background-color: rgba(196, 160, 116, 0.15);
+  background-color: rgba(196, 160, 116, 0.18);
   border-color: var(--color-champagne-400);
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(196, 160, 116, 0.1);
 }
 
 .button--secondary:focus {
   outline: 2px solid var(--color-champagne-400);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .button--secondary:disabled,
@@ -182,69 +185,79 @@
   cursor: not-allowed;
   opacity: 0.6;
   transform: none;
+  box-shadow: none;
 }
 
 /**
  * Minimal button
- * Solid black editorial button for luxury aesthetic
+ * Solid matte black editorial button for luxury aesthetic
  */
 .button--minimal {
-  background-color: #000000;
-  color: #ffffff;
-  border-color: #000000;
+  background-color: var(--color-matte-black);
+  color: var(--color-white);
+  border-color: var(--color-matte-black);
   
-  /* Transition */
-  transition: background-color var(--transition-fast) var(--transition-ease-out),
-              border-color var(--transition-fast) var(--transition-ease-out),
-              transform var(--transition-fast) var(--transition-ease-out);
+  /* Premium shadow */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  
+  /* Luxury transition */
+  transition: background-color 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury),
+              transform 0.3s var(--ease-luxury),
+              box-shadow 0.4s var(--ease-luxury);
 }
 
 .button--minimal:hover {
-  background-color: #1a1a1a;
-  border-color: #1a1a1a;
-  transform: translateY(-1px);
+  background-color: var(--color-matte-black-soft);
+  border-color: var(--color-matte-black-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .button--minimal:active {
-  background-color: #000000;
+  background-color: var(--color-matte-black);
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .button--minimal:focus {
-  outline: 2px solid rgba(0, 0, 0, 0.3);
-  outline-offset: 2px;
+  outline: 2px solid rgba(0, 0, 0, 0.4);
+  outline-offset: 3px;
 }
 
 /**
  * Minimal outline button
- * Black outlined editorial button
+ * Matte black outlined editorial button
  */
 .button--minimal-outline {
   background-color: transparent;
-  color: #000000;
-  border-color: #000000;
+  color: var(--color-matte-black);
+  border-color: var(--color-matte-black);
   
-  /* Transition */
-  transition: background-color var(--transition-fast) var(--transition-ease-out),
-              border-color var(--transition-fast) var(--transition-ease-out),
-              color var(--transition-fast) var(--transition-ease-out),
-              transform var(--transition-fast) var(--transition-ease-out);
+  /* Luxury transition */
+  transition: background-color 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury),
+              color 0.4s var(--ease-luxury),
+              transform 0.3s var(--ease-luxury),
+              box-shadow 0.4s var(--ease-luxury);
 }
 
 .button--minimal-outline:hover {
-  background-color: #000000;
-  color: #ffffff;
-  transform: translateY(-1px);
+  background-color: var(--color-matte-black);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .button--minimal-outline:active {
-  background-color: #1a1a1a;
+  background-color: var(--color-matte-black-soft);
   transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .button--minimal-outline:focus {
-  outline: 2px solid rgba(0, 0, 0, 0.3);
-  outline-offset: 2px;
+  outline: 2px solid rgba(0, 0, 0, 0.4);
+  outline-offset: 3px;
 }
 
 /**
@@ -255,23 +268,31 @@
   background-color: transparent;
   color: var(--color-primary);
   border-color: var(--color-primary);
+  
+  /* Luxury transition */
+  transition: background-color 0.4s var(--ease-luxury),
+              border-color 0.4s var(--ease-luxury),
+              color 0.4s var(--ease-luxury),
+              transform 0.3s var(--ease-luxury),
+              box-shadow 0.4s var(--ease-luxury);
 }
 
 .button--outline:hover {
-  background-color: var(--color-primary-50);
-  border-color: var(--color-primary-dark);
-  color: var(--color-primary-dark);
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(109, 84, 56, 0.15);
 }
 
 .button--outline:focus {
-  outline: 2px solid var(--color-primary-300);
-  outline-offset: 2px;
+  outline: 2px solid var(--color-primary-light);
+  outline-offset: 3px;
 }
 
 .button--outline:active {
-  background-color: var(--color-primary-100);
-  border-color: var(--color-primary-700);
-  color: var(--color-primary-700);
+  background-color: var(--color-primary-dark);
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(109, 84, 56, 0.12);
 }
 
 .button--outline:disabled,

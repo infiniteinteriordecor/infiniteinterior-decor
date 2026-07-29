@@ -27,7 +27,29 @@
 
 /* Primary Colors - Luxury Brand Identity */
 :root {
-  /* Walnut Brown */
+  /* Luxury Matte Black */
+  --color-matte-black: #0a0a0a;
+  --color-matte-black-soft: #111111;
+  --color-matte-black-light: #1a1a1a;
+  
+  /* Warm White */
+  --color-warm-white: #faf8f5;
+  --color-warm-white-soft: #f5f3f0;
+  --color-warm-white-warm: #f0ede8;
+  
+  /* Champagne Gold - Refined luxury gold */
+  --color-champagne-50: #fdfcf8;
+  --color-champagne-100: #f9f6ed;
+  --color-champagne-200: #f1e9d6;
+  --color-champagne-300: #e5d4b8;
+  --color-champagne-400: #d4b896;
+  --color-champagne-500: #c4a074;
+  --color-champagne-600: #a8855c;
+  --color-champagne-700: #8c6b4a;
+  --color-champagne-800: #73563f;
+  --color-champagne-900: #5e4635;
+  
+  /* Walnut Brown - Premium wood tone */
   --color-walnut-50: #f8f5f0;
   --color-walnut-100: #ebe4d8;
   --color-walnut-200: #d4c4a8;
@@ -39,17 +61,22 @@
   --color-walnut-800: #423625;
   --color-walnut-900: #362d20;
   
-  /* Champagne Gold */
-  --color-champagne-50: #fdfcf8;
-  --color-champagne-100: #f9f6ed;
-  --color-champagne-200: #f1e9d6;
-  --color-champagne-300: #e5d4b8;
-  --color-champagne-400: #d4b896;
-  --color-champagne-500: #c4a074;
-  --color-champagne-600: #a8855c;
-  --color-champagne-700: #8c6b4a;
-  --color-champagne-800: #73563f;
-  --color-champagne-900: #5e4635;
+  /* Stone Grey - Sophisticated neutral */
+  --color-stone-50: #f5f5f4;
+  --color-stone-100: #e7e5e4;
+  --color-stone-200: #d6d3d1;
+  --color-stone-300: #a8a29e;
+  --color-stone-400: #78716c;
+  --color-stone-500: #57534e;
+  --color-stone-600: #44403c;
+  --color-stone-700: #292524;
+  --color-stone-800: #1c1917;
+  --color-stone-900: #0c0a09;
+  
+  /* Glass White - Translucent luxury */
+  --color-glass-white: rgba(255, 255, 255, 0.95);
+  --color-glass-white-soft: rgba(255, 255, 255, 0.85);
+  --color-glass-white-muted: rgba(255, 255, 255, 0.7);
   
   /* Bronze */
   --color-bronze-50: #f8f6f3;
@@ -78,7 +105,7 @@
   /* Warm White */
   --color-warm-white: #faf8f5;
   
-  /* Primary brand color (Walnut Brown) */
+  /* Primary brand color (Luxury Walnut Brown) */
   --color-primary: var(--color-walnut-600);
   --color-primary-light: var(--color-walnut-400);
   --color-primary-dark: var(--color-walnut-800);
@@ -87,6 +114,15 @@
   --color-accent: var(--color-champagne-500);
   --color-accent-light: var(--color-champagne-300);
   --color-accent-dark: var(--color-champagne-700);
+  
+  /* Luxury accent (Matte Black for sophistication) */
+  --color-luxury: var(--color-matte-black);
+  --color-luxury-soft: var(--color-matte-black-soft);
+  
+  /* Soft shadow colors */
+  --color-shadow-soft: rgba(10, 10, 10, 0.08);
+  --color-shadow-medium: rgba(10, 10, 10, 0.12);
+  --color-shadow-luxury: rgba(196, 160, 116, 0.15);
 }
 
 /* Secondary Colors - Accent */
@@ -187,30 +223,36 @@
   --color-info-900: #1e3a8a;
 }
 
-/* Text Colors - Minimalist Luxury Palette */
+/* Text Colors - Luxury Minimalist Palette */
 :root {
-  --color-text-primary: #1A1A1A;  /* Rich Charcoal */
-  --color-text-secondary: #4A4A4A;
-  --color-text-tertiary: #6A6A6A;
-  --color-text-inverse: #F9F9F6;
-  --color-text-link: #8C7A6B;  /* Warm Taupe accent */
-  --color-text-link-hover: #6B5A4B;
+  --color-text-primary: var(--color-matte-black-light);  /* Rich luxury black */
+  --color-text-secondary: var(--color-stone-600);  /* Sophisticated grey */
+  --color-text-tertiary: var(--color-stone-500);  /* Muted grey */
+  --color-text-inverse: var(--color-warm-white);  /* Warm white for dark backgrounds */
+  --color-text-link: var(--color-walnut-600);  /* Premium walnut accent */
+  --color-text-link-hover: var(--color-walnut-700);
+  --color-text-gold: var(--color-champagne-500);  /* Champagne gold for accents */
+  --color-text-gold-light: var(--color-champagne-400);
 }
 
-/* Background Colors - Minimalist Luxury Palette */
+/* Background Colors - Luxury Minimalist Palette */
 :root {
-  --color-bg-primary: #F9F9F6;  /* Warm Alabaster */
-  --color-bg-secondary: #F5F5F2;
-  --color-bg-tertiary: #EFEFEC;
-  --color-bg-inverse: #1A1A1A;
-  --color-bg-accent: #8C7A6B;  /* Warm Taupe */
+  --color-bg-primary: var(--color-warm-white);  /* Warm alabaster */
+  --color-bg-secondary: var(--color-warm-white-soft);  /* Soft warm white */
+  --color-bg-tertiary: var(--color-stone-50);  /* Stone grey tint */
+  --color-bg-inverse: var(--color-matte-black);  /* Luxury black */
+  --color-bg-accent: var(--color-walnut-50);  /* Subtle walnut tint */
+  --color-bg-glass: var(--color-glass-white);  /* Translucent glass */
+  --color-bg-glass-dark: rgba(10, 10, 10, 0.85);  /* Dark glass */
 }
 
-/* Border Colors - Minimalist Luxury Palette */
+/* Border Colors - Luxury Minimalist Palette */
 :root {
-  --color-border-light: rgba(26, 26, 26, 0.08);
-  --color-border-medium: rgba(26, 26, 26, 0.1);
-  --color-border-dark: rgba(26, 26, 26, 0.15);
+  --color-border-light: rgba(10, 10, 10, 0.06);
+  --color-border-medium: rgba(10, 10, 10, 0.1);
+  --color-border-dark: rgba(10, 10, 10, 0.15);
+  --color-border-gold: rgba(196, 160, 116, 0.3);
+  --color-border-warm: rgba(109, 84, 56, 0.15);
 }
 
 /* ============================================

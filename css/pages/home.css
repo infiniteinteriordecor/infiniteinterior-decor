@@ -32,14 +32,16 @@
   /* Overflow hidden for background effects */
   overflow: hidden;
   
-  /* Premium luxury interior background with placeholder */
-  background-color: var(--color-charcoal-900);
+  /* Premium luxury matte black background */
+  background-color: var(--color-matte-black);
   /* background-image set dynamically via JavaScript for GitHub Pages compatibility */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-  /* Dark overlay for readability */
+  /* Luxury parallax effect */
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 /**
@@ -51,7 +53,12 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(to bottom, rgba(26, 26, 26, 0.4) 0%, rgba(26, 26, 26, 0.7) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0.3) 0%,
+    rgba(10, 10, 10, 0.5) 50%,
+    rgba(10, 10, 10, 0.8) 100%
+  );
 }
 
 /* ============================================
@@ -67,16 +74,20 @@
   z-index: 0;
   
   /* Premium luxury interior background image */
-  background-color: var(--color-charcoal-900);
+  background-color: var(--color-matte-black);
   /* background-image set dynamically via JavaScript for GitHub Pages compatibility */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  
+  /* Subtle parallax movement */
+  will-change: transform;
+  transition: transform 0.1s ease-out;
 }
 
 /**
  * Mesh gradient overlay
- * Creates luxury mesh effect with multiple color stops
+ * Creates luxury mesh effect with refined champagne gold tones
  */
 .hero__mesh {
   position: absolute;
@@ -84,13 +95,14 @@
   z-index: 1;
   
   background: 
-    radial-gradient(ellipse at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 70%, rgba(184, 134, 11, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(139, 105, 20, 0.1) 0%, transparent 60%),
-    radial-gradient(ellipse at 30% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
-    radial-gradient(ellipse at 70% 30%, rgba(184, 134, 11, 0.06) 0%, transparent 40%);
+    radial-gradient(ellipse at 20% 30%, rgba(196, 160, 116, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(168, 133, 92, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 105, 71, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 70%, rgba(196, 160, 116, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 70% 30%, rgba(168, 133, 92, 0.05) 0%, transparent 40%);
   
-  animation: heroMeshBreath 8s ease-in-out infinite;
+  animation: heroMeshBreath 12s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /**
@@ -195,7 +207,7 @@
 
 /**
  * Mouse follow radial light
- * Interactive light that follows mouse cursor
+ * Interactive light that follows mouse cursor with refined champagne gold
  */
 .hero__mouse-light {
   position: absolute;
@@ -204,12 +216,13 @@
   pointer-events: none;
   
   background: radial-gradient(
-    circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(212, 175, 55, 0.06) 0%,
-    transparent 100%
+    circle 500px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(196, 160, 116, 0.08) 0%,
+    rgba(168, 133, 92, 0.04) 30%,
+    transparent 70%
   );
   
-  transition: background 0.3s ease-out;
+  transition: background 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* ============================================
@@ -291,26 +304,34 @@
 
 /**
  * Hero title (primary h1)
- * Premium serif font with elegant white gradient
+ * Premium serif font with elegant warm white gradient
  */
 .hero__title {
   font-family: var(--font-family-secondary);
-  font-size: clamp(3rem, 8vw, 6rem);
-  font-weight: var(--font-weight-bold);
-  line-height: clamp(1.1, 1.15, 1.2);
-  letter-spacing: clamp(-0.03em, -0.01em, 0);
+  font-size: clamp(3.5rem, 9vw, 7rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: clamp(1.05, 1.1, 1.15);
+  letter-spacing: clamp(-0.04em, -0.02em, -0.01em);
   color: #ffffff;
-  margin: 0 0 clamp(1rem, 2vw, 1.5rem) 0;
+  margin: 0 0 clamp(1.5rem, 2.5vw, 2rem) 0;
   
-  /* Elegant white gradient for luxury feel */
-  background: linear-gradient(180deg, #ffffff 0%, #f5f0e6 50%, #e8e0d0 100%);
+  /* Elegant warm white gradient for luxury feel */
+  background: linear-gradient(
+    180deg,
+    var(--color-warm-white) 0%,
+    var(--color-champagne-200) 50%,
+    var(--color-champagne-300) 100%
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   
+  /* Subtle text shadow for depth */
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+  
   /* Animation */
   opacity: 0;
-  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  animation: heroContentEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
 }
 
 /**
@@ -318,19 +339,22 @@
  */
 .hero__description {
   font-family: var(--font-family-primary);
-  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
   font-weight: var(--font-weight-regular);
-  line-height: clamp(1.5, 1.6, 1.7);
-  letter-spacing: 0.01em;
-  color: var(--color-charcoal-200);
-  margin: 0 0 clamp(2rem, 4vw, 3rem) 0;
-  max-width: clamp(20rem, 60vw, 40rem);
+  line-height: clamp(1.6, 1.7, 1.8);
+  letter-spacing: 0.02em;
+  color: var(--color-champagne-200);
+  margin: 0 0 clamp(2.5rem, 4vw, 3.5rem) 0;
+  max-width: clamp(22rem, 65vw, 42rem);
   margin-left: auto;
   margin-right: auto;
   
+  /* Subtle text shadow for readability */
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+  
   /* Animation */
   opacity: 0;
-  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+  animation: heroContentEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
 }
 
 /**
@@ -340,11 +364,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(0.75rem, 1.5vw, 1rem);
+  gap: clamp(1rem, 1.5vw, 1.25rem);
   
   /* Animation */
   opacity: 0;
-  animation: heroContentEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 0.7s forwards;
+  animation: heroContentEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
 }
 
 @media (min-width: 640px) {

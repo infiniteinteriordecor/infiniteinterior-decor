@@ -62,6 +62,41 @@ img:hover,
   transform: translateY(-2px);
 }
 
+/* Enhanced focus states for accessibility */
+.button:focus-visible,
+.btn:focus-visible,
+.navbar__link:focus-visible {
+  outline: 2px solid var(--color-champagne-500);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(196, 160, 116, 0.2);
+}
+
+/* Card focus states for keyboard navigation */
+.card:focus-visible,
+.project:focus-visible,
+.service:focus-visible {
+  outline: 2px solid var(--color-champagne-500);
+  outline-offset: 4px;
+}
+
+/* Skip link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-matte-black);
+  color: var(--color-warm-white);
+  padding: var(--spacing-3) var(--spacing-6);
+  border-radius: var(--radius-lg);
+  z-index: 9999;
+  transition: top 0.3s var(--ease-luxury);
+}
+
+.skip-link:focus {
+  top: var(--spacing-4);
+}
+
 /* ============================================
    CARD HOVER EFFECTS
    ============================================ */
@@ -137,15 +172,74 @@ a,
 
 .scroll-reveal {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
   transition: 
-    opacity 1s var(--ease-luxury),
-    transform 1s var(--ease-luxury);
+    opacity 1.2s var(--ease-luxury),
+    transform 1.2s var(--ease-luxury);
 }
 
 .scroll-reveal.revealed {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Scroll reveal from left */
+.scroll-reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: 
+    opacity 1.2s var(--ease-luxury),
+    transform 1.2s var(--ease-luxury);
+}
+
+.scroll-reveal-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scroll reveal from right */
+.scroll-reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: 
+    opacity 1.2s var(--ease-luxury),
+    transform 1.2s var(--ease-luxury);
+}
+
+.scroll-reveal-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Scroll reveal with scale */
+.scroll-reveal-scale {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: 
+    opacity 1.2s var(--ease-luxury),
+    transform 1.2s var(--ease-luxury);
+}
+
+.scroll-reveal-scale.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Scroll reveal with blur */
+.scroll-reveal-blur {
+  opacity: 0;
+  transform: translateY(30px);
+  filter: blur(8px);
+  transition: 
+    opacity 1.2s var(--ease-luxury),
+    transform 1.2s var(--ease-luxury),
+    filter 1.2s var(--ease-luxury);
+}
+
+.scroll-reveal-blur.revealed {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
 }
 
 /* ============================================
@@ -162,8 +256,13 @@ a,
     scroll-behavior: auto !important;
   }
   
-  .scroll-reveal {
+  .scroll-reveal,
+  .scroll-reveal-left,
+  .scroll-reveal-right,
+  .scroll-reveal-scale,
+  .scroll-reveal-blur {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }

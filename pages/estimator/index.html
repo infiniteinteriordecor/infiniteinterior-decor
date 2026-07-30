@@ -34,12 +34,18 @@
     <!-- Theme Color -->
     <meta name="theme-color" content="#9a7d3e">
     
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    
     <!-- Preconnect to existing design assets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
     <!-- DNS prefetch for performance -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap">
     
     <!-- Link to existing main CSS for design tokens -->
     <link rel="stylesheet" href="../../css/main.css">
@@ -97,21 +103,17 @@
     <!-- Skip link for accessibility -->
     <a href="#estimator-main" class="skip-link">Skip to main content</a>
     
-    <!-- Navigation -->
+    <!-- Navbar Component (reuse existing) -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <!-- Skip to main content link (hidden visually, available to screen readers) -->
         <a href="#estimator-main" class="navbar__skip-link u-sr-only">Skip to main content</a>
         
-        <!-- Navbar container -->
         <div class="navbar__container u-container">
-            <!-- Logo/Brand -->
             <div class="navbar__brand">
                 <a href="../../index.html" class="navbar__logo-link" aria-label="Infinite Interior Decor Home">
                     <div id="navbar-logo-container" class="navbar__logo-container"></div>
                 </a>
             </div>
             
-            <!-- Desktop Navigation -->
             <ul class="navbar__nav navbar__nav--desktop u-display-flex u-flex-row u-items-center u-gap-6">
                 <li class="navbar__item">
                     <a href="../../index.html" class="navbar__link">Home</a>
@@ -136,14 +138,7 @@
                 </li>
             </ul>
             
-            <!-- Mobile Menu Toggle -->
-            <button 
-                class="navbar__toggle" 
-                type="button" 
-                aria-label="Toggle navigation menu"
-                aria-expanded="false"
-                aria-controls="navbar-menu"
-            >
+            <button class="navbar__toggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-menu">
                 <span class="navbar__toggle-icon" aria-hidden="true">
                     <span class="navbar__toggle-line"></span>
                     <span class="navbar__toggle-line"></span>
@@ -153,7 +148,6 @@
             </button>
         </div>
         
-        <!-- Mobile Navigation Drawer -->
         <div class="navbar__menu" id="navbar-menu" aria-hidden="true">
             <span class="navbar__menu-title">MENU</span>
             <button class="navbar__menu-close" aria-label="Close menu" onclick="document.querySelector('.navbar__toggle').click()">
@@ -408,21 +402,21 @@
     <!-- Core UI Scripts -->
     <script src="../../js/core/navbar.js" defer></script>
     
-    <!-- Estimator Engine Scripts -->
-    <script src="../../js/estimator-state.js" defer></script>
-    <script src="../../js/estimator-router.js" defer></script>
-    <script src="../../js/validation.js" defer></script>
+    <!-- Estimator Engine Scripts (correct dependency order) -->
     <script src="../../js/storage-manager.js" defer></script>
+    <script src="../../js/estimator-state.js" defer></script>
+    <script src="../../js/validation.js" defer></script>
+    <script src="../../js/estimator-router.js" defer></script>
     <script src="../../js/material-engine.js" defer></script>
     <script src="../../js/package-engine.js" defer></script>
     <script src="../../js/budget-engine.js" defer></script>
-    <script src="../../js/module-engine.js" defer></script>
-    <script src="../../js/boq-engine.js" defer></script>
     <script src="../../js/recommendation-engine.js" defer></script>
     <script src="../../js/comparison-engine.js" defer></script>
+    <script src="../../js/module-engine.js" defer></script>
+    <script src="../../js/boq-engine.js" defer></script>
     <script src="../../js/pdf-generator.js" defer></script>
-    <script src="../../js/estimator-ui.js" defer></script>
     <script src="../../js/estimator-engine.js" defer></script>
+    <script src="../../js/estimator-ui.js" defer></script>
     <script src="../../js/estimator.js" defer></script>
 </body>
 </html>

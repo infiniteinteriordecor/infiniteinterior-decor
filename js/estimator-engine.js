@@ -51,7 +51,6 @@
         this.budgetEngine = new window.EstimatorBudgetEngine();
         this.recommendationEngine = new window.EstimatorRecommendationEngine();
         this.comparisonEngine = new window.EstimatorComparisonEngine();
-        this.pdfGenerator = new window.EstimatorPDFGenerator();
         this.storage = new window.EstimatorStorage();
         this.validation = new window.EstimatorValidation();
         this.packageEngine = new window.EstimatorPackageEngine();
@@ -61,9 +60,6 @@
         // Initialize storage
         await this.storage.init();
         
-        // Initialize PDF generator
-        await this.pdfGenerator.init();
-        
         // Load data
         await this.loadData();
         
@@ -72,6 +68,15 @@
         this.budgetEngine.init(this.pricingRules);
         this.recommendationEngine.init(this.recommendationsData, this.upgradeRules);
         this.packageEngine.init(this.materialsData);
+        
+        // Initialize PDF generator with safe fallback
+        try {
+          this.pdfGenerator = new window.EstimatorPDFGenerator();
+          await this.pdfGenerator.init();
+        } catch (pdfError) {
+          console.warn('PDF generator initialization failed, continuing without PDF functionality:', pdfError);
+          this.pdfGenerator = null;
+        }
         
         return true;
       } catch (error) {
@@ -87,16 +92,16 @@
     async loadData() {
       try {
         // Load materials data
-        this.materialsData = await this.loadJSON('data/estimator/materials.json');
+        this.materialsData = await this.loadJSON('../../data/estimator/materials.json');
         
         // Load pricing rules
-        this.pricingRules = await this.loadJSON('data/estimator/pricing-rules.json');
+        this.pricingRules = await this.loadJSON('../../data/estimator/pricing-rules.json');
         
         // Load recommendations
-        this.recommendationsData = await this.loadJSON('data/estimator/recommendations.json');
+        this.recommendationsData = await this.loadJSON('../../data/estimator/recommendations.json');
         
         // Load upgrade rules
-        this.upgradeRules = await this.loadJSON('data/estimator/upgrade-rules.json');
+        this.upgradeRules = await this.loadJSON('../../data/estimator/upgrade-rules.json');
       } catch (error) {
         console.error('Data loading error:', error);
       }

@@ -85,6 +85,18 @@
       ]
     },
     {
+      "name": "Cost Estimator",
+      "short_name": "Estimator",
+      "description": "Get instant interior design cost estimates",
+      "url": "/pages/estimator/",
+      "icons": [
+        {
+          "src": "/assets/images/icons/shortcut-estimator-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
       "name": "Contact Us",
       "short_name": "Contact",
       "description": "Get in touch with our team",

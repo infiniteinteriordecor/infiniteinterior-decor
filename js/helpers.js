@@ -426,7 +426,43 @@
     }
   };
 
+  /**
+   * Resolve asset path for GitHub Pages compatibility
+   * Converts absolute paths to relative paths based on current page depth
+   * @param {string} assetPath - Absolute asset path (e.g., '/assets/images/logo.png')
+   * @returns {string} Relative asset path
+   */
+  function resolveAssetPath(assetPath) {
+    const currentPath = window.location.pathname;
+    const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
+    
+    // Remove GitHub Pages subpath if present
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    let effectiveSegments = pathSegments;
+    if (isGitHubPages && pathSegments.length > 0) {
+      effectiveSegments = pathSegments.slice(1);
+    }
+    
+    const depth = effectiveSegments.length;
+    let prefix = '';
+    
+    if (depth === 0 || (depth === 1 && effectiveSegments[0].endsWith('.html'))) {
+      prefix = '';
+    } else if (depth === 1) {
+      prefix = '../';
+    } else if (depth === 2) {
+      prefix = '../../';
+    } else {
+      prefix = '../'.repeat(depth);
+    }
+    
+    // Remove leading slash from asset path and add prefix
+    const relativePath = assetPath.startsWith('/') ? prefix + assetPath.substring(1) : prefix + assetPath;
+    return relativePath;
+  }
+
   // Export for use in other modules
   window.EstimatorHelper = Helper;
+  window.resolveAssetPath = resolveAssetPath;
 
 })();

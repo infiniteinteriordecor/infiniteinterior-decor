@@ -91,19 +91,23 @@
      */
     async loadData() {
       try {
+        // Use global asset resolver for consistent path resolution
+        const resolver = window.resolveAssetPath || ((p) => p);
+        
         // Load materials data
-        this.materialsData = await this.loadJSON('../../data/estimator/materials.json');
+        this.materialsData = await this.loadJSON(resolver('data/estimator/materials.json'));
         
         // Load pricing rules
-        this.pricingRules = await this.loadJSON('../../data/estimator/pricing-rules.json');
+        this.pricingRules = await this.loadJSON(resolver('data/estimator/pricing-rules.json'));
         
         // Load recommendations
-        this.recommendationsData = await this.loadJSON('../../data/estimator/recommendations.json');
+        this.recommendationsData = await this.loadJSON(resolver('data/estimator/recommendations.json'));
         
         // Load upgrade rules
-        this.upgradeRules = await this.loadJSON('../../data/estimator/upgrade-rules.json');
+        this.upgradeRules = await this.loadJSON(resolver('data/estimator/upgrade-rules.json'));
       } catch (error) {
         console.error('Data loading error:', error);
+        throw error; // Re-throw to allow caller to handle
       }
     }
 
@@ -118,10 +122,17 @@
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return await response.json();
+        const data = await response.json();
+        
+        // Validate JSON structure
+        if (!data || typeof data !== 'object') {
+          throw new Error('Invalid JSON structure - expected object');
+        }
+        
+        return data;
       } catch (error) {
         console.error(`Error loading ${path}:`, error);
-        return {};
+        throw error; // Re-throw to allow caller to handle
       }
     }
 

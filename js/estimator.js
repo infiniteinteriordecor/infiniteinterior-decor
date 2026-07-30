@@ -2,11 +2,11 @@
  * Estimator Module Entry Point
  * 
  * Main entry point for the estimator module.
- * Initializes all components and manages application lifecycle.
+ * Now uses Bootstrap Loader for orchestrated initialization with error resilience.
  * 
  * Architecture:
- * - Purpose: Initialize and coordinate all estimator modules
- * - Dependencies: All estimator modules
+ * - Purpose: Initialize and coordinate all estimator modules via Bootstrap
+ * - Dependencies: estimator-bootstrap.js, All estimator modules
  * - Exports: EstimatorApp class
  */
 
@@ -15,57 +15,64 @@
 
   /**
    * Estimator Application Class
-   * Main application coordinator
+   * Main application coordinator - now delegates to Bootstrap
    */
   class EstimatorApp {
     constructor() {
-      // Module instances
+      // Module instances (populated by Bootstrap)
       this.stateManager = null;
       this.router = null;
       this.ui = null;
       this.engine = null;
+      this.storage = null;
       
       // Application state
       this.isInitialized = false;
       this.isLoaded = false;
+      this.bootstrapResults = null;
     }
 
     /**
-     * Initialize application
+     * Initialize application via Bootstrap
      * @returns {Promise<boolean>} Success status
      */
     async init() {
       try {
-        console.log('Initializing Infinite Interior OS...');
+        console.log('Initializing Infinite Interior OS via Bootstrap...');
         
-        // Initialize state manager
-        this.stateManager = window.EstimatorState;
-        
-        // Initialize router
-        this.router = new window.EstimatorRouter(this.stateManager);
-        this.router.init();
-        
-        // Initialize UI manager
-        this.ui = new window.EstimatorUI(this.stateManager, this.router);
-        
-        // Initialize estimator engine
-        this.engine = new window.EstimatorEngine(this.stateManager);
-        const engineInitialized = await this.engine.init();
-        
-        if (!engineInitialized) {
-          throw new Error('Failed to initialize estimator engine');
+        // Check if Bootstrap is available
+        if (!window.EstimatorBootstrap) {
+          throw new Error('Bootstrap loader not found. Ensure estimator-bootstrap.js is loaded.');
         }
+
+        // Run Bootstrap
+        this.bootstrapResults = await window.EstimatorBootstrap.bootstrap();
         
-        // Initialize UI
-        this.ui.init();
+        // Extract results from Bootstrap
+        const { results, context, success } = this.bootstrapResults;
         
+        if (!success) {
+          console.warn('Bootstrap completed with warnings. Some modules may not be available.');
+        }
+
+        // Assign instances from Bootstrap results
+        this.stateManager = context.state;
+        this.router = context.router;
+        this.ui = context.ui;
+        this.engine = context.engine;
+        this.storage = results.storage;
+
         // Check for draft resumption
         await this.checkDraftResumption();
         
         // Set initialized flag
         this.isInitialized = true;
         
-        console.log('Infinite Interior OS initialized successfully');
+        console.log('Infinite Interior OS initialized successfully via Bootstrap');
+        
+        // Log diagnostic summary
+        const diagnostic = window.EstimatorBootstrap.getDiagnostic();
+        console.log('Bootstrap Diagnostic Summary:', diagnostic.summary);
         
         return true;
       } catch (error) {
@@ -81,10 +88,15 @@
      */
     async checkDraftResumption() {
       try {
-        const draftId = this.engine.storage.getCurrentDraftId();
+        if (!this.storage) {
+          console.warn('Storage not available, skipping draft resumption');
+          return;
+        }
+
+        const draftId = this.storage.getCurrentDraftId();
         
         if (draftId) {
-          const draft = await this.engine.loadDraft(draftId);
+          const draft = await this.storage.loadDraft(draftId);
           
           if (draft) {
             // Ask user if they want to resume
@@ -97,7 +109,7 @@
               this.ui.renderStep(this.stateManager.get('currentStep'));
             } else {
               // Clear draft
-              await this.engine.deleteDraft(draftId);
+              await this.storage.deleteDraft(draftId);
             }
           }
         }
@@ -112,6 +124,12 @@
     start() {
       if (!this.isInitialized) {
         console.error('Application not initialized');
+        return;
+      }
+      
+      if (!this.router || !this.ui) {
+        console.error('Critical modules not available');
+        this.showError('Application failed to initialize properly. Please refresh the page.');
         return;
       }
       
@@ -130,19 +148,27 @@
      */
     async saveDraft() {
       try {
+        if (!this.storage || !this.stateManager) {
+          throw new Error('Storage or StateManager not available');
+        }
+
         const state = this.stateManager.getState();
-        const draftId = await this.engine.saveDraft(state);
+        const draftId = await this.storage.saveDraft(state);
         
         this.stateManager.set('isDraft', true);
         this.stateManager.set('draftId', draftId);
         this.stateManager.set('lastSaved', new Date().toISOString());
         
-        this.ui.showAlert('Draft saved successfully', 'success');
+        if (this.ui && this.ui.showAlert) {
+          this.ui.showAlert('Draft saved successfully', 'success');
+        }
         
         return draftId;
       } catch (error) {
         console.error('Save draft error:', error);
-        this.ui.showAlert('Failed to save draft', 'error');
+        if (this.ui && this.ui.showAlert) {
+          this.ui.showAlert('Failed to save draft', 'error');
+        }
         return null;
       }
     }
@@ -153,10 +179,14 @@
      */
     async generateQuotation() {
       try {
+        if (!this.engine || !this.stateManager) {
+          throw new Error('Engine or StateManager not available');
+        }
+
         const state = this.stateManager.getState();
         const pdfBlob = await this.engine.generatePDF('quotation', state);
         
-        if (pdfBlob) {
+        if (pdfBlob && this.engine.pdfGenerator) {
           this.engine.pdfGenerator.savePDF(pdfBlob, 'quotation.pdf');
           return true;
         }
@@ -164,7 +194,9 @@
         return false;
       } catch (error) {
         console.error('Generate quotation error:', error);
-        this.ui.showAlert('Failed to generate quotation', 'error');
+        if (this.ui && this.ui.showAlert) {
+          this.ui.showAlert('Failed to generate quotation', 'error');
+        }
         return false;
       }
     }
@@ -175,10 +207,14 @@
      */
     async generateBOQ() {
       try {
+        if (!this.engine || !this.stateManager) {
+          throw new Error('Engine or StateManager not available');
+        }
+
         const state = this.stateManager.getState();
         const pdfBlob = await this.engine.generatePDF('boq', state);
         
-        if (pdfBlob) {
+        if (pdfBlob && this.engine.pdfGenerator) {
           this.engine.pdfGenerator.savePDF(pdfBlob, 'boq.pdf');
           return true;
         }
@@ -186,7 +222,9 @@
         return false;
       } catch (error) {
         console.error('Generate BOQ error:', error);
-        this.ui.showAlert('Failed to generate BOQ', 'error');
+        if (this.ui && this.ui.showAlert) {
+          this.ui.showAlert('Failed to generate BOQ', 'error');
+        }
         return false;
       }
     }
@@ -196,10 +234,12 @@
      */
     reset() {
       if (confirm('Are you sure you want to reset? All unsaved changes will be lost.')) {
-        this.stateManager.reset();
-        this.router.reset();
-        this.ui.reset();
-        this.ui.showAlert('Application reset successfully', 'info');
+        if (this.stateManager) this.stateManager.reset();
+        if (this.router) this.router.reset();
+        if (this.ui) this.ui.reset();
+        if (this.ui && this.ui.showAlert) {
+          this.ui.showAlert('Application reset successfully', 'info');
+        }
       }
     }
 
@@ -209,7 +249,7 @@
      */
     showError(message) {
       const loadingElement = document.getElementById('estimator-loading');
-      const loadingText = loadingElement.querySelector('.estimator-loading__text');
+      const loadingText = loadingElement ? loadingElement.querySelector('.estimator-loading__text') : null;
       
       if (loadingText) {
         loadingText.textContent = message;
@@ -226,8 +266,20 @@
         initialized: this.isInitialized,
         loaded: this.isLoaded,
         engine: this.engine ? this.engine.getStatus() : null,
-        state: this.stateManager ? this.stateManager.getState() : null
+        state: this.stateManager ? this.stateManager.getState() : null,
+        bootstrap: this.bootstrapResults ? window.EstimatorBootstrap.getDiagnostic() : null
       };
+    }
+
+    /**
+     * Get diagnostic report
+     * @returns {Object} Diagnostic report
+     */
+    getDiagnostics() {
+      if (window.EstimatorBootstrap) {
+        return window.EstimatorBootstrap.getDiagnostic();
+      }
+      return null;
     }
 
     /**
@@ -251,8 +303,13 @@
         this.stateManager = null;
       }
       
+      if (this.storage) {
+        this.storage = null;
+      }
+      
       this.isInitialized = false;
       this.isLoaded = false;
+      this.bootstrapResults = null;
       
       console.log('Infinite Interior OS destroyed');
     }

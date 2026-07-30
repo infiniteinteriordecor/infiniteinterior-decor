@@ -1,0 +1,276 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinterior.com/data/estimator/materials/boards.json",
+  "title": "Boards Material Database",
+  "description": "Comprehensive database of board materials for interior design including plywood, MDF, particle board, and specialty boards",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["id", "name", "brand", "category", "basic", "medium", "premium", "price", "unit", "life", "warranty", "finish", "maintenance", "description", "tags", "availability"],
+    "properties": {
+      "id": {
+        "type": "string",
+        "description": "Unique identifier for the material"
+      },
+      "name": {
+        "type": "string",
+        "description": "Material name"
+      },
+      "brand": {
+        "type": "string",
+        "description": "Brand or manufacturer name"
+      },
+      "category": {
+        "type": "string",
+        "description": "Material category (plywood, mdf, particle_board, blockboard, marine_plywood, fire_retardant)"
+      },
+      "basic": {
+        "type": "object",
+        "description": "Basic tier specifications",
+        "properties": {
+          "price": { "type": "number" },
+          "thickness": { "type": "string" },
+          "grade": { "type": "string" }
+        }
+      },
+      "medium": {
+        "type": "object",
+        "description": "Medium tier specifications",
+        "properties": {
+          "price": { "type": "number" },
+          "thickness": { "type": "string" },
+          "grade": { "type": "string" }
+        }
+      },
+      "premium": {
+        "type": "object",
+        "description": "Premium tier specifications",
+        "properties": {
+          "price": { "type": "number" },
+          "thickness": { "type": "string" },
+          "grade": { "type": "string" }
+        }
+      },
+      "price": {
+        "type": "number",
+        "description": "Base price per unit"
+      },
+      "unit": {
+        "type": "string",
+        "description": "Unit of measurement (sqft, sheet, sqm)"
+      },
+      "life": {
+        "type": "number",
+        "description": "Expected lifespan in years"
+      },
+      "warranty": {
+        "type": "number",
+        "description": "Warranty period in years"
+      },
+      "finish": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Available finishes"
+      },
+      "maintenance": {
+        "type": "string",
+        "description": "Maintenance requirements"
+      },
+      "description": {
+        "type": "string",
+        "description": "Detailed description"
+      },
+      "tags": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Tags for categorization"
+      },
+      "availability": {
+        "type": "string",
+        "description": "Availability status (in_stock, limited, made_to_order)"
+      }
+    }
+  },
+  "example": [
+    {
+      "id": "plywood_greenply_710",
+      "name": "Greenply 710 Plywood",
+      "brand": "Greenply",
+      "category": "plywood",
+      "basic": {
+        "price": 85,
+        "thickness": "18mm",
+        "grade": "BWP"
+      },
+      "medium": {
+        "price": 120,
+        "thickness": "18mm",
+        "grade": "BWP Premium"
+      },
+      "premium": {
+        "price": 165,
+        "thickness": "19mm",
+        "grade": "BWP Marine"
+      },
+      "price": 85,
+      "unit": "sqft",
+      "life": 25,
+      "warranty": 15,
+      "finish": ["raw", "laminated", "veneered"],
+      "maintenance": "Low - periodic polishing recommended",
+      "description": "BWP (Boiling Water Proof) plywood suitable for furniture, cabinets, and interior applications",
+      "tags": ["furniture", "cabinets", "waterproof", "durable"],
+      "availability": "in_stock"
+    },
+    {
+      "id": "mdf_greenpanel_18mm",
+      "name": "Greenpanel MDF",
+      "brand": "Greenpanel",
+      "category": "mdf",
+      "basic": {
+        "price": 55,
+        "thickness": "18mm",
+        "grade": "Standard"
+      },
+      "medium": {
+        "price": 75,
+        "thickness": "18mm",
+        "grade": "Moisture Resistant"
+      },
+      "premium": {
+        "price": 95,
+        "thickness": "19mm",
+        "grade": "Fire Retardant"
+      },
+      "price": 55,
+      "unit": "sqft",
+      "life": 15,
+      "warranty": 10,
+      "finish": ["raw", "laminated", "painted"],
+      "maintenance": "Medium - avoid water exposure",
+      "description": "Medium Density Fiberboard ideal for cabinets, shutters, and decorative applications",
+      "tags": ["cabinets", "shutters", "smooth", "uniform"],
+      "availability": "in_stock"
+    },
+    {
+      "id": "particle_board_eco_18mm",
+      "name": "Eco Particle Board",
+      "brand": "Century",
+      "category": "particle_board",
+      "basic": {
+        "price": 35,
+        "thickness": "18mm",
+        "grade": "Standard"
+      },
+      "medium": {
+        "price": 50,
+        "thickness": "18mm",
+        "grade": "Moisture Resistant"
+      },
+      "premium": {
+        "price": 70,
+        "thickness": "19mm",
+        "grade": "Pre-laminated"
+      },
+      "price": 35,
+      "unit": "sqft",
+      "life": 10,
+      "warranty": 5,
+      "finish": ["raw", "pre-laminated"],
+      "maintenance": "High - avoid moisture",
+      "description": "Economical particle board for budget furniture and temporary applications",
+      "tags": ["budget", "economy", "temporary"],
+      "availability": "in_stock"
+    },
+    {
+      "id": "blockboard_century_19mm",
+      "name": "Century Blockboard",
+      "brand": "Century",
+      "category": "blockboard",
+      "basic": {
+        "price": 75,
+        "thickness": "19mm",
+        "grade": "Standard"
+      },
+      "medium": {
+        "price": 95,
+        "thickness": "19mm",
+        "grade": "Premium"
+      },
+      "premium": {
+        "price": 130,
+        "thickness": "25mm",
+        "grade": "Marine"
+      },
+      "price": 75,
+      "unit": "sqft",
+      "life": 20,
+      "warranty": 12,
+      "finish": ["raw", "laminated", "veneered"],
+      "maintenance": "Low - durable core",
+      "description": "Blockboard with solid wood core for doors, shelves, and load-bearing applications",
+      "tags": ["doors", "shelves", "load-bearing", "strong"],
+      "availability": "in_stock"
+    },
+    {
+      "id": "marine_plywood_king_710",
+      "name": "King 710 Marine Plywood",
+      "brand": "Century",
+      "category": "marine_plywood",
+      "basic": {
+        "price": 140,
+        "thickness": "18mm",
+        "grade": "IS:710"
+      },
+      "medium": {
+        "price": 180,
+        "thickness": "18mm",
+        "grade": "IS:710 Premium"
+      },
+      "premium": {
+        "price": 240,
+        "thickness": "19mm",
+        "grade": "IS:710 Marine Plus"
+      },
+      "price": 140,
+      "unit": "sqft",
+      "life": 30,
+      "warranty": 20,
+      "finish": ["raw", "laminated", "veneered"],
+      "maintenance": "Very Low - waterproof",
+      "description": "Marine grade plywood for bathrooms, kitchens, and exterior applications",
+      "tags": ["waterproof", "marine", "exterior", "bathroom"],
+      "availability": "in_stock"
+    },
+    {
+      "id": "fire_retardant_greenply",
+      "name": "Greenply Fire Retardant",
+      "brand": "Greenply",
+      "category": "fire_retardant",
+      "basic": {
+        "price": 160,
+        "thickness": "18mm",
+        "grade": "Class B"
+      },
+      "medium": {
+        "price": 200,
+        "thickness": "18mm",
+        "grade": "Class A"
+      },
+      "premium": {
+        "price": 280,
+        "thickness": "19mm",
+        "grade": "Class A+"
+      },
+      "price": 160,
+      "unit": "sqft",
+      "life": 25,
+      "warranty": 15,
+      "finish": ["raw", "laminated"],
+      "maintenance": "Low - fire resistant",
+      "description": "Fire retardant plywood for commercial and high-safety applications",
+      "tags": ["fire_safety", "commercial", "public_spaces"],
+      "availability": "limited"
+    }
+  ]
+}

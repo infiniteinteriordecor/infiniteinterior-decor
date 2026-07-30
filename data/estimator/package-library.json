@@ -1,0 +1,147 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/package-library.json",
+  "title": "Package Library",
+  "description": "Package definitions for interior design estimator with bundled services and pricing",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "packages": {
+      "type": "object",
+      "description": "Package definitions keyed by package ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique package identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Package name"
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Package quality tier"
+            },
+            "basePrice": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Base package price in INR"
+            },
+            "description": {
+              "type": "string",
+              "description": "Package description"
+            },
+            "includedRooms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Included room types"
+            },
+            "includedModules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Included module IDs"
+            },
+            "includedServices": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Included service types"
+            },
+            "materialTier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Default material tier"
+            },
+            "maxRooms": {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of rooms included"
+            },
+            "maxArea": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Maximum area in sqft"
+            },
+            "duration": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "description": "Minimum duration in days"
+                },
+                "max": {
+                  "type": "integer",
+                  "description": "Maximum duration in days"
+                }
+              },
+              "required": ["min", "max"]
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Package features"
+            },
+            "exclusions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Excluded items or services"
+            },
+            "popular": {
+              "type": "boolean",
+              "description": "Whether this is a popular package"
+            }
+          },
+          "required": ["id", "name", "tier", "basePrice", "includedRooms", "materialTier"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "packages"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "packages": {
+      "starter_package": {
+        "id": "starter_package",
+        "name": "Starter Package",
+        "tier": "essential",
+        "basePrice": 500000,
+        "description": "Basic interior design package for small spaces",
+        "includedRooms": ["living", "bedroom"],
+        "includedModules": ["basic_lighting"],
+        "includedServices": ["design", "installation"],
+        "materialTier": "essential",
+        "maxRooms": 2,
+        "maxArea": 500,
+        "duration": {
+          "min": 15,
+          "max": 30
+        },
+        "features": ["Basic design consultation", "Material selection", "Installation"],
+        "exclusions": ["Furniture", "Custom cabinetry"],
+        "popular": true
+      }
+    }
+  }
+}

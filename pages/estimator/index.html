@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Infinite Interior OS - Premium Interior Design Estimator Platform">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#1a1a1a">
+    <title>Infinite Interior OS | Estimator</title>
+    
+    <!-- Preconnect to existing design assets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- DNS prefetch for performance -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Link to existing main CSS for design tokens -->
+    <link rel="stylesheet" href="../../css/main.css">
+    
+    <!-- Estimator-specific CSS modules -->
+    <link rel="stylesheet" href="../../css/estimator.css">
+    <link rel="stylesheet" href="../../css/estimator-layout.css">
+    <link rel="stylesheet" href="../../css/estimator-components.css">
+    <link rel="stylesheet" href="../../css/estimator-responsive.css">
+    <link rel="stylesheet" href="../../css/estimator-animations.css">
+    
+    <!-- Critical CSS inline for above-the-fold content -->
+    <style>
+        /* Critical CSS for immediate rendering */
+        .estimator-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+        }
+        .estimator-loading__spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid rgba(201, 169, 98, 0.2);
+            border-top-color: #c9a962;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .estimator-loading__text {
+            margin-top: 16px;
+            color: #c9a962;
+            font-size: 14px;
+        }
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: #c9a962;
+            color: #1a1a1a;
+            padding: 8px 16px;
+            z-index: 100;
+            transition: top 0.3s;
+        }
+        .skip-link:focus {
+            top: 0;
+        }
+    </style>
+</head>
+<body class="estimator-page">
+    <!-- Skip link for accessibility -->
+    <a href="#estimator-main" class="skip-link">Skip to main content</a>
+    
+    <!-- Estimator Container -->
+    <div id="estimator-app" class="estimator-app">
+        <!-- Loading State -->
+        <div id="estimator-loading" class="estimator-loading">
+            <div class="estimator-loading__spinner"></div>
+            <p class="estimator-loading__text">Loading Infinite Interior OS...</p>
+        </div>
+        
+        <!-- Main Content (Hidden until loaded) -->
+        <main id="estimator-main" class="estimator-main" hidden>
+            <!-- Wizard Container -->
+            <div id="estimator-wizard" class="estimator-wizard">
+                <!-- Progress Indicator -->
+                <div id="estimator-progress" class="estimator-progress" aria-label="Wizard progress">
+                    <!-- Progress steps will be injected here -->
+                </div>
+                
+                <!-- Step Container -->
+                <div id="estimator-step-container" class="estimator-step-container">
+                    <!-- Steps will be injected here -->
+                </div>
+                
+                <!-- Navigation Controls -->
+                <div id="estimator-navigation" class="estimator-navigation">
+                    <button id="estimator-prev" class="button button--secondary" disabled>
+                        Previous
+                    </button>
+                    <button id="estimator-next" class="button button--primary">
+                        Next
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Floating Summary Sidebar (Desktop) -->
+            <aside id="estimator-summary-sidebar" class="estimator-summary-sidebar" hidden>
+                <div class="estimator-summary-sidebar__content">
+                    <h3 class="estimator-summary-sidebar__title">Project Summary</h3>
+                    <div id="estimator-summary-content" class="estimator-summary-sidebar__items"></div>
+                </div>
+            </aside>
+            
+            <!-- Bottom Sheet (Mobile) -->
+            <div id="estimator-bottom-sheet" class="estimator-bottom-sheet" hidden>
+                <div class="estimator-bottom-sheet__handle"></div>
+                <div class="estimator-bottom-sheet__content">
+                    <h3 class="estimator-bottom-sheet__title">Project Summary</h3>
+                    <div id="estimator-bottom-sheet-content" class="estimator-bottom-sheet__items"></div>
+                </div>
+            </div>
+            
+            <!-- Summary View (Hidden until completion) -->
+            <div id="estimator-summary" class="estimator-summary" hidden>
+                <!-- Summary content will be injected here -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Deferred JavaScript Modules -->
+    <script src="../../js/estimator-state.js" defer></script>
+    <script src="../../js/estimator-router.js" defer></script>
+    <script src="../../js/helpers.js" defer></script>
+    <script src="../../js/validation.js" defer></script>
+    <script src="../../js/storage-manager.js" defer></script>
+    <script src="../../js/material-engine.js" defer></script>
+    <script src="../../js/package-engine.js" defer></script>
+    <script src="../../js/budget-engine.js" defer></script>
+    <script src="../../js/module-engine.js" defer></script>
+    <script src="../../js/boq-engine.js" defer></script>
+    <script src="../../js/recommendation-engine.js" defer></script>
+    <script src="../../js/comparison-engine.js" defer></script>
+    <script src="../../js/pdf-generator.js" defer></script>
+    <script src="../../js/estimator-ui.js" defer></script>
+    <script src="../../js/estimator-engine.js" defer></script>
+    <script src="../../js/estimator.js" defer></script>
+</body>
+</html>

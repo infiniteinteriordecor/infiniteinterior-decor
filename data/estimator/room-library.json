@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/room-library.json",
+  "title": "Room Library",
+  "description": "Room type definitions for interior design estimator with standard dimensions and configurations",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "rooms": {
+      "type": "object",
+      "description": "Room type definitions keyed by room ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique room identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Room name"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["living", "bedroom", "kitchen", "bathroom", "dining", "office", "outdoor", "other"],
+              "description": "Room category"
+            },
+            "defaultDimensions": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "number",
+                  "description": "Default length in feet"
+                },
+                "width": {
+                  "type": "number",
+                  "description": "Default width in feet"
+                },
+                "height": {
+                  "type": "number",
+                  "description": "Default height in feet"
+                }
+              },
+              "required": ["length", "width", "height"]
+            },
+            "minDimensions": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "number",
+                  "description": "Minimum length in feet"
+                },
+                "width": {
+                  "type": "number",
+                  "description": "Minimum width in feet"
+                },
+                "height": {
+                  "type": "number",
+                  "description": "Minimum height in feet"
+                }
+              },
+              "required": ["length", "width", "height"]
+            },
+            "maxDimensions": {
+              "type": "object",
+              "properties": {
+                "length": {
+                  "type": "number",
+                  "description": "Maximum length in feet"
+                },
+                "width": {
+                  "type": "number",
+                  "description": "Maximum width in feet"
+                },
+                "height": {
+                  "type": "number",
+                  "description": "Maximum height in feet"
+                }
+              },
+              "required": ["length", "width", "height"]
+            },
+            "defaultMaterials": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Default material IDs for this room type"
+            },
+            "requiredMaterials": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Required material categories for this room type"
+            },
+            "optionalModules": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Optional module IDs for this room type"
+            },
+            "baseComplexity": {
+              "type": "string",
+              "enum": ["simple", "moderate", "complex"],
+              "description": "Base complexity level for this room type"
+            },
+            "description": {
+              "type": "string",
+              "description": "Room description"
+            }
+          },
+          "required": ["id", "name", "category", "defaultDimensions", "baseComplexity"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "rooms"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "rooms": {
+      "living_room_standard": {
+        "id": "living_room_standard",
+        "name": "Standard Living Room",
+        "category": "living",
+        "defaultDimensions": {
+          "length": 16,
+          "width": 12,
+          "height": 10
+        },
+        "minDimensions": {
+          "length": 12,
+          "width": 10,
+          "height": 9
+        },
+        "maxDimensions": {
+          "length": 24,
+          "width": 18,
+          "height": 12
+        },
+        "defaultMaterials": ["flooring_wood", "walls_paint", "ceiling_pop"],
+        "requiredMaterials": ["flooring", "walls", "ceiling"],
+        "optionalModules": ["lighting_design", "entertainment_unit"],
+        "baseComplexity": "moderate"
+      }
+    }
+  }
+}

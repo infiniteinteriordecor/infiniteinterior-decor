@@ -1,0 +1,171 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/upgrade-rules.json",
+  "title": "Upgrade Rules",
+  "description": "Upgrade path rules and cost calculations for tier and material upgrades",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "tierUpgrades": {
+      "type": "object",
+      "description": "Tier upgrade rules and costs",
+      "patternProperties": {
+        "^[a-z]+_to_[a-z]+$": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string",
+              "description": "Source tier"
+            },
+            "to": {
+              "type": "string",
+              "description": "Target tier"
+            },
+            "costMultiplier": {
+              "type": "number",
+              "description": "Cost multiplier for upgrade"
+            },
+            "requiredChanges": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Required material changes"
+            },
+            "optionalChanges": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Optional material changes"
+            },
+            "timelineImpact": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "description": "Minimum additional days"
+                },
+                "max": {
+                  "type": "integer",
+                  "description": "Maximum additional days"
+                }
+              }
+            }
+          },
+          "required": ["from", "to", "costMultiplier"]
+        }
+      }
+    },
+    "materialUpgrades": {
+      "type": "object",
+      "description": "Material upgrade rules",
+      "patternProperties": {
+        "^[a-z0-9_]+_to_[a-z0-9_]+$": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string",
+              "description": "Source material ID"
+            },
+            "to": {
+              "type": "string",
+              "description": "Target material ID"
+            },
+            "costDifference": {
+              "type": "number",
+              "description": "Cost difference per unit"
+            },
+            "unit": {
+              "type": "string",
+              "description": "Unit of measurement"
+            },
+            "benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Benefits of upgrade"
+            },
+            "compatibility": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Compatible room types"
+            }
+          },
+          "required": ["from", "to", "costDifference"]
+        }
+      }
+    },
+    "moduleUpgrades": {
+      "type": "object",
+      "description": "Module upgrade rules",
+      "patternProperties": {
+        "^[a-z0-9_]+_to_[a-z0-9_]+$": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string",
+              "description": "Source module ID"
+            },
+            "to": {
+              "type": "string",
+              "description": "Target module ID"
+            },
+            "costDifference": {
+              "type": "number",
+              "description": "Cost difference"
+            },
+            "additionalFeatures": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Additional features"
+            },
+            "installationImpact": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "integer"
+                },
+                "max": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "required": ["from", "to", "costDifference"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "tierUpgrades"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "tierUpgrades": {
+      "essential_to_premium": {
+        "from": "essential",
+        "to": "premium",
+        "costMultiplier": 1.3,
+        "requiredChanges": ["flooring", "walls"],
+        "optionalChanges": ["lighting", "hardware"],
+        "timelineImpact": {
+          "min": 5,
+          "max": 10
+        }
+      }
+    }
+  }
+}

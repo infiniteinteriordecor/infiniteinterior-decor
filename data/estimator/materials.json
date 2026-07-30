@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/materials.json",
+  "title": "Materials Library",
+  "description": "Material definitions for interior design estimator with pricing and tier information",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "materials": {
+      "type": "object",
+      "description": "Material definitions keyed by material ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique material identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Material name"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["flooring", "walls", "ceiling", "furniture", "lighting", "accessories", "hardware"],
+              "description": "Material category"
+            },
+            "basePrice": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Base price per unit in INR"
+            },
+            "unit": {
+              "type": "string",
+              "enum": ["sqft", "sqm", "piece", "meter", "kg", "liter"],
+              "description": "Pricing unit"
+            },
+            "description": {
+              "type": "string",
+              "description": "Material description"
+            },
+            "brand": {
+              "type": "string",
+              "description": "Brand name"
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Material quality tier"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Material features"
+            },
+            "availability": {
+              "type": "string",
+              "enum": ["in-stock", "limited", "pre-order"],
+              "description": "Availability status"
+            },
+            "images": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Image URLs"
+            }
+          },
+          "required": ["id", "name", "category", "basePrice", "unit"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "materials"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "materials": {
+      "hardwood_oak": {
+        "id": "hardwood_oak",
+        "name": "Oak Hardwood Flooring",
+        "category": "flooring",
+        "basePrice": 450,
+        "unit": "sqft",
+        "description": "Premium oak hardwood flooring",
+        "brand": "Asian Paints",
+        "tier": "premium",
+        "features": ["Durable", "Natural finish", "Easy maintenance"],
+        "availability": "in-stock",
+        "images": []
+      }
+    }
+  }
+}

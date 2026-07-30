@@ -1,0 +1,214 @@
+/**
+ * Estimator Main Stylesheet
+ * 
+ * Main entry point for estimator module styles.
+ * Inherits design tokens from existing website.
+ * Premium luxury design system.
+ * 
+ * Architecture:
+ * - Imports: None (inherits from main.css)
+ * - Purpose: Module-specific overrides and base styles
+ * - Dependencies: css/main.css
+ */
+
+/* ============================================
+   ESTIMATOR PAGE BASE
+   ============================================ */
+
+/**
+ * Estimator page body
+ * Inherits from existing design system
+ */
+.estimator-page {
+  /* Inherit all design tokens from main.css */
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-primary) 100%);
+}
+
+/* ============================================
+   ESTIMATOR APP CONTAINER
+   ============================================ */
+
+/**
+ * Main estimator application container
+ */
+.estimator-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--color-bg-tertiary) 0%, var(--color-bg-primary) 100%);
+  color: var(--color-text-primary);
+  position: relative;
+}
+
+/* Glass effect overlay */
+.estimator-app::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(196, 160, 116, 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(196, 160, 116, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+/**
+ * Loading indicator
+ */
+.estimator-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: var(--spacing-6);
+}
+
+.estimator-loading__spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid var(--color-border-light);
+  border-top-color: var(--color-champagne-500);
+  border-radius: 50%;
+  animation: estimator-spin 1s linear infinite;
+}
+
+@keyframes estimator-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.estimator-loading__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-family: var(--font-family-base);
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+
+/**
+ * Main content container
+ */
+.estimator-main {
+  max-width: var(--container-7xl);
+  margin: 0 auto;
+  padding: var(--spacing-8) var(--spacing-6);
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 640px) {
+  .estimator-main {
+    padding: var(--spacing-12) var(--spacing-8);
+  }
+}
+
+/* ============================================
+   WIZARD CONTAINER
+   ============================================ */
+
+/**
+ * Wizard wrapper
+ */
+.estimator-wizard {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 16px 48px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   PROGRESS INDICATOR
+   ============================================ */
+
+/**
+ * Progress bar container
+ */
+.estimator-progress {
+  padding: var(--spacing-8);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   STEP CONTAINER
+   ============================================ */
+
+/**
+ * Step content area
+ */
+.estimator-step-container {
+  min-height: 500px;
+  padding: var(--spacing-10);
+}
+
+/* ============================================
+   NAVIGATION CONTROLS
+   ============================================ */
+
+/**
+ * Navigation buttons
+ */
+.estimator-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-8);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+/* ============================================
+   SUMMARY VIEW
+   ============================================ */
+
+/**
+ * Summary container (hidden until completion)
+ */
+.estimator-summary {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-2xl);
+  padding: var(--spacing-10);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 16px 48px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Skip link for keyboard users
+ * Inherits from micro-interactions.css
+ */
+.skip-link {
+  /* Inherits from existing micro-interactions.css */
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .estimator-loading__spinner {
+    animation: none;
+  }
+}

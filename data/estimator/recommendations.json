@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/recommendations.json",
+  "title": "Recommendations Library",
+  "description": "Recommendation rules and suggestions for estimator engine",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "recommendations": {
+      "type": "object",
+      "description": "Recommendation definitions keyed by recommendation ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique recommendation identifier"
+            },
+            "type": {
+              "type": "string",
+              "enum": ["material", "tier", "module", "style", "upgrade"],
+              "description": "Recommendation type"
+            },
+            "title": {
+              "type": "string",
+              "description": "Recommendation title"
+            },
+            "description": {
+              "type": "string",
+              "description": "Recommendation description"
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10,
+              "description": "Recommendation priority (1-10)"
+            },
+            "conditions": {
+              "type": "object",
+              "description": "Conditions for recommendation to apply",
+              "properties": {
+                "budgetRange": {
+                  "type": "object",
+                  "properties": {
+                    "min": {
+                      "type": "number"
+                    },
+                    "max": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "roomTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "currentTier": {
+                  "type": "string"
+                },
+                "area": {
+                  "type": "object",
+                  "properties": {
+                    "min": {
+                      "type": "number"
+                    },
+                    "max": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "suggestion": {
+              "type": "object",
+              "description": "Suggested action or item",
+              "properties": {
+                "itemId": {
+                  "type": "string",
+                  "description": "Suggested item ID"
+                },
+                "action": {
+                  "type": "string",
+                  "description": "Suggested action"
+                },
+                "reasoning": {
+                  "type": "string",
+                  "description": "Reasoning for suggestion"
+                }
+              }
+            },
+            "benefits": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Benefits of following recommendation"
+            },
+            "costImpact": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["increase", "decrease", "neutral"]
+                },
+                "percentage": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "required": ["id", "type", "title", "description", "priority"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "recommendations"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "recommendations": {
+      "upgrade_to_premium_flooring": {
+        "id": "upgrade_to_premium_flooring",
+        "type": "material",
+        "title": "Upgrade to Premium Flooring",
+        "description": "Consider upgrading to premium hardwood flooring for better durability and aesthetics",
+        "priority": 7,
+        "conditions": {
+          "budgetRange": {
+            "min": 1500000,
+            "max": 5000000
+          },
+          "currentTier": "essential"
+        },
+        "suggestion": {
+          "itemId": "hardwood_oak",
+          "action": "upgrade_material",
+          "reasoning": "Premium flooring offers better longevity and adds value to your property"
+        },
+        "benefits": ["Enhanced durability", "Better aesthetics", "Increased property value"],
+        "costImpact": {
+          "type": "increase",
+          "percentage": 15
+        }
+      }
+    }
+  }
+}

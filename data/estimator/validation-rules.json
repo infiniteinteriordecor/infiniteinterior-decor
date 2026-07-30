@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/validation-rules.json",
+  "title": "Validation Rules",
+  "description": "Validation rules for estimator form fields and data integrity",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "fieldRules": {
+      "type": "object",
+      "description": "Validation rules for individual fields",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["required", "email", "phone", "min", "max", "minLength", "maxLength", "pattern", "numeric", "integer", "positive"],
+                "description": "Validation rule type"
+              },
+              "message": {
+                "type": "string",
+                "description": "Error message for failed validation"
+              },
+              "value": {
+                "type": "number",
+                "description": "Value for min, max, minLength, maxLength rules"
+              },
+              "regex": {
+                "type": "string",
+                "description": "Regular expression for pattern rule"
+              }
+            },
+            "required": ["type", "message"]
+          }
+        }
+      }
+    },
+    "stepRules": {
+      "type": "object",
+      "description": "Validation rules for each wizard step",
+      "patternProperties": {
+        "^[1-8]$": {
+          "type": "object",
+          "properties": {
+            "stepId": {
+              "type": "integer",
+              "description": "Step ID"
+            },
+            "requiredFields": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Required field names for this step"
+            },
+            "conditionalRules": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "condition": {
+                    "type": "string",
+                    "description": "Condition expression"
+                  },
+                  "requiredFields": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required": ["stepId", "requiredFields"]
+        }
+      }
+    },
+    "businessRules": {
+      "type": "object",
+      "description": "Business logic validation rules",
+      "properties": {
+        "minBudget": {
+          "type": "number",
+          "description": "Minimum budget amount"
+        },
+        "maxBudget": {
+          "type": "number",
+          "description": "Maximum budget amount"
+        },
+        "minRooms": {
+          "type": "integer",
+          "description": "Minimum number of rooms"
+        },
+        "maxRooms": {
+          "type": "integer",
+          "description": "Maximum number of rooms"
+        },
+        "minArea": {
+          "type": "number",
+          "description": "Minimum total area in sqft"
+        },
+        "maxArea": {
+          "type": "number",
+          "description": "Maximum total area in sqft"
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "fieldRules", "stepRules"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "fieldRules": {
+      "client_name": [
+        {
+          "type": "required",
+          "message": "Name is required"
+        },
+        {
+          "type": "minLength",
+          "value": 2,
+          "message": "Name must be at least 2 characters"
+        }
+      ],
+      "client_email": [
+        {
+          "type": "required",
+          "message": "Email is required"
+        },
+        {
+          "type": "email",
+          "message": "Please enter a valid email address"
+        }
+      ],
+      "client_phone": [
+        {
+          "type": "required",
+          "message": "Phone number is required"
+        },
+        {
+          "type": "phone",
+          "message": "Please enter a valid phone number"
+        }
+      ],
+      "budget": [
+        {
+          "type": "required",
+          "message": "Budget is required"
+        },
+        {
+          "type": "min",
+          "value": 500000,
+          "message": "Minimum budget is ₹5,00,000"
+        }
+      ]
+    },
+    "stepRules": {
+      "1": {
+        "stepId": 1,
+        "requiredFields": ["selectedPackage"],
+        "conditionalRules": []
+      },
+      "2": {
+        "stepId": 2,
+        "requiredFields": ["budget"],
+        "conditionalRules": []
+      },
+      "6": {
+        "stepId": 6,
+        "requiredFields": ["client_name", "client_email", "client_phone", "client_city"],
+        "conditionalRules": []
+      }
+    },
+    "businessRules": {
+      "minBudget": 500000,
+      "maxBudget": 100000000,
+      "minRooms": 1,
+      "maxRooms": 20,
+      "minArea": 200,
+      "maxArea": 10000
+    }
+  }
+}

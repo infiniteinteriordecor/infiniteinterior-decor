@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/pricing-rules.json",
+  "title": "Pricing Rules",
+  "description": "Pricing calculation rules and cost multipliers for estimator engine",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "baseRates": {
+      "type": "object",
+      "description": "Base rates for different cost components",
+      "properties": {
+        "labor": {
+          "type": "number",
+          "description": "Base labor rate per sqft in INR"
+        },
+        "design": {
+          "type": "number",
+          "description": "Base design fee percentage"
+        },
+        "installation": {
+          "type": "number",
+          "description": "Base installation fee percentage"
+        },
+        "contingency": {
+          "type": "number",
+          "description": "Base contingency percentage"
+        },
+        "tax": {
+          "type": "number",
+          "description": "Base tax percentage (GST)"
+        }
+      },
+      "required": ["labor", "design", "installation", "contingency", "tax"]
+    },
+    "tierMultipliers": {
+      "type": "object",
+      "description": "Multipliers for different material tiers",
+      "properties": {
+        "essential": {
+          "type": "number",
+          "description": "Essential tier multiplier"
+        },
+        "premium": {
+          "type": "number",
+          "description": "Premium tier multiplier"
+        },
+        "luxury": {
+          "type": "number",
+          "description": "Luxury tier multiplier"
+        },
+        "elite": {
+          "type": "number",
+          "description": "Elite tier multiplier"
+        }
+      },
+      "required": ["essential", "premium", "luxury", "elite"]
+    },
+    "complexityMultipliers": {
+      "type": "object",
+      "description": "Multipliers for different complexity levels",
+      "properties": {
+        "simple": {
+          "type": "number",
+          "description": "Simple complexity multiplier"
+        },
+        "moderate": {
+          "type": "number",
+          "description": "Moderate complexity multiplier"
+        },
+        "complex": {
+          "type": "number",
+          "description": "Complex complexity multiplier"
+        }
+      },
+      "required": ["simple", "moderate", "complex"]
+    },
+    "roomCategoryMultipliers": {
+      "type": "object",
+      "description": "Multipliers for different room categories",
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "number",
+          "description": "Room category multiplier"
+        }
+      }
+    },
+    "locationMultipliers": {
+      "type": "object",
+      "description": "Multipliers for different locations/cities",
+      "patternProperties": {
+        "^[a-z]+$": {
+          "type": "number",
+          "description": "Location multiplier"
+        }
+      }
+    },
+    "discountRules": {
+      "type": "object",
+      "description": "Discount rules and thresholds",
+      "properties": {
+        "volumeDiscount": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "minAmount": {
+                "type": "number",
+                "description": "Minimum amount for discount"
+              },
+              "discountPercentage": {
+                "type": "number",
+                "description": "Discount percentage"
+              }
+            },
+            "required": ["minAmount", "discountPercentage"]
+          }
+        },
+        "packageDiscount": {
+          "type": "object",
+          "description": "Package-specific discounts",
+          "patternProperties": {
+            "^[a-z]+$": {
+              "type": "number",
+              "description": "Package discount percentage"
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "baseRates", "tierMultipliers", "complexityMultipliers"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "baseRates": {
+      "labor": 150,
+      "design": 5,
+      "installation": 8,
+      "contingency": 10,
+      "tax": 18
+    },
+    "tierMultipliers": {
+      "essential": 1.0,
+      "premium": 1.3,
+      "luxury": 1.6,
+      "elite": 2.0
+    },
+    "complexityMultipliers": {
+      "simple": 1.0,
+      "moderate": 1.2,
+      "complex": 1.5
+    }
+  }
+}

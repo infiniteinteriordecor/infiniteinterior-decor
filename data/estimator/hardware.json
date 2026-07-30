@@ -1,0 +1,109 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/hardware.json",
+  "title": "Hardware Library",
+  "description": "Hardware definitions for interior design including fittings, fixtures, and accessories",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "hardware": {
+      "type": "object",
+      "description": "Hardware definitions keyed by hardware ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique hardware identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Hardware name"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["handles", "hinges", "locks", "fittings", "fixtures", "accessories"],
+              "description": "Hardware category"
+            },
+            "basePrice": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Base price per unit in INR"
+            },
+            "unit": {
+              "type": "string",
+              "enum": ["piece", "set", "pair"],
+              "description": "Pricing unit"
+            },
+            "description": {
+              "type": "string",
+              "description": "Hardware description"
+            },
+            "brand": {
+              "type": "string",
+              "description": "Brand name"
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Hardware quality tier"
+            },
+            "material": {
+              "type": "string",
+              "description": "Hardware material"
+            },
+            "finish": {
+              "type": "string",
+              "description": "Hardware finish"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Hardware features"
+            },
+            "compatibility": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Compatible materials or products"
+            }
+          },
+          "required": ["id", "name", "category", "basePrice", "unit"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "hardware"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "hardware": {
+      "door_handle_brass": {
+        "id": "door_handle_brass",
+        "name": "Brass Door Handle",
+        "category": "handles",
+        "basePrice": 850,
+        "unit": "piece",
+        "description": "Premium brass door handle",
+        "brand": "Hafele",
+        "tier": "premium",
+        "material": "Brass",
+        "finish": "Polished",
+        "features": ["Durable", "Anti-corrosion"],
+        "compatibility": ["wooden_doors", "pvc_doors"]
+      }
+    }
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/cities.json",
+  "title": "Cities Library",
+  "description": "City definitions for location-based pricing and service availability",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "cities": {
+      "type": "object",
+      "description": "City definitions keyed by city ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique city identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "City name"
+            },
+            "state": {
+              "type": "string",
+              "description": "State name"
+            },
+            "country": {
+              "type": "string",
+              "description": "Country name"
+            },
+            "multiplier": {
+              "type": "number",
+              "description": "Location-based pricing multiplier"
+            },
+            "availableServices": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Available service types"
+            },
+            "leadTime": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "description": "Minimum lead time in days"
+                },
+                "max": {
+                  "type": "integer",
+                  "description": "Maximum lead time in days"
+                }
+              },
+              "required": ["min", "max"]
+            },
+            "zones": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Service zones within city"
+            }
+          },
+          "required": ["id", "name", "state", "multiplier"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "cities"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "cities": {
+      "mumbai": {
+        "id": "mumbai",
+        "name": "Mumbai",
+        "state": "Maharashtra",
+        "country": "India",
+        "multiplier": 1.2,
+        "availableServices": ["design", "installation", "consultation"],
+        "leadTime": {
+          "min": 30,
+          "max": 60
+        },
+        "zones": ["South Mumbai", "Western Suburbs", "Eastern Suburbs", "Navi Mumbai"]
+      }
+    }
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/modules.json",
+  "title": "Modules Library",
+  "description": "Module definitions for interior design estimator with optional add-on features",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "modules": {
+      "type": "object",
+      "description": "Module definitions keyed by module ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique module identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Module name"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["lighting", "furniture", "storage", "entertainment", "automation", "decor", "functional"],
+              "description": "Module category"
+            },
+            "basePrice": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Base module price in INR"
+            },
+            "unit": {
+              "type": "string",
+              "enum": ["piece", "set", "room", "sqft"],
+              "description": "Pricing unit"
+            },
+            "description": {
+              "type": "string",
+              "description": "Module description"
+            },
+            "suitableFor": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Suitable room types"
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Module quality tier"
+            },
+            "features": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Module features"
+            },
+            "requiredMaterials": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Required material IDs"
+            },
+            "installationComplexity": {
+              "type": "string",
+              "enum": ["simple", "moderate", "complex"],
+              "description": "Installation complexity"
+            },
+            "duration": {
+              "type": "object",
+              "properties": {
+                "min": {
+                  "type": "integer",
+                  "description": "Minimum installation time in days"
+                },
+                "max": {
+                  "type": "integer",
+                  "description": "Maximum installation time in days"
+                }
+              },
+              "required": ["min", "max"]
+            }
+          },
+          "required": ["id", "name", "category", "basePrice", "unit"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "modules"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "modules": {
+      "smart_lighting": {
+        "id": "smart_lighting",
+        "name": "Smart Lighting System",
+        "category": "lighting",
+        "basePrice": 25000,
+        "unit": "room",
+        "description": "Automated smart lighting with app control",
+        "suitableFor": ["living", "bedroom", "kitchen"],
+        "tier": "premium",
+        "features": ["App control", "Voice control", "Scheduling", "Energy saving"],
+        "requiredMaterials": ["led_lights", "smart_switches"],
+        "installationComplexity": "moderate",
+        "duration": {
+          "min": 2,
+          "max": 4
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,454 @@
+/**
+ * Estimator Animations Stylesheet
+ * 
+ * Animations and transitions for estimator module.
+ * Inherits animation timing from existing website.
+ * 
+ * Architecture:
+ * - Purpose: Smooth transitions and micro-interactions
+ * - Dependencies: css/main.css (animation tokens, easing)
+ */
+
+/* ============================================
+   STEP TRANSITIONS
+   ============================================ */
+
+/**
+ * Step enter animation
+ */
+@keyframes estimator-step-enter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Step exit animation
+ */
+@keyframes estimator-step-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/**
+ * Step transition class
+ */
+.estimator-step--entering {
+  animation: estimator-step-enter 0.4s var(--ease-luxury) forwards;
+}
+
+.estimator-step--exiting {
+  animation: estimator-step-exit 0.3s var(--ease-luxury) forwards;
+}
+
+/* ============================================
+   CARD SELECTION ANIMATIONS
+   ============================================ */
+
+/**
+ * Card selection animation
+ */
+@keyframes estimator-card-select {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/**
+ * Card selection class
+ */
+.estimator-card--selecting {
+  animation: estimator-card-select 0.3s var(--ease-luxury);
+}
+
+/**
+ * Card hover animation
+ */
+.estimator-card {
+  transition: transform 0.3s var(--ease-luxury),
+              box-shadow 0.3s var(--ease-luxury),
+              border-color 0.3s var(--ease-luxury);
+}
+
+/* ============================================
+   PROGRESS ANIMATIONS
+   ============================================ */
+
+/**
+ * Progress line animation
+ */
+.estimator-progress-line--active {
+  transition: width 0.6s var(--ease-luxury);
+}
+
+/**
+ * Progress step indicator animation
+ */
+.estimator-progress-step__indicator {
+  transition: all 0.4s var(--ease-luxury);
+}
+
+/**
+ * Progress step completion animation
+ */
+@keyframes estimator-step-complete {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.estimator-progress-step--completed .estimator-progress-step__indicator {
+  animation: estimator-step-complete 0.5s var(--ease-luxury);
+}
+
+/* ============================================
+   FORM ANIMATIONS
+   ============================================ */
+
+/**
+ * Input focus animation
+ */
+.estimator-input,
+.estimator-select,
+.estimator-textarea {
+  transition: border-color 0.3s var(--ease-luxury),
+              box-shadow 0.3s var(--ease-luxury);
+}
+
+/**
+ * Label animation on focus
+ */
+@keyframes estimator-label-focus {
+  from {
+    color: var(--color-text-tertiary);
+  }
+  to {
+    color: var(--color-champagne-500);
+  }
+}
+
+/**
+ * Button hover animation
+ */
+.estimator-navigation .button {
+  transition: transform 0.2s var(--ease-luxury),
+              box-shadow 0.2s var(--ease-luxury);
+}
+
+.estimator-navigation .button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.estimator-navigation .button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ============================================
+   SUMMARY ANIMATIONS
+   ============================================ */
+
+/**
+ * Summary item animation
+ */
+@keyframes estimator-summary-item {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/**
+ * Summary item staggered animation
+ */
+.estimator-summary-item {
+  animation: estimator-summary-item 0.3s var(--ease-luxury) forwards;
+  opacity: 0;
+}
+
+/* ============================================
+   LOADING ANIMATIONS
+   ============================================ */
+
+/**
+ * Skeleton loading animation
+ */
+@keyframes estimator-skeleton {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/**
+ * Skeleton loading class
+ */
+.estimator-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-bg-tertiary) 0%,
+    var(--color-bg-secondary) 50%,
+    var(--color-bg-tertiary) 100%
+  );
+  background-size: 200% 100%;
+  animation: estimator-skeleton 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   ALERT ANIMATIONS
+   ============================================ */
+
+/**
+ * Alert enter animation
+ */
+@keyframes estimator-alert-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/**
+ * Alert exit animation
+ */
+@keyframes estimator-alert-exit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/**
+ * Alert animation classes
+ */
+.estimator-alert--entering {
+  animation: estimator-alert-enter 0.3s var(--ease-luxury) forwards;
+}
+
+.estimator-alert--exiting {
+  animation: estimator-alert-exit 0.3s var(--ease-luxury) forwards;
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  /**
+   * Disable all animations for users who prefer reduced motion
+   */
+  .estimator-step--entering,
+  .estimator-step--exiting,
+  .estimator-card--selecting,
+  .estimator-card,
+  .estimator-progress-line--active,
+  .estimator-progress-step__indicator,
+  .estimator-input,
+  .estimator-select,
+  .estimator-textarea,
+  .estimator-navigation .button,
+  .estimator-summary-item,
+  .estimator-skeleton,
+  .estimator-alert--entering,
+  .estimator-alert--exiting {
+    animation: none;
+    transition: none;
+  }
+  
+  .estimator-card:hover:not(:disabled) {
+    transform: none;
+  }
+  
+  .estimator-navigation .button:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ============================================
+   UTILITY ANIMATION CLASSES
+   ============================================ */
+
+/**
+ * Fade in utility
+ */
+@keyframes estimator-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.estimator-fade-in {
+  animation: estimator-fade-in 0.3s var(--ease-luxury) forwards;
+}
+
+/**
+ * Slide up utility
+ */
+@keyframes estimator-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.estimator-slide-up {
+  animation: estimator-slide-up 0.4s var(--ease-luxury) forwards;
+}
+
+/**
+ * Scale in utility
+ */
+@keyframes estimator-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.estimator-scale-in {
+  animation: estimator-scale-in 0.3s var(--ease-luxury) forwards;
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT
+   ============================================ */
+
+/**
+ * Respect user's reduced motion preference
+ * Disables all animations when user prefers reduced motion
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .estimator-step--entering,
+  .estimator-step--exiting,
+  .estimator-card--selected,
+  .estimator-card--hover,
+  .estimator-progress__step--active,
+  .estimator-progress__step--completed,
+  .estimator-progress__bar,
+  .estimator-input--focus,
+  .estimator-textarea--focus,
+  .estimator-select--focus,
+  .estimator-checkbox--checked,
+  .estimator-radio--checked,
+  .estimator-summary-item--entering,
+  .estimator-skeleton,
+  .estimator-alert,
+  .estimator-fade-in,
+  .estimator-slide-up,
+  .estimator-scale-in {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ============================================
+   FOCUS VISIBILITY FOR ACCESSIBILITY
+   ============================================ */
+
+/**
+ * Enhanced focus styles for keyboard navigation
+ */
+.estimator-wizard *:focus-visible,
+.estimator-navigation *:focus-visible,
+.estimator-summary-sidebar *:focus-visible,
+.estimator-bottom-sheet *:focus-visible {
+  outline: 2px solid var(--color-champagne-400);
+  outline-offset: 2px;
+}
+
+/**
+ * Focus trap for modal dialogs
+ */
+.estimator-modal:focus {
+  outline: none;
+}
+
+/* ============================================
+   SCREEN READER ONLY CONTENT
+   ============================================ */
+
+/**
+ * Screen reader only class
+ * Visually hidden but accessible to screen readers
+ */
+.estimator-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/**
+ * Focusable when needed (for skip links, etc.)
+ */
+.estimator-sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}

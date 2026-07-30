@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/styles.json",
+  "title": "Design Styles Library",
+  "description": "Interior design style definitions for estimator with aesthetic preferences",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "styles": {
+      "type": "object",
+      "description": "Design style definitions keyed by style ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique style identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Style name"
+            },
+            "category": {
+              "type": "string",
+              "enum": ["modern", "traditional", "contemporary", "minimalist", "industrial", "scandinavian", "bohemian", "transitional"],
+              "description": "Style category"
+            },
+            "description": {
+              "type": "string",
+              "description": "Style description"
+            },
+            "colorPalette": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Color palette (hex codes)"
+            },
+            "materials": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Preferred material types"
+            },
+            "characteristics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Style characteristics"
+            },
+            "suitableFor": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Suitable room types"
+            },
+            "complexity": {
+              "type": "string",
+              "enum": ["simple", "moderate", "complex"],
+              "description": "Implementation complexity"
+            },
+            "images": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Example image URLs"
+            }
+          },
+          "required": ["id", "name", "category", "description"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "styles"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "styles": {
+      "modern_minimal": {
+        "id": "modern_minimal",
+        "name": "Modern Minimalist",
+        "category": "minimalist",
+        "description": "Clean lines, neutral colors, functional design",
+        "colorPalette": ["#FFFFFF", "#F5F5F5", "#E0E0E0", "#333333"],
+        "materials": ["wood", "glass", "metal", "concrete"],
+        "characteristics": ["Clean lines", "Neutral colors", "Functional", "Uncluttered"],
+        "suitableFor": ["living", "bedroom", "office", "kitchen"],
+        "complexity": "moderate"
+      }
+    }
+  }
+}

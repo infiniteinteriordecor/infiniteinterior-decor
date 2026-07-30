@@ -1,0 +1,198 @@
+/**
+ * Estimator Layout Stylesheet
+ * 
+ * Grid and layout systems for estimator module.
+ * Inherits container and grid tokens from existing website.
+ * 
+ * Architecture:
+ * - Purpose: Layout structure, grid systems, spacing
+ * - Dependencies: css/main.css (design tokens)
+ */
+
+/* ============================================
+   ESTIMATOR GRID SYSTEM
+   ============================================ */
+
+/**
+ * Two-column layout for step content
+ */
+.estimator-grid--2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+  .estimator-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/**
+ * Three-column layout for step content
+ */
+.estimator-grid--3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .estimator-grid--3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .estimator-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/**
+ * Four-column layout for step content
+ */
+.estimator-grid--4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .estimator-grid--4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .estimator-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   STEP LAYOUT
+   ============================================ */
+
+/**
+ * Step header section
+ */
+.estimator-step__header {
+  margin-bottom: var(--spacing-8);
+}
+
+/**
+ * Step content section
+ */
+.estimator-step__content {
+  margin-bottom: var(--spacing-8);
+}
+
+/**
+ * Step footer section
+ */
+.estimator-step__footer {
+  margin-top: var(--spacing-8);
+  padding-top: var(--spacing-8);
+  border-top: 1px solid var(--color-border-light);
+}
+
+/* ============================================
+   FORM LAYOUT
+   ============================================ */
+
+/**
+ * Form group container
+ */
+.estimator-form-group {
+  margin-bottom: var(--spacing-6);
+}
+
+/**
+ * Form row for horizontal layouts
+ */
+.estimator-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .estimator-form-row {
+    flex-direction: row;
+  }
+}
+
+/**
+ * Form column
+ */
+.estimator-form-col {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ============================================
+   CARD LAYOUT
+   ============================================ */
+
+/**
+ * Selection card grid
+ */
+.estimator-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+}
+
+@media (min-width: 640px) {
+  .estimator-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .estimator-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/**
+ * Compact card grid
+ */
+.estimator-card-grid--compact {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-4);
+}
+
+/* ============================================
+   SUMMARY LAYOUT
+   ============================================ */
+
+/**
+ * Summary section
+ */
+.estimator-summary-section {
+  margin-bottom: var(--spacing-8);
+  padding-bottom: var(--spacing-8);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.estimator-summary-section:last-child {
+  border-bottom: none;
+}
+
+/**
+ * Summary grid
+ */
+.estimator-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 1024px) {
+  .estimator-summary-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}

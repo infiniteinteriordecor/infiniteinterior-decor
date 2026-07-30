@@ -1,0 +1,286 @@
+/**
+ * Estimator Responsive Stylesheet
+ * 
+ * Responsive breakpoints and mobile-specific adjustments.
+ * Inherits responsive tokens from existing website.
+ * 
+ * Architecture:
+ * - Purpose: Mobile-first responsive design
+ * - Dependencies: css/main.css (breakpoints), css/estimator-layout.css
+ */
+
+/* ============================================
+   MOBILE OPTIMIZATIONS
+   ============================================ */
+
+@media (max-width: 639px) {
+  /**
+   * Compact progress steps on mobile
+   */
+  .estimator-progress-steps {
+    gap: var(--spacing-2);
+  }
+  
+  .estimator-progress-step__label {
+    font-size: var(--font-size-xs);
+    max-width: 60px;
+  }
+  
+  /**
+   * Compact step container on mobile
+   */
+  .estimator-step-container {
+    padding: var(--spacing-6);
+    min-height: auto;
+  }
+  
+  /**
+   * Stack form rows on mobile
+   */
+  .estimator-form-row {
+    flex-direction: column;
+    gap: var(--spacing-4);
+  }
+  
+  /**
+   * Single column card grid on mobile
+   */
+  .estimator-card-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+  
+  /**
+   * Compact navigation on mobile
+   */
+  .estimator-navigation {
+    flex-direction: column-reverse;
+    gap: var(--spacing-4);
+  }
+  
+  .estimator-navigation .button {
+    width: 100%;
+  }
+  
+  /**
+   * Compact summary on mobile
+   */
+  .estimator-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   TABLET OPTIMIZATIONS
+   ============================================ */
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  /**
+   * Medium progress steps on tablet
+   */
+  .estimator-progress-step__label {
+    max-width: 80px;
+  }
+  
+  /**
+   * Two-column card grid on tablet
+   */
+  .estimator-card-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /**
+   * Horizontal navigation on tablet
+   */
+  .estimator-navigation {
+    flex-direction: row;
+  }
+}
+
+/* ============================================
+   DESKTOP OPTIMIZATIONS
+   ============================================ */
+
+@media (min-width: 1024px) {
+  /**
+   * Full progress steps on desktop
+   */
+  .estimator-progress-step__label {
+    max-width: 100px;
+  }
+  
+  /**
+   * Three-column card grid on desktop
+   */
+  .estimator-card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /**
+   * Two-column summary on desktop
+   */
+  .estimator-summary-grid {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* ============================================
+   LARGE DESKTOP OPTIMIZATIONS
+   ============================================ */
+
+@media (min-width: 1280px) {
+  /**
+   * Four-column card grid on large desktop
+   */
+  .estimator-card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================
+   TOUCH DEVICE OPTIMIZATIONS
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+  /**
+   * Larger touch targets for mobile devices
+   */
+  .estimator-card {
+    padding: var(--spacing-8);
+  }
+  
+  .estimator-input,
+  .estimator-select,
+  .estimator-textarea {
+    padding: var(--spacing-5);
+    font-size: 16px; /* Prevent iOS zoom */
+  }
+  
+  .estimator-checkbox,
+  .estimator-radio {
+    padding: var(--spacing-2);
+  }
+  
+  .estimator-checkbox__input,
+  .estimator-radio__input {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ============================================
+   HIGH DPI OPTIMIZATIONS
+   ============================================ */
+
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  /**
+   * Crisper borders on high DPI displays
+   */
+  .estimator-card,
+  .estimator-input,
+  .estimator-select,
+  .estimator-textarea {
+    border-width: 0.5px;
+  }
+}
+
+/* ============================================
+   DARK MODE SUPPORT
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+  /**
+   * Dark mode adjustments
+   * Inherits from existing design tokens
+   */
+  .estimator-app {
+    background-color: var(--color-bg-tertiary);
+  }
+  
+  .estimator-card {
+    background-color: var(--color-bg-primary);
+    border-color: var(--color-border-light);
+  }
+  
+  .estimator-input,
+  .estimator-select,
+  .estimator-textarea {
+    background-color: var(--color-bg-primary);
+    border-color: var(--color-border-light);
+    color: var(--color-text-primary);
+  }
+}
+
+/* ============================================
+   PRINT OPTIMIZATIONS
+   ============================================ */
+
+@media print {
+  /**
+   * Print-friendly layout
+   */
+  .estimator-navigation,
+  .estimator-progress {
+    display: none;
+  }
+  
+  .estimator-card {
+    break-inside: avoid;
+    border: 1px solid var(--color-border-light);
+  }
+  
+  .estimator-summary {
+    box-shadow: none;
+  }
+}
+
+/* ============================================
+   SUMMARY SIDEBAR & BOTTOM SHEET RESPONSIVE
+   ============================================ */
+
+/**
+ * Summary sidebar responsive behavior
+ */
+@media (max-width: 1024px) {
+  .estimator-summary-sidebar {
+    display: none;
+  }
+}
+
+/**
+ * Bottom sheet responsive behavior
+ */
+@media (min-width: 1025px) {
+  .estimator-bottom-sheet {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .estimator-bottom-sheet {
+    display: block;
+  }
+}
+
+/**
+ * Ultra-wide screens (1920px+)
+ */
+@media (min-width: 1920px) {
+  .estimator-main {
+    max-width: var(--container-7xl);
+    padding: var(--spacing-16) var(--spacing-12);
+  }
+
+  .estimator-wizard {
+    border-radius: var(--radius-3xl);
+  }
+
+  .estimator-step-container {
+    min-height: 600px;
+    padding: var(--spacing-12);
+  }
+
+  .estimator-summary-sidebar {
+    width: 400px;
+  }
+}

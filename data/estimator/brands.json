@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://infiniteinteriordecor.com/schemas/brands.json",
+  "title": "Brands Library",
+  "description": "Brand definitions for interior design materials and products",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for compatibility tracking"
+    },
+    "last_updated": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    },
+    "brands": {
+      "type": "object",
+      "description": "Brand definitions keyed by brand ID",
+      "patternProperties": {
+        "^[a-z0-9_-]+$": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "description": "Unique brand identifier"
+            },
+            "name": {
+              "type": "string",
+              "description": "Brand name"
+            },
+            "logo": {
+              "type": "string",
+              "description": "Brand logo URL"
+            },
+            "website": {
+              "type": "string",
+              "format": "uri",
+              "description": "Brand website URL"
+            },
+            "tier": {
+              "type": "string",
+              "enum": ["essential", "premium", "luxury", "elite"],
+              "description": "Brand quality tier"
+            },
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Product categories offered by brand"
+            },
+            "description": {
+              "type": "string",
+              "description": "Brand description"
+            },
+            "country": {
+              "type": "string",
+              "description": "Country of origin"
+            },
+            "warranty": {
+              "type": "string",
+              "description": "Warranty information"
+            }
+          },
+          "required": ["id", "name", "tier"]
+        }
+      }
+    }
+  },
+  "required": ["schema_version", "last_updated", "brands"],
+  "example": {
+    "schema_version": "1.0.0",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "brands": {
+      "asian_paints": {
+        "id": "asian_paints",
+        "name": "Asian Paints",
+        "tier": "premium",
+        "categories": ["flooring", "walls"],
+        "country": "India",
+        "warranty": "5 years"
+      }
+    }
+  }
+}

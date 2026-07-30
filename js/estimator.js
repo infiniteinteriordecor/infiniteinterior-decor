@@ -62,7 +62,7 @@
         this.engine = context.engine;
         this.storage = results.storage;
 
-        // Check for draft resumption
+        // Check for draft resumption SAFELY
         await this.checkDraftResumption();
         
         // Set initialized flag
@@ -93,6 +93,12 @@
           return;
         }
 
+        // SAFE CHECK: Verify if the function exists before calling it
+        if (typeof this.storage.getCurrentDraftId !== 'function') {
+          console.warn('getCurrentDraftId is not available on storage, skipping draft resumption');
+          return;
+        }
+
         const draftId = this.storage.getCurrentDraftId();
         
         if (draftId) {
@@ -106,7 +112,7 @@
               this.stateManager.import(draft);
               this.stateManager.set('isDraft', true);
               this.stateManager.set('draftId', draftId);
-              this.ui.renderStep(this.stateManager.get('currentStep'));
+              if (this.ui) this.ui.renderStep(this.stateManager.get('currentStep'));
             } else {
               // Clear draft
               await this.storage.deleteDraft(draftId);
@@ -138,6 +144,16 @@
       
       // Set loaded flag
       this.isLoaded = true;
+
+      // === HIDE LOADER OVERLAY SAFELY ===
+      const loadingScreen = document.getElementById('estimator-loading');
+      if (loadingScreen) {
+        loadingScreen.style.transition = 'opacity 0.5s ease-out';
+        loadingScreen.style.opacity = '0';
+        setTimeout(() => {
+          loadingScreen.style.display = 'none';
+        }, 500);
+      }
       
       console.log('Infinite Interior OS started');
     }

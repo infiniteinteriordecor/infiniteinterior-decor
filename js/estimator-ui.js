@@ -80,7 +80,7 @@
       this.updateNavigationButtons(state);
       this.updateProgress(state);
       
-      // === CRITICAL FIX: Detect step change and render new UI content ===
+      // Detect step change and render new UI content
       if (state.currentStep && this.currentRenderedStep !== state.currentStep) {
         this.renderStep(state.currentStep);
       }
@@ -94,10 +94,46 @@
     }
 
     /**
-     * Handle next button click
+     * Handle next button click (UPDATED FOR COMPLETION)
      */
-    handleNext() {
-      this.router.next();
+    async handleNext() {
+      // Check if this is the final step
+      const isFinalStep = this.elements.nextButton.textContent === 'Complete';
+
+      if (isFinalStep) {
+        console.log("Completion triggered! Processing BOQ...");
+        
+        // Show loading state for BOQ Generation
+        const loadingScreen = document.getElementById('estimator-loading');
+        if (loadingScreen) {
+            const loadingText = loadingScreen.querySelector('.estimator-loading__text');
+            if(loadingText) loadingText.textContent = 'Generating your BOQ...';
+            loadingScreen.style.display = 'flex';
+            loadingScreen.style.opacity = '1';
+        }
+
+        try {
+            // Trigger PDF Generation via global App instance safely
+            if (window.EstimatorApp && typeof window.EstimatorApp.generateBOQ === 'function') {
+                const success = await window.EstimatorApp.generateBOQ();
+                if (!success) console.warn("PDF generation returned false, check if estimator-engine.js is fully loaded.");
+            } else {
+                console.warn("EstimatorApp.generateBOQ not found. Skipping PDF generation.");
+            }
+        } catch(error) {
+            console.error("BOQ Generation failed:", error);
+        } finally {
+            // Hide loading and show summary success screen
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => { loadingScreen.style.display = 'none'; }, 500);
+            }
+            this.showSummary();
+        }
+      } else {
+        // Normal next step
+        this.router.next();
+      }
     }
 
     /**
@@ -109,7 +145,7 @@
       this.elements.nextButton.disabled = !state.canProceed;
       
       // Update next button text for final step
-      if (state.currentStep === state.totalSteps) {
+      if (state.currentStep === state.totalSteps || state.currentStep === 8) {
         this.elements.nextButton.textContent = 'Complete';
       } else {
         this.elements.nextButton.textContent = 'Next';
@@ -121,11 +157,9 @@
      * @param {Object} state - Current state
      */
     renderProgress(state) {
-      // Handle the case where the router method might fail or return undefined safely
       const steps = (typeof this.router.getAllSteps === 'function') ? this.router.getAllSteps() : [];
       const currentStep = state ? state.currentStep : (this.router.currentStep || 1);
       
-      // If we don't have explicit step titles from router, use defaults
       const defaultTitles = ['Category', 'Type', 'Information', 'Requirements', 'Style', 'Package', 'Budget', 'Contact'];
       
       let html = '<div class="estimator-progress-line"></div>';
@@ -168,24 +202,17 @@
      * @param {number} stepId - Step ID
      */
     renderStep(stepId) {
-      // Sync the tracking variable so we don't double-render
       this.currentRenderedStep = stepId;
       
-      // Add exiting animation
       this.elements.stepContainer.classList.add('estimator-step--exiting');
       
       setTimeout(() => {
-        // Clear container
         this.elements.stepContainer.innerHTML = '';
-        
-        // Add entering animation
         this.elements.stepContainer.classList.remove('estimator-step--exiting');
         this.elements.stepContainer.classList.add('estimator-step--entering');
         
-        // Render step-specific content
         this.renderStepContent(stepId);
         
-        // Remove animation class after animation completes
         setTimeout(() => {
           this.elements.stepContainer.classList.remove('estimator-step--entering');
         }, 400);
@@ -197,34 +224,16 @@
      * @param {number} stepId - Step ID
      */
     renderStepContent(stepId) {
-      // Note: Function names here are historical but they map perfectly to the 8 steps
       switch (stepId) {
-        case 1:
-          this.renderPackageStep();     // Renders Step 1: Category
-          break;
-        case 2:
-          this.renderBudgetStep();      // Renders Step 2: Type
-          break;
-        case 3:
-          this.renderRoomsStep();       // Renders Step 3: Information
-          break;
-        case 4:
-          this.renderModulesStep();     // Renders Step 4: Requirements
-          break;
-        case 5:
-          this.renderMaterialsStep();   // Renders Step 5: Design Style
-          break;
-        case 6:
-          this.renderDetailsStep();     // Renders Step 6: Package
-          break;
-        case 7:
-          this.renderReviewStep();      // Renders Step 7: Budget
-          break;
-        case 8:
-          this.renderSummaryStep();     // Renders Step 8: Contact
-          break;
-        default:
-          this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
+        case 1: this.renderPackageStep(); break;
+        case 2: this.renderBudgetStep(); break;
+        case 3: this.renderRoomsStep(); break;
+        case 4: this.renderModulesStep(); break;
+        case 5: this.renderMaterialsStep(); break;
+        case 6: this.renderDetailsStep(); break;
+        case 7: this.renderReviewStep(); break;
+        case 8: this.renderSummaryStep(); break;
+        default: this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
       }
     }
 
@@ -273,7 +282,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleCategorySelection(e));
         card.addEventListener('keydown', (e) => {
@@ -285,16 +293,12 @@
       });
     }
 
-    /**
-     * Handle category selection
-     */
     handleCategorySelection(event) {
       const card = event.currentTarget;
       const categoryId = card.dataset.category;
       
       this.state.set('projectCategory', categoryId);
       
-      // Update UI
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => {
         c.classList.remove('estimator-card--selected');
         c.setAttribute('aria-pressed', 'false');
@@ -302,7 +306,6 @@
       card.classList.add('estimator-card--selected');
       card.setAttribute('aria-pressed', 'true');
       
-      // Enable next button
       this.state.set('canProceed', true);
     }
 
@@ -311,34 +314,10 @@
      */
     renderBudgetStep() {
       const projectTypes = [
-        { 
-          id: 'new_construction', 
-          name: 'New Construction', 
-          description: 'Complete interior design for newly built spaces',
-          features: ['Full space planning', 'Complete furnishing', 'Custom design elements'],
-          icon: '🏗️'
-        },
-        { 
-          id: 'renovation', 
-          name: 'Renovation', 
-          description: 'Transform existing spaces with modern design',
-          features: ['Space optimization', 'Modern upgrades', 'Structural modifications'],
-          icon: '🔧'
-        },
-        { 
-          id: 'interior_redesign', 
-          name: 'Interior Redesign', 
-          description: 'Refresh your space with new aesthetics',
-          features: ['Style refresh', 'Furniture updates', 'Decor enhancements'],
-          icon: '🎨'
-        },
-        { 
-          id: 'partial_upgrade', 
-          name: 'Partial Upgrade', 
-          description: 'Focus on specific areas or rooms',
-          features: ['Room-specific design', 'Budget-friendly', 'Flexible scope'],
-          icon: '📐'
-        }
+        { id: 'new_construction', name: 'New Construction', description: 'Complete interior design for newly built spaces', features: ['Full space planning', 'Complete furnishing', 'Custom design elements'], icon: '🏗️' },
+        { id: 'renovation', name: 'Renovation', description: 'Transform existing spaces with modern design', features: ['Space optimization', 'Modern upgrades', 'Structural modifications'], icon: '🔧' },
+        { id: 'interior_redesign', name: 'Interior Redesign', description: 'Refresh your space with new aesthetics', features: ['Style refresh', 'Furniture updates', 'Decor enhancements'], icon: '🎨' },
+        { id: 'partial_upgrade', name: 'Partial Upgrade', description: 'Focus on specific areas or rooms', features: ['Room-specific design', 'Budget-friendly', 'Flexible scope'], icon: '📐' }
       ];
 
       let html = `
@@ -383,7 +362,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleProjectTypeSelection(e));
         card.addEventListener('keydown', (e) => {
@@ -395,19 +373,12 @@
       });
     }
 
-    /**
-     * Handle project type selection
-     */
     handleProjectTypeSelection(event) {
       const card = event.currentTarget;
       const typeId = card.dataset.type;
       
       this.state.set('projectType', typeId);
-      
-      // Re-render to show expanded state
       this.renderBudgetStep();
-      
-      // Enable next button
       this.state.set('canProceed', true);
     }
 
@@ -481,20 +452,15 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       const inputs = this.elements.stepContainer.querySelectorAll('input, select');
       inputs.forEach(input => {
         input.addEventListener('input', (e) => this.handleProjectInfoChange(e));
         input.addEventListener('change', (e) => this.handleProjectInfoChange(e));
       });
 
-      // Check if form is valid
       this.validateProjectInfo();
     }
 
-    /**
-     * Handle project info change
-     */
     handleProjectInfoChange(event) {
       const field = event.target.id;
       const value = event.target.value;
@@ -506,13 +472,9 @@
       this.validateProjectInfo();
     }
 
-    /**
-     * Validate project info
-     */
     validateProjectInfo() {
       const projectInfo = this.state.get('projectInfo') || {};
       const isValid = projectInfo.area && projectInfo.city && projectInfo.constructionType;
-      
       this.state.set('canProceed', isValid);
     }
 
@@ -583,7 +545,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       const addBtn = this.elements.stepContainer.querySelector('.estimator-add-room-btn');
       addBtn.addEventListener('click', () => this.showAddRoomModal());
 
@@ -595,13 +556,9 @@
         btn.addEventListener('click', (e) => this.deleteRoom(e));
       });
 
-      // Validate
       this.state.set('canProceed', rooms.length > 0);
     }
 
-    /**
-     * Show add room modal
-     */
     showAddRoomModal() {
       const roomTypes = [
         { id: 'living_room', name: 'Living Room', icon: '🛋️' },
@@ -646,9 +603,6 @@
       confirmBtn.addEventListener('click', () => this.addRoom(modal));
     }
 
-    /**
-     * Add room
-     */
     addRoom(modal) {
       const type = modal.querySelector('#room-type').value;
       const area = modal.querySelector('#room-area').value;
@@ -665,9 +619,6 @@
       this.renderModulesStep();
     }
 
-    /**
-     * Duplicate room
-     */
     duplicateRoom(event) {
       const index = parseInt(event.target.dataset.index);
       const rooms = this.state.get('rooms') || [];
@@ -677,9 +628,6 @@
       this.renderModulesStep();
     }
 
-    /**
-     * Delete room
-     */
     deleteRoom(event) {
       const index = parseInt(event.target.dataset.index);
       const rooms = this.state.get('rooms') || [];
@@ -693,69 +641,15 @@
      */
     renderMaterialsStep() {
       const designStyles = [
-        { 
-          id: 'modern', 
-          name: 'Modern', 
-          description: 'Clean lines, neutral colors, functional design',
-          colorPalette: ['#FFFFFF', '#F5F5F5', '#E0E0E0', '#333333'],
-          icon: '🏢'
-        },
-        { 
-          id: 'minimalist', 
-          name: 'Minimalist', 
-          description: 'Simplicity, clean aesthetics, essential elements',
-          colorPalette: ['#FAFAFA', '#F0F0F0', '#E8E8E8', '#2C2C2C'],
-          icon: '⬜'
-        },
-        { 
-          id: 'luxury', 
-          name: 'Luxury', 
-          description: 'Premium materials, elegant finishes, sophisticated',
-          colorPalette: ['#1C1C1C', '#C4A074', '#D4AF37', '#FFFFFF'],
-          icon: '✨'
-        },
-        { 
-          id: 'industrial', 
-          name: 'Industrial', 
-          description: 'Raw materials, exposed elements, urban aesthetic',
-          colorPalette: ['#4A4A4A', '#8B7355', '#B8860B', '#D3D3D3'],
-          icon: '🏭'
-        },
-        { 
-          id: 'japandi', 
-          name: 'Japandi', 
-          description: 'Japanese minimalism meets Scandinavian warmth',
-          colorPalette: ['#F5F5DC', '#D2B48C', '#8B4513', '#FAF0E6'],
-          icon: '🎋'
-        },
-        { 
-          id: 'classic', 
-          name: 'Classic', 
-          description: 'Timeless elegance, traditional elements, refined',
-          colorPalette: ['#FFF8DC', '#DEB887', '#8B4513', '#F5F5DC'],
-          icon: '🏛️'
-        },
-        { 
-          id: 'scandinavian', 
-          name: 'Scandinavian', 
-          description: 'Light, airy, natural materials, cozy warmth',
-          colorPalette: ['#F5F5DC', '#E0E0E0', '#87CEEB', '#FFFFFF'],
-          icon: '❄️'
-        },
-        { 
-          id: 'neo_classical', 
-          name: 'Neo Classical', 
-          description: 'Modern interpretation of classical elements',
-          colorPalette: ['#FFFDD0', '#C0C0C0', '#DAA520', '#FAFAD2'],
-          icon: '🏛️'
-        },
-        { 
-          id: 'contemporary', 
-          name: 'Contemporary', 
-          description: 'Current trends, flexible, adaptable design',
-          colorPalette: ['#E8E8E8', '#A9A9A9', '#696969', '#2F4F4F'],
-          icon: '🎨'
-        }
+        { id: 'modern', name: 'Modern', description: 'Clean lines, neutral colors, functional design', colorPalette: ['#FFFFFF', '#F5F5F5', '#E0E0E0', '#333333'], icon: '🏢' },
+        { id: 'minimalist', name: 'Minimalist', description: 'Simplicity, clean aesthetics, essential elements', colorPalette: ['#FAFAFA', '#F0F0F0', '#E8E8E8', '#2C2C2C'], icon: '⬜' },
+        { id: 'luxury', name: 'Luxury', description: 'Premium materials, elegant finishes, sophisticated', colorPalette: ['#1C1C1C', '#C4A074', '#D4AF37', '#FFFFFF'], icon: '✨' },
+        { id: 'industrial', name: 'Industrial', description: 'Raw materials, exposed elements, urban aesthetic', colorPalette: ['#4A4A4A', '#8B7355', '#B8860B', '#D3D3D3'], icon: '🏭' },
+        { id: 'japandi', name: 'Japandi', description: 'Japanese minimalism meets Scandinavian warmth', colorPalette: ['#F5F5DC', '#D2B48C', '#8B4513', '#FAF0E6'], icon: '🎋' },
+        { id: 'classic', name: 'Classic', description: 'Timeless elegance, traditional elements, refined', colorPalette: ['#FFF8DC', '#DEB887', '#8B4513', '#F5F5DC'], icon: '🏛️' },
+        { id: 'scandinavian', name: 'Scandinavian', description: 'Light, airy, natural materials, cozy warmth', colorPalette: ['#F5F5DC', '#E0E0E0', '#87CEEB', '#FFFFFF'], icon: '❄️' },
+        { id: 'neo_classical', name: 'Neo Classical', description: 'Modern interpretation of classical elements', colorPalette: ['#FFFDD0', '#C0C0C0', '#DAA520', '#FAFAD2'], icon: '🏛️' },
+        { id: 'contemporary', name: 'Contemporary', description: 'Current trends, flexible, adaptable design', colorPalette: ['#E8E8E8', '#A9A9A9', '#696969', '#2F4F4F'], icon: '🎨' }
       ];
 
       let html = `
@@ -797,7 +691,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleDesignStyleSelection(e));
         card.addEventListener('keydown', (e) => {
@@ -809,16 +702,12 @@
       });
     }
 
-    /**
-     * Handle design style selection
-     */
     handleDesignStyleSelection(event) {
       const card = event.currentTarget;
       const styleId = card.dataset.style;
       
       this.state.set('designStyle', styleId);
       
-      // Update UI
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => {
         c.classList.remove('estimator-card--selected');
         c.setAttribute('aria-pressed', 'false');
@@ -826,7 +715,6 @@
       card.classList.add('estimator-card--selected');
       card.setAttribute('aria-pressed', 'true');
       
-      // Enable next button
       this.state.set('canProceed', true);
     }
 
@@ -835,61 +723,11 @@
      */
     renderDetailsStep() {
       const packages = [
-        {
-          id: 'basic',
-          name: 'Basic',
-          tier: 'essential',
-          description: 'Essential interior design for budget-conscious projects',
-          timeline: '15-30 days',
-          features: ['Basic design consultation', 'Material selection', 'Standard installation'],
-          inclusions: ['2 design revisions', 'Standard materials', 'Basic lighting'],
-          exclusions: ['Custom furniture', 'Premium materials', 'Smart home integration'],
-          popular: false
-        },
-        {
-          id: 'standard',
-          name: 'Standard',
-          tier: 'premium',
-          description: 'Comprehensive design with quality materials',
-          timeline: '30-45 days',
-          features: ['Full design planning', 'Premium materials', 'Professional installation'],
-          inclusions: ['4 design revisions', 'Premium materials', 'Advanced lighting', 'Custom cabinetry'],
-          exclusions: ['Smart home integration', 'Premium furniture'],
-          popular: true
-        },
-        {
-          id: 'premium',
-          name: 'Premium',
-          tier: 'luxury',
-          description: 'Luxury design with premium finishes and custom elements',
-          timeline: '45-60 days',
-          features: ['Bespoke design', 'Luxury materials', 'White-glove installation'],
-          inclusions: ['Unlimited revisions', 'Luxury materials', 'Smart lighting', 'Custom furniture', 'Home automation'],
-          exclusions: ['Architectural modifications'],
-          popular: false
-        },
-        {
-          id: 'luxury_signature',
-          name: 'Luxury Signature',
-          tier: 'elite',
-          description: 'Ultra-premium design with exclusive materials and services',
-          timeline: '60-90 days',
-          features: ['Exclusive design', 'Imported materials', 'Concierge service'],
-          inclusions: ['Unlimited revisions', 'Imported materials', 'Smart home integration', 'Custom furniture', 'Project management', 'Post-installation support'],
-          exclusions: ['Structural changes'],
-          popular: false
-        },
-        {
-          id: 'custom',
-          name: 'Custom',
-          tier: 'elite',
-          description: 'Fully customized solution tailored to your needs',
-          timeline: 'Based on scope',
-          features: ['Personalized design', 'Flexible scope', 'Dedicated team'],
-          inclusions: ['Custom scope', 'Dedicated designer', 'Priority scheduling'],
-          exclusions: ['None - fully customizable'],
-          popular: false
-        }
+        { id: 'basic', name: 'Basic', tier: 'essential', description: 'Essential interior design for budget-conscious projects', timeline: '15-30 days', features: ['Basic design consultation', 'Material selection', 'Standard installation'], inclusions: ['2 design revisions', 'Standard materials', 'Basic lighting'], exclusions: ['Custom furniture', 'Premium materials', 'Smart home integration'], popular: false },
+        { id: 'standard', name: 'Standard', tier: 'premium', description: 'Comprehensive design with quality materials', timeline: '30-45 days', features: ['Full design planning', 'Premium materials', 'Professional installation'], inclusions: ['4 design revisions', 'Premium materials', 'Advanced lighting', 'Custom cabinetry'], exclusions: ['Smart home integration', 'Premium furniture'], popular: true },
+        { id: 'premium', name: 'Premium', tier: 'luxury', description: 'Luxury design with premium finishes and custom elements', timeline: '45-60 days', features: ['Bespoke design', 'Luxury materials', 'White-glove installation'], inclusions: ['Unlimited revisions', 'Luxury materials', 'Smart lighting', 'Custom furniture', 'Home automation'], exclusions: ['Architectural modifications'], popular: false },
+        { id: 'luxury_signature', name: 'Luxury Signature', tier: 'elite', description: 'Ultra-premium design with exclusive materials and services', timeline: '60-90 days', features: ['Exclusive design', 'Imported materials', 'Concierge service'], inclusions: ['Unlimited revisions', 'Imported materials', 'Smart home integration', 'Custom furniture', 'Project management', 'Post-installation support'], exclusions: ['Structural changes'], popular: false },
+        { id: 'custom', name: 'Custom', tier: 'elite', description: 'Fully customized solution tailored to your needs', timeline: 'Based on scope', features: ['Personalized design', 'Flexible scope', 'Dedicated team'], inclusions: ['Custom scope', 'Dedicated designer', 'Priority scheduling'], exclusions: ['None - fully customizable'], popular: false }
       ];
 
       let html = `
@@ -957,7 +795,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       this.elements.stepContainer.querySelectorAll('.estimator-package-card').forEach(card => {
         card.addEventListener('click', (e) => this.handlePackageSelection(e));
         card.addEventListener('keydown', (e) => {
@@ -969,19 +806,12 @@
       });
     }
 
-    /**
-     * Handle package selection
-     */
     handlePackageSelection(event) {
       const card = event.currentTarget;
       const packageId = card.dataset.package;
       
       this.state.set('selectedPackage', packageId);
-      
-      // Re-render to show expanded state
       this.renderDetailsStep();
-      
-      // Enable next button
       this.state.set('canProceed', true);
     }
 
@@ -1059,7 +889,6 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       this.elements.stepContainer.querySelectorAll('.estimator-budget-type-selector .estimator-chip').forEach(chip => {
         chip.addEventListener('click', (e) => {
           this.state.set('budgetType', e.target.dataset.type);
@@ -1096,9 +925,6 @@
       }
     }
 
-    /**
-     * Validate budget
-     */
     validateBudget() {
       const budget = this.state.get('budget');
       const isValid = budget && budget >= 500000;
@@ -1111,7 +937,6 @@
     renderSummaryStep() {
       const clientDetails = this.state.get('clientDetails') || {};
       
-      // Get summary data
       const summary = {
         projectCategory: this.state.get('projectCategory'),
         projectType: this.state.get('projectType'),
@@ -1251,20 +1076,15 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Add event listeners
       const inputs = this.elements.stepContainer.querySelectorAll('input, select, textarea');
       inputs.forEach(input => {
         input.addEventListener('input', (e) => this.handleContactDetailChange(e));
         input.addEventListener('change', (e) => this.handleContactDetailChange(e));
       });
 
-      // Validate
       this.validateContactForm();
     }
 
-    /**
-     * Handle contact detail change
-     */
     handleContactDetailChange(event) {
       const field = event.target.id.replace('client-', '');
       const value = event.target.value;
@@ -1276,9 +1096,6 @@
       this.validateContactForm();
     }
 
-    /**
-     * Validate contact form
-     */
     validateContactForm() {
       const clientDetails = this.state.get('clientDetails') || {};
       const isValid = clientDetails.name && clientDetails.phone && clientDetails.email && clientDetails.city;
@@ -1286,68 +1103,65 @@
       this.state.set('canProceed', isValid);
     }
 
-    /**
-     * Show loading state
-     */
     showLoading() {
-      this.elements.loading.hidden = false;
-      this.elements.main.hidden = true;
+      if(this.elements.loading) this.elements.loading.hidden = false;
+      if(this.elements.main) this.elements.main.hidden = true;
     }
 
-    /**
-     * Hide loading state
-     */
     hideLoading() {
-      this.elements.loading.hidden = true;
-      this.elements.main.hidden = false;
+      if(this.elements.loading) this.elements.loading.hidden = true;
+      if(this.elements.main) this.elements.main.hidden = false;
     }
 
-    /**
-     * Show alert
-     * @param {string} message - Alert message
-     * @param {string} type - Alert type
-     */
     showAlert(message, type = 'info') {
       const alert = document.createElement('div');
       alert.className = `estimator-alert estimator-alert--${type}`;
       alert.textContent = message;
       
-      this.elements.stepContainer.insertBefore(alert, this.elements.stepContainer.firstChild);
-      
-      // Auto-dismiss after 5 seconds
-      setTimeout(() => {
-        alert.classList.add('estimator-alert--exiting');
-        setTimeout(() => alert.remove(), 300);
-      }, 5000);
+      if(this.elements.stepContainer) {
+          this.elements.stepContainer.insertBefore(alert, this.elements.stepContainer.firstChild);
+          setTimeout(() => {
+            alert.classList.add('estimator-alert--exiting');
+            setTimeout(() => alert.remove(), 300);
+          }, 5000);
+      }
     }
 
-    /**
-     * Clear alerts
-     */
     clearAlerts() {
-      const alerts = this.elements.stepContainer.querySelectorAll('.estimator-alert');
-      alerts.forEach(alert => alert.remove());
+      if(this.elements.stepContainer) {
+          const alerts = this.elements.stepContainer.querySelectorAll('.estimator-alert');
+          alerts.forEach(alert => alert.remove());
+      }
     }
 
     /**
-     * Show summary view
+     * Show summary view (UPDATED WITH HTML INJECTION FOR SAFETY)
      */
     showSummary() {
-      this.elements.wizard.hidden = true;
-      this.elements.summary.hidden = false;
+      if(this.elements.wizard) this.elements.wizard.hidden = true;
+      
+      if(this.elements.summary) {
+          this.elements.summary.hidden = false;
+          
+          // Inject a beautiful success message just in case the HTML div is empty
+          this.elements.summary.innerHTML = `
+            <div style="text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-2xl); max-width: 600px; margin: 40px auto; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.05);">
+                <span style="font-size: 72px; display: block; margin-bottom: 24px;">🎉</span>
+                <h2 style="font-family: var(--font-heading); font-size: 32px; color: var(--color-text-primary); margin-bottom: 16px;">Estimation Complete!</h2>
+                <p style="color: var(--color-text-secondary); font-size: 18px; margin-bottom: 32px; line-height: 1.6;">Your project details have been successfully recorded. If the PDF engine is active, your BOQ is downloading now.</p>
+                <div style="display: flex; gap: 16px; justify-content: center;">
+                    <button onclick="location.reload()" style="padding: 16px 32px; background: var(--color-champagne-500); color: white; border: none; border-radius: var(--radius-lg); font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Start New Estimate</button>
+                </div>
+            </div>
+          `;
+      }
     }
 
-    /**
-     * Hide summary view
-     */
     hideSummary() {
-      this.elements.wizard.hidden = false;
-      this.elements.summary.hidden = true;
+      if(this.elements.wizard) this.elements.wizard.hidden = false;
+      if(this.elements.summary) this.elements.summary.hidden = true;
     }
 
-    /**
-     * Reset UI
-     */
     reset() {
       this.hideSummary();
       this.renderStep(1);

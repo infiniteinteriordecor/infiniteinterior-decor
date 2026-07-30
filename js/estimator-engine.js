@@ -57,22 +57,28 @@
         this.moduleEngine = new window.EstimatorModuleEngine();
         this.boqEngine = new window.EstimatorBOQEngine();
         
-        // Initialize storage
-        await this.storage.init();
+        // Initialize storage SAFELY
+        if (this.storage && typeof this.storage.init === 'function') {
+          await this.storage.init();
+        }
         
         // Load data
         await this.loadData();
         
         // Initialize engines with data
-        this.materialEngine.init(this.materialsData);
-        this.budgetEngine.init(this.pricingRules);
-        this.recommendationEngine.init(this.recommendationsData, this.upgradeRules);
-        this.packageEngine.init(this.materialsData);
+        if (this.materialEngine && this.materialsData) this.materialEngine.init(this.materialsData);
+        if (this.budgetEngine && this.pricingRules) this.budgetEngine.init(this.pricingRules);
+        if (this.recommendationEngine && this.recommendationsData) this.recommendationEngine.init(this.recommendationsData, this.upgradeRules);
+        if (this.packageEngine && this.materialsData) this.packageEngine.init(this.materialsData);
         
         // Initialize PDF generator with safe fallback
         try {
-          this.pdfGenerator = new window.EstimatorPDFGenerator();
-          await this.pdfGenerator.init();
+          if (window.EstimatorPDFGenerator) {
+            this.pdfGenerator = new window.EstimatorPDFGenerator();
+            if (typeof this.pdfGenerator.init === 'function') {
+              await this.pdfGenerator.init();
+            }
+          }
         } catch (pdfError) {
           console.warn('PDF generator initialization failed, continuing without PDF functionality:', pdfError);
           this.pdfGenerator = null;
@@ -91,8 +97,16 @@
      */
     async loadData() {
       try {
-        // Use global asset resolver for consistent path resolution
-        const resolver = window.resolveAssetPath || ((p) => p);
+        // Use global asset resolver with a bulletproof GitHub Pages fallback
+        const resolver = window.resolveAssetPath || function(p) {
+          if (!p) return '';
+          let baseUrl = '/';
+          if (window.location.hostname.includes('github.io')) {
+            const segments = window.location.pathname.split('/').filter(Boolean);
+            baseUrl = '/' + (segments[0] || '') + '/';
+          }
+          return baseUrl + (p.startsWith('/') ? p.substring(1) : p);
+        };
         
         // Load materials data
         this.materialsData = await this.loadJSON(resolver('data/estimator/materials.json'));
@@ -288,6 +302,8 @@
      * @returns {Promise<Blob>} PDF blob
      */
     async generatePDF(type, data) {
+      if (!this.pdfGenerator) return null;
+      
       switch (type) {
         case 'quotation':
           return await this.pdfGenerator.generateQuotation(data);
@@ -308,6 +324,7 @@
      * @returns {Promise<string>} Draft ID
      */
     async saveDraft(data) {
+      if (!this.storage) return null;
       return await this.storage.saveDraft(data);
     }
 
@@ -317,6 +334,7 @@
      * @returns {Promise<Object>} Draft data
      */
     async loadDraft(draftId) {
+      if (!this.storage) return null;
       return await this.storage.loadDraft(draftId);
     }
 
@@ -326,6 +344,7 @@
      * @returns {Promise<boolean>} Success status
      */
     async deleteDraft(draftId) {
+      if (!this.storage) return false;
       return await this.storage.deleteDraft(draftId);
     }
 
@@ -334,6 +353,7 @@
      * @returns {Promise<Array>} Array of drafts
      */
     async listDrafts() {
+      if (!this.storage) return [];
       return await this.storage.listDrafts();
     }
 
@@ -344,6 +364,7 @@
      * @returns {Object} Validation result
      */
     validateStep(stepId, data) {
+      if (!this.validation) return { isValid: true, errors: [] };
       return this.validation.validateStep(stepId, data);
     }
 
@@ -354,6 +375,7 @@
      * @returns {Object} Validation result
      */
     validateField(field, value) {
+      if (!this.validation) return { isValid: true, error: null };
       return this.validation.validateField(field, value);
     }
 
@@ -363,7 +385,7 @@
      * @returns {Object} Tier information
      */
     getMaterialTier(tierId) {
-      return this.materialEngine.getTier(tierId);
+      return this.materialEngine ? this.materialEngine.getTier(tierId) : null;
     }
 
     /**
@@ -371,7 +393,7 @@
      * @returns {Array} Array of tiers
      */
     getAllMaterialTiers() {
-      return this.materialEngine.getAllTiers();
+      return this.materialEngine ? this.materialEngine.getAllTiers() : [];
     }
 
     /**
@@ -380,7 +402,7 @@
      * @returns {Object} Range information
      */
     getBudgetRange(budget) {
-      return this.budgetEngine.getBudgetRange(budget);
+      return this.budgetEngine ? this.budgetEngine.getBudgetRange(budget) : null;
     }
 
     /**
@@ -388,14 +410,14 @@
      * @returns {Array} Array of budget ranges
      */
     getAllBudgetRanges() {
-      return this.budgetEngine.getAllBudgetRanges();
+      return this.budgetEngine ? this.budgetEngine.getAllBudgetRanges() : [];
     }
 
     /**
      * Reset estimator
      */
     reset() {
-      this.state.reset();
+      if (this.state) this.state.reset();
     }
 
     /**

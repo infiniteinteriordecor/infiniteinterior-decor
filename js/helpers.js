@@ -437,10 +437,8 @@
   };
 
   /**
-   * Resolve asset path using browser-native URL resolution
-   * Works on localhost, file://, and GitHub Pages without manual path calculation
-   * @param {string} assetPath - Relative or absolute asset path (e.g., 'assets/images/logo.png' or '/assets/images/logo.png')
-   * @returns {string} Resolved asset path
+   * Resolve asset path safely
+   * Fixed to use consistent getBaseUrl logic and prevent GitHub Pages routing errors
    */
   function resolveAssetPath(assetPath) {
     if (!assetPath) return '';
@@ -450,36 +448,14 @@
       return assetPath;
     }
     
-    // Use browser-native URL resolution
     try {
-      const currentUrl = window.location.href;
-      const resolvedUrl = new URL(assetPath, currentUrl);
+      // Use the safe base URL we defined at the top of the file
+      const baseUrl = typeof window.getBaseUrl === 'function' ? window.getBaseUrl() : '/';
+      const cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
       
-      // Convert to relative path from current page
-      const currentPath = window.location.pathname;
-      const resolvedPath = resolvedUrl.pathname;
-      
-      // Calculate relative path
-      const currentSegments = currentPath.split('/').filter(s => s.length > 0);
-      const resolvedSegments = resolvedPath.split('/').filter(s => s.length > 0);
-      
-      // Find common prefix
-      let commonDepth = 0;
-      while (commonDepth < currentSegments.length && 
-             commonDepth < resolvedSegments.length && 
-             currentSegments[commonDepth] === resolvedSegments[commonDepth]) {
-        commonDepth++;
-      }
-      
-      // Calculate relative path
-      const upLevels = currentSegments.length - commonDepth;
-      const relativePath = '../'.repeat(upLevels) + resolvedSegments.slice(commonDepth).join('/');
-      
-      return relativePath;
-      
+      return baseUrl + cleanPath;
     } catch (error) {
       console.error('Asset path resolution error:', error);
-      // Fallback to original path if resolution fails
       return assetPath;
     }
   }

@@ -109,52 +109,23 @@
   };
 
   /**
-   * Global Asset Resolver
-   * Uses the existing resolveAssetPath from helpers.js if available
-   * Falls back to browser-native URL resolution if not
+   * Global Asset Resolver (FIXED: Safe Standalone Version - No Infinite Loops)
    */
   function resolveAssetPath(path) {
     if (!path) return '';
     
-    // Use existing resolver from helpers.js if available
-    if (window.resolveAssetPath && typeof window.resolveAssetPath === 'function') {
-      const resolved = window.resolveAssetPath(path);
-      Diagnostic.info('Asset resolved via helpers.js', { original: path, resolved });
-      return resolved;
-    }
-    
-    // Fallback: Use browser-native URL resolution
-    if (path.startsWith('http://') || path.startsWith('https://')) {
-      return path;
-    }
-    
     try {
-      const currentUrl = window.location.href;
-      const resolvedUrl = new URL(path, currentUrl);
-      
-      // Convert to relative path from current page
-      const currentPath = window.location.pathname;
-      const resolvedPath = resolvedUrl.pathname;
-      
-      // Calculate relative path
-      const currentSegments = currentPath.split('/').filter(s => s.length > 0);
-      const resolvedSegments = resolvedPath.split('/').filter(s => s.length > 0);
-      
-      // Find common prefix
-      let commonDepth = 0;
-      while (commonDepth < currentSegments.length && 
-             commonDepth < resolvedSegments.length && 
-             currentSegments[commonDepth] === resolvedSegments[commonDepth]) {
-        commonDepth++;
+      let baseUrl = '/';
+      if (window.location.hostname.includes('github.io')) {
+        const segments = window.location.pathname.split('/').filter(Boolean);
+        baseUrl = '/' + (segments[0] || '') + '/';
       }
       
-      // Calculate relative path
-      const upLevels = currentSegments.length - commonDepth;
-      const relativePath = '../'.repeat(upLevels) + resolvedSegments.slice(commonDepth).join('/');
+      const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+      const finalPath = baseUrl + cleanPath;
       
-      Diagnostic.info('Asset resolved via fallback', { original: path, resolved: relativePath });
-      
-      return relativePath;
+      Diagnostic.info('Asset resolved safely', { original: path, resolved: finalPath });
+      return finalPath;
       
     } catch (error) {
       Diagnostic.error('Asset path resolution error', { error: error.message });
@@ -494,7 +465,7 @@
     }
 
     // Phase 8: Final Validation
-    Diagnostic.info('--- PHASE 8: FINAL VALIDATION ---');
+    Diagnostic.info('--- PHASE 8: FINAL Validation ---');
     
     const criticalModules = ['Storage', 'State', 'Router', 'UI'];
     const criticalStatus = criticalModules.map(name => ({

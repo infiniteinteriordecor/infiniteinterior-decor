@@ -497,5 +497,13 @@
   window.EstimatorHelper = Helper;
   window.resolveAssetPath = resolveAssetPath;
   window.getBasePath = getBasePath;
+  
+  // Standalone getBaseUrl for global availability without app.js dependency
+  window.getBaseUrl = window.getBaseUrl || function() {
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    if (!isGitHubPages) return '/';
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+    return '/' + (pathSegments[0] || '') + '/';
+  };
 
 })();

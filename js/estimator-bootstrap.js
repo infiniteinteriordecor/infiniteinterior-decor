@@ -525,7 +525,15 @@
   // Export Bootstrap object
   window.EstimatorBootstrap = {
     bootstrap,
-    resolveAssetPath,
+    resolveAssetPath: function(path) {
+      if (!path) return '';
+      if (window.resolveAssetPath && typeof window.resolveAssetPath === 'function' && window.resolveAssetPath !== this.resolveAssetPath) {
+        return window.resolveAssetPath(path);
+      }
+      const baseUrl = (typeof window.getBaseUrl === 'function') ? window.getBaseUrl() : '/';
+      const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+      return baseUrl + cleanPath;
+    },
     getDiagnostic: () => Diagnostic.getReport(),
     CONFIG
   };

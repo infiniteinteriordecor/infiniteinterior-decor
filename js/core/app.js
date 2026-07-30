@@ -9,34 +9,6 @@
   'use strict';
 
   /**
-   * Bulletproof base URL detection for GitHub Pages
-   * Dynamically extracts repository name from pathname for portability
-   * Works universally across all environments
-   */
-  window.getBaseUrl = function() {
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    if (!isGitHubPages) return '/';
-    
-    // Extract repository name from pathname dynamically
-    const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
-    const repoName = pathSegments[0] || '';
-    return '/' + repoName + '/';
-  };
-
-  /**
-   * Bulletproof asset path resolution
-   * Prevents all forms of subpath duplication
-   * Dynamically strips any existing base URL to prevent duplication
-   */
-  window.resolveAssetPath = function(assetPath) {
-    if (!assetPath) return '';
-    const baseUrl = window.getBaseUrl();
-    // Strip any leading slash to prevent duplication
-    let cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
-    return baseUrl + cleanPath;
-  };
-
-  /**
    * Core module loader
    * Dynamically loads modules based on current page
    */

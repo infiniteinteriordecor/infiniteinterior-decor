@@ -427,64 +427,67 @@
   };
 
   /**
-   * Resolve asset path for GitHub Pages compatibility
-   * Converts absolute paths to relative paths based on current page depth
-   * @param {string} assetPath - Absolute asset path (e.g., '/assets/images/logo.png')
-   * @returns {string} Relative asset path
+   * Resolve asset path using browser-native URL resolution
+   * Works on localhost, file://, and GitHub Pages without manual path calculation
+   * @param {string} assetPath - Relative or absolute asset path (e.g., 'assets/images/logo.png' or '/assets/images/logo.png')
+   * @returns {string} Resolved asset path
    */
   function resolveAssetPath(assetPath) {
-    const currentPath = window.location.pathname;
-    const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
+    if (!assetPath) return '';
     
-    // Remove GitHub Pages subpath if present
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    let effectiveSegments = pathSegments;
-    if (isGitHubPages && pathSegments.length > 0) {
-      effectiveSegments = pathSegments.slice(1);
+    // If already absolute URL, return as-is
+    if (assetPath.startsWith('http://') || assetPath.startsWith('https://')) {
+      return assetPath;
     }
     
-    const depth = effectiveSegments.length;
-    let prefix = '';
-    
-    if (depth === 0 || (depth === 1 && effectiveSegments[0].endsWith('.html'))) {
-      prefix = '';
-    } else if (depth === 1) {
-      prefix = '../';
-    } else if (depth === 2) {
-      prefix = '../../';
-    } else {
-      prefix = '../'.repeat(depth);
+    // Use browser-native URL resolution
+    try {
+      const currentUrl = window.location.href;
+      const resolvedUrl = new URL(assetPath, currentUrl);
+      
+      // Convert to relative path from current page
+      const currentPath = window.location.pathname;
+      const resolvedPath = resolvedUrl.pathname;
+      
+      // Calculate relative path
+      const currentSegments = currentPath.split('/').filter(s => s.length > 0);
+      const resolvedSegments = resolvedPath.split('/').filter(s => s.length > 0);
+      
+      // Find common prefix
+      let commonDepth = 0;
+      while (commonDepth < currentSegments.length && 
+             commonDepth < resolvedSegments.length && 
+             currentSegments[commonDepth] === resolvedSegments[commonDepth]) {
+        commonDepth++;
+      }
+      
+      // Calculate relative path
+      const upLevels = currentSegments.length - commonDepth;
+      const relativePath = '../'.repeat(upLevels) + resolvedSegments.slice(commonDepth).join('/');
+      
+      return relativePath;
+      
+    } catch (error) {
+      console.error('Asset path resolution error:', error);
+      // Fallback to original path if resolution fails
+      return assetPath;
     }
-    
-    // Remove leading slash from asset path and add prefix
-    const relativePath = assetPath.startsWith('/') ? prefix + assetPath.substring(1) : prefix + assetPath;
-    return relativePath;
   }
 
   /**
    * Get base path for current page
-   * Returns the relative path prefix to reach the root
+   * Returns the relative path prefix to reach the root using browser-native URL resolution
    * @returns {string} Base path prefix
    */
   function getBasePath() {
     const currentPath = window.location.pathname;
-    const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
+    const pathSegments = currentPath.split('/').filter(s => s.length > 0);
     
-    // Remove GitHub Pages subpath if present
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    let effectiveSegments = pathSegments;
-    if (isGitHubPages && pathSegments.length > 0) {
-      effectiveSegments = pathSegments.slice(1);
-    }
+    // Calculate relative path to root
+    const depth = pathSegments.length;
     
-    const depth = effectiveSegments.length;
-    
-    if (depth === 0 || (depth === 1 && effectiveSegments[0].endsWith('.html'))) {
+    if (depth === 0) {
       return '';
-    } else if (depth === 1) {
-      return '../';
-    } else if (depth === 2) {
-      return '../../';
     } else {
       return '../'.repeat(depth);
     }

@@ -22,20 +22,20 @@
   const CONFIG = {
     // Module loading order
     modules: [
-      { name: 'Storage', check: () => window.EstimatorStorage, init: async (storage) => await storage.init() },
-      { name: 'State', check: () => window.EstimatorState, init: null },
-      { name: 'Validation', check: () => window.EstimatorValidation, init: null },
-      { name: 'Router', check: () => window.EstimatorRouter, init: (state) => new window.EstimatorRouter(state) },
-      { name: 'MaterialEngine', check: () => window.EstimatorMaterialEngine, init: null },
-      { name: 'PackageEngine', check: () => window.EstimatorPackageEngine, init: null },
-      { name: 'BudgetEngine', check: () => window.EstimatorBudgetEngine, init: null },
-      { name: 'RecommendationEngine', check: () => window.EstimatorRecommendationEngine, init: null },
-      { name: 'ComparisonEngine', check: () => window.EstimatorComparisonEngine, init: null },
-      { name: 'ModuleEngine', check: () => window.EstimatorModuleEngine, init: null },
-      { name: 'BOQEngine', check: () => window.EstimatorBOQEngine, init: null },
-      { name: 'PDFGenerator', check: () => window.EstimatorPDFGenerator, init: async (pdf) => await pdf.init() },
-      { name: 'EstimatorEngine', check: () => window.EstimatorEngine, init: async (engine, state) => await engine.init() },
-      { name: 'UI', check: () => window.EstimatorUI, init: (state, router) => new window.EstimatorUI(state, router) }
+      { name: 'Storage', check: () => window.EstimatorStorage, init: null }, // Singleton, will call init() if exists
+      { name: 'State', check: () => window.EstimatorState, init: null }, // Singleton
+      { name: 'Validation', check: () => window.EstimatorValidation, init: null }, // Constructor
+      { name: 'Router', check: () => window.EstimatorRouter, init: null }, // Constructor, will receive state from context
+      { name: 'MaterialEngine', check: () => window.EstimatorMaterialEngine, init: null }, // Constructor
+      { name: 'PackageEngine', check: () => window.EstimatorPackageEngine, init: null }, // Constructor
+      { name: 'BudgetEngine', check: () => window.EstimatorBudgetEngine, init: null }, // Constructor
+      { name: 'RecommendationEngine', check: () => window.EstimatorRecommendationEngine, init: null }, // Constructor
+      { name: 'ComparisonEngine', check: () => window.EstimatorComparisonEngine, init: null }, // Constructor
+      { name: 'ModuleEngine', check: () => window.EstimatorModuleEngine, init: null }, // Constructor
+      { name: 'BOQEngine', check: () => window.EstimatorBOQEngine, init: null }, // Constructor
+      { name: 'PDFGenerator', check: () => window.EstimatorPDFGenerator, init: null }, // Constructor, will call init() if exists
+      { name: 'EstimatorEngine', check: () => window.EstimatorEngine, init: null }, // Constructor
+      { name: 'UI', check: () => window.EstimatorUI, init: null } // Constructor, will receive state and router from context
     ],
 
     // Data files to load
@@ -111,7 +111,7 @@
   /**
    * Global Asset Resolver
    * Uses the existing resolveAssetPath from helpers.js if available
-   * Falls back to a simple implementation if not
+   * Falls back to browser-native URL resolution if not
    */
   function resolveAssetPath(path) {
     if (!path) return '';
@@ -123,46 +123,61 @@
       return resolved;
     }
     
-    // Fallback implementation
-    if (path.startsWith('http://') || path.startsWith('https://') || path.startsWith('/')) {
+    // Fallback: Use browser-native URL resolution
+    if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
-
-    const currentPath = window.location.pathname;
-    const pathSegments = currentPath.split('/').filter(s => s.length > 0);
-    const depth = pathSegments.length;
     
-    let prefix = '';
-    for (let i = 0; i < depth; i++) {
-      prefix += '../';
+    try {
+      const currentUrl = window.location.href;
+      const resolvedUrl = new URL(path, currentUrl);
+      
+      // Convert to relative path from current page
+      const currentPath = window.location.pathname;
+      const resolvedPath = resolvedUrl.pathname;
+      
+      // Calculate relative path
+      const currentSegments = currentPath.split('/').filter(s => s.length > 0);
+      const resolvedSegments = resolvedPath.split('/').filter(s => s.length > 0);
+      
+      // Find common prefix
+      let commonDepth = 0;
+      while (commonDepth < currentSegments.length && 
+             commonDepth < resolvedSegments.length && 
+             currentSegments[commonDepth] === resolvedSegments[commonDepth]) {
+        commonDepth++;
+      }
+      
+      // Calculate relative path
+      const upLevels = currentSegments.length - commonDepth;
+      const relativePath = '../'.repeat(upLevels) + resolvedSegments.slice(commonDepth).join('/');
+      
+      Diagnostic.info('Asset resolved via fallback', { original: path, resolved: relativePath });
+      
+      return relativePath;
+      
+    } catch (error) {
+      Diagnostic.error('Asset path resolution error', { error: error.message });
+      return path;
     }
-    
-    if (depth === 0 || (depth === 1 && pathSegments[0] === 'pages')) {
-      prefix = '';
-    }
-
-    const resolvedPath = prefix + path.replace(/^\.\//, '').replace(/^\.\.\//, '');
-    
-    Diagnostic.info('Asset resolved via fallback', { original: path, resolved: resolvedPath, currentPath, depth });
-    
-    return resolvedPath;
   }
 
   /**
-   * Validate Constructor Exists
+   * Validate Module (accepts both singletons and constructors)
    */
-  function validateConstructor(name, constructor) {
-    if (!constructor) {
-      Diagnostic.error(`Constructor not found: ${name}`);
+  function validateModule(name, module) {
+    if (!module) {
+      Diagnostic.error(`Module not found: ${name}`);
       return false;
     }
     
-    if (typeof constructor !== 'function') {
-      Diagnostic.error(`Constructor is not a function: ${name}`, { type: typeof constructor });
+    // Accept both singleton instances (object) and constructors (function)
+    if (typeof module !== 'object' && typeof module !== 'function') {
+      Diagnostic.error(`Module is neither object nor function: ${name}`, { type: typeof module });
       return false;
     }
     
-    Diagnostic.info(`Constructor validated: ${name}`);
+    Diagnostic.info(`Module validated: ${name}`, { type: typeof module });
     return true;
   }
 
@@ -175,37 +190,74 @@
     Diagnostic.info(`Loading module: ${name}`);
     
     try {
-      // Check if constructor exists
-      const constructor = check();
+      // Check if module exists
+      const module = check();
       
-      if (!validateConstructor(name, constructor)) {
-        Diagnostic.modules[name] = { status: 'failed', error: 'Constructor not found' };
-        Diagnostic.warn(`Module ${name} skipped - constructor not available`);
+      if (!validateModule(name, module)) {
+        Diagnostic.modules[name] = { status: 'failed', error: 'Module not found' };
+        Diagnostic.warn(`Module ${name} skipped - module not available`);
         return null;
       }
 
-      // Initialize if init function provided
-      let instance = constructor;
+      // Handle singleton instances vs constructors
+      let instance = module;
       
-      if (init) {
-        // Handle different init signatures
+      if (typeof module === 'function') {
+        // It's a constructor, instantiate it
+        Diagnostic.info(`Instantiating constructor: ${name}`);
+        
+        // Handle different constructor signatures
         if (name === 'Router') {
-          instance = init(context.state);
-        } else if (name === 'UI') {
-          instance = init(context.state, context.router);
-        } else if (name === 'EstimatorEngine') {
-          instance = new constructor(context.state);
-          const initialized = await init(instance, context.state);
-          if (!initialized) {
-            throw new Error('EstimatorEngine initialization failed');
+          // Router requires state parameter
+          if (!context.state) {
+            throw new Error('Router requires state to be available');
           }
+          instance = new module(context.state);
+        } else if (name === 'UI') {
+          // UI requires state and router parameters
+          if (!context.state || !context.router) {
+            throw new Error('UI requires state and router to be available');
+          }
+          instance = new module(context.state, context.router);
+        } else if (name === 'EstimatorEngine') {
+          // EstimatorEngine requires state parameter
+          if (!context.state) {
+            throw new Error('EstimatorEngine requires state to be available');
+          }
+          instance = new module(context.state);
         } else {
-          await init(instance);
+          instance = new module();
         }
+      } else {
+        // It's a singleton instance, use directly
+        Diagnostic.info(`Using singleton instance: ${name}`);
       }
 
-      Diagnostic.modules[name] = { status: 'loaded', instance: !!instance };
-      Diagnostic.info(`Module loaded: ${name}`);
+      // Call init if provided and exists on the instance
+      if (init) {
+        if (typeof init === 'function') {
+          // Custom init function provided in config
+          if (name === 'Router') {
+            instance = init(context.state);
+          } else if (name === 'UI') {
+            instance = init(context.state, context.router);
+          } else if (name === 'EstimatorEngine') {
+            const initialized = await init(instance, context.state);
+            if (!initialized) {
+              throw new Error('EstimatorEngine initialization failed');
+            }
+          } else {
+            await init(instance);
+          }
+        }
+      } else if (typeof instance.init === 'function') {
+        // Call the instance's init method if it exists
+        Diagnostic.info(`Calling init() on ${name}`);
+        await instance.init();
+      }
+
+      Diagnostic.modules[name] = { status: 'loaded', instance: !!instance, type: typeof module };
+      console.log(`✓ ${name} Loaded`);
       
       return instance;
       
@@ -326,8 +378,10 @@
       const data = await loadDataFile(dataConfig);
       if (data) {
         dataResults[dataConfig.name] = data;
+        console.log(`✓ ${dataConfig.name} Loaded`);
       }
     }
+    console.log('✓ Assets Loaded');
 
     // Phase 4: Load Engine Modules
     Diagnostic.info('--- PHASE 4: ENGINE MODULES ---');

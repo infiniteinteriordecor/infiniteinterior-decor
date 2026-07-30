@@ -13,6 +13,16 @@
 (function() {
   'use strict';
 
+  // Fallback for getBaseUrl if not already defined by app.js
+  if (typeof window.getBaseUrl !== 'function') {
+    window.getBaseUrl = function() {
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      if (!isGitHubPages) return '/';
+      const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+      return '/' + (pathSegments[0] || '') + '/';
+    };
+  }
+
   /**
    * Helper Object
    * Contains all utility functions

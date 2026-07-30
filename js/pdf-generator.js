@@ -404,7 +404,7 @@
      */
     generateProjectSummaryPage(data) {
       const projectInfo = data.projectInfo || {};
-      const package = data.selectedPackage || 'medium';
+      const selectedPackage = data.selectedPackage || 'medium';
       
       return `
 <div class="page">
@@ -435,7 +435,7 @@
     </div>
     <div class="info-item">
       <div class="info-label">Selected Package</div>
-      <div class="info-value">${package.charAt(0).toUpperCase() + package.slice(1)}</div>
+      <div class="info-value">${selectedPackage.charAt(0).toUpperCase() + selectedPackage.slice(1)}</div>
     </div>
     <div class="info-item">
       <div class="info-label">Design Style</div>
@@ -484,8 +484,8 @@
      * @returns {string} HTML string
      */
     generatePackageSummaryPage(data) {
-      const package = data.selectedPackage || 'medium';
-      const packageName = package.charAt(0).toUpperCase() + package.slice(1);
+      const selectedPackage = data.selectedPackage || 'medium';
+      const packageName = selectedPackage.charAt(0).toUpperCase() + selectedPackage.slice(1);
       
       return `
 <div class="page">
@@ -505,15 +505,15 @@
     </div>
     <div class="info-item">
       <div class="info-label">Quality Level</div>
-      <div class="info-value">${package === 'premium' ? 'Luxury' : package === 'medium' ? 'Premium' : 'Standard'}</div>
+      <div class="info-value">${selectedPackage === 'premium' ? 'Luxury' : selectedPackage === 'medium' ? 'Premium' : 'Standard'}</div>
     </div>
     <div class="info-item">
       <div class="info-label">Expected Lifespan</div>
-      <div class="info-value">${package === 'premium' ? '25 years' : package === 'medium' ? '20 years' : '15 years'}</div>
+      <div class="info-value">${selectedPackage === 'premium' ? '25 years' : selectedPackage === 'medium' ? '20 years' : '15 years'}</div>
     </div>
     <div class="info-item">
       <div class="info-label">Warranty Period</div>
-      <div class="info-value">${package === 'premium' ? '15 years' : package === 'medium' ? '10 years' : '5 years'}</div>
+      <div class="info-value">${selectedPackage === 'premium' ? '15 years' : selectedPackage === 'medium' ? '10 years' : '5 years'}</div>
     </div>
   </div>
   
@@ -572,23 +572,23 @@
     <tbody>
       <tr>
         <td>Premium Materials</td>
-        <td>${package === 'premium' ? '✓' : package === 'medium' ? '✓' : '✗'}</td>
+        <td>${selectedPackage === 'premium' ? '✓' : selectedPackage === 'medium' ? '✓' : '✗'}</td>
       </tr>
       <tr>
         <td>Soft-close Hardware</td>
-        <td>${package === 'premium' ? '✓' : package === 'medium' ? '✓' : '✗'}</td>
+        <td>${selectedPackage === 'premium' ? '✓' : selectedPackage === 'medium' ? '✓' : '✗'}</td>
       </tr>
       <tr>
         <td>Premium Lighting</td>
-        <td>${package === 'premium' ? '✓' : package === 'medium' ? '✓' : '✗'}</td>
+        <td>${selectedPackage === 'premium' ? '✓' : selectedPackage === 'medium' ? '✓' : '✗'}</td>
       </tr>
       <tr>
         <td>Veneer Finish</td>
-        <td>${package === 'premium' ? '✓' : package === 'medium' ? '✓' : '✗'}</td>
+        <td>${selectedPackage === 'premium' ? '✓' : selectedPackage === 'medium' ? '✓' : '✗'}</td>
       </tr>
       <tr>
         <td>Design Revisions</td>
-        <td>${package === 'premium' ? 'Unlimited' : package === 'medium' ? '4' : '2'}</td>
+        <td>${selectedPackage === 'premium' ? 'Unlimited' : selectedPackage === 'medium' ? '4' : '2'}</td>
       </tr>
     </tbody>
   </table>
@@ -752,7 +752,7 @@
      * @returns {string} HTML string
      */
     generateMaterialDetailsPage(data) {
-      const package = data.selectedPackage || 'medium';
+      const selectedPackage = data.selectedPackage || 'medium';
       
       return `
 <div class="page">
@@ -776,8 +776,8 @@
     <tbody>
       <tr>
         <td>Main Plywood</td>
-        <td>${package === 'premium' ? 'BWP Marine' : package === 'medium' ? 'BWR' : 'MR'}</td>
-        <td>${package === 'premium' ? '19mm' : '18mm'}</td>
+        <td>${selectedPackage === 'premium' ? 'BWP Marine' : selectedPackage === 'medium' ? 'BWR' : 'MR'}</td>
+        <td>${selectedPackage === 'premium' ? '19mm' : '18mm'}</td>
         <td>Greenply/Century</td>
       </tr>
       <tr>
@@ -788,7 +788,7 @@
       </tr>
       <tr>
         <td>MDF</td>
-        <td>${package === 'premium' ? 'Fire Retardant' : 'Standard'}</td>
+        <td>${selectedPackage === 'premium' ? 'Fire Retardant' : 'Standard'}</td>
         <td>18mm</td>
         <td>Greenpanel</td>
       </tr>
@@ -808,21 +808,21 @@
     <tbody>
       <tr>
         <td>Hinges</td>
-        <td>${package === 'premium' ? 'Soft Close Plus' : 'Standard'}</td>
+        <td>${selectedPackage === 'premium' ? 'Soft Close Plus' : 'Standard'}</td>
         <td>Hafele</td>
-        <td>${package === 'premium' ? 'Brass' : 'Chrome'}</td>
+        <td>${selectedPackage === 'premium' ? 'Brass' : 'Chrome'}</td>
       </tr>
       <tr>
         <td>Slides</td>
-        <td>${package === 'premium' ? 'Heavy Duty' : 'Standard'}</td>
+        <td>${selectedPackage === 'premium' ? 'Heavy Duty' : 'Standard'}</td>
         <td>Hettich</td>
-        <td>${package === 'premium' ? 'Matte Black' : 'Chrome'}</td>
+        <td>${selectedPackage === 'premium' ? 'Matte Black' : 'Chrome'}</td>
       </tr>
       <tr>
         <td>Handles</td>
         <td>Bar Handle</td>
         <td>Hafele</td>
-        <td>${package === 'premium' ? 'Gold' : 'Stainless Steel'}</td>
+        <td>${selectedPackage === 'premium' ? 'Gold' : 'Stainless Steel'}</td>
       </tr>
     </tbody>
   </table>
@@ -840,21 +840,21 @@
     <tbody>
       <tr>
         <td>Laminates</td>
-        <td>${package === 'premium' ? 'Texture' : 'Decorative'}</td>
+        <td>${selectedPackage === 'premium' ? 'Texture' : 'Decorative'}</td>
         <td>Merino/Greenlam</td>
-        <td>${package === 'premium' ? '1mm' : '0.8mm'}</td>
+        <td>${selectedPackage === 'premium' ? '1mm' : '0.8mm'}</td>
       </tr>
       <tr>
         <td>Paint</td>
-        <td>${package === 'premium' ? 'Royal Luxury' : ' Royale'}</td>
+        <td>${selectedPackage === 'premium' ? 'Royal Luxury' : ' Royale'}</td>
         <td>Asian Paints</td>
-        <td>${package === 'premium' ? 'Gloss' : 'Satin'}</td>
+        <td>${selectedPackage === 'premium' ? 'Gloss' : 'Satin'}</td>
       </tr>
       <tr>
         <td>Veneer</td>
-        <td>${package === 'premium' ? 'Premium Walnut' : 'Natural Oak'}</td>
+        <td>${selectedPackage === 'premium' ? 'Premium Walnut' : 'Natural Oak'}</td>
         <td>Decowood</td>
-        <td>${package === 'premium' ? '0.8mm' : '0.5mm'}</td>
+        <td>${selectedPackage === 'premium' ? '0.8mm' : '0.5mm'}</td>
       </tr>
     </tbody>
   </table>

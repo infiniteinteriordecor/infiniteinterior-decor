@@ -96,79 +96,13 @@
   }
 
   /**
-   * Calculate relative path prefix based on current page depth
-   * Dynamically removes GitHub Pages subpath for portability
-   * @returns {string} Relative path prefix (e.g., '', '../', '../../')
-   */
-  function getRelativePathPrefix() {
-    const currentPath = window.location.pathname;
-    const pathSegments = currentPath.split('/').filter(segment => segment.length > 0);
-    
-    // Remove GitHub Pages subpath if present (dynamic extraction)
-    const isGitHubPages = window.location.hostname.includes('github.io');
-    let effectiveSegments = pathSegments;
-    if (isGitHubPages && pathSegments.length > 0) {
-      // First segment is the repository name on GitHub Pages
-      effectiveSegments = pathSegments.slice(1);
-    }
-    
-    const depth = effectiveSegments.length;
-    
-    if (depth === 0 || (depth === 1 && effectiveSegments[0].endsWith('.html'))) {
-      // Root level
-      return '';
-    } else if (depth === 1) {
-      // pages/about/ (index.html)
-      return '../';
-    } else if (depth === 2) {
-      // pages/projects/detail/ (index.html)
-      return '../../';
-    } else {
-      // Fallback for deeper levels
-      return '../'.repeat(depth);
-    }
-  }
-
-  /**
    * Update navigation links with correct relative paths
+   * Uses window.resolveAssetPath for GitHub Pages compatibility
    */
   function updateNavigationLinks() {
-    const prefix = getRelativePathPrefix();
-    console.log("Navigation path prefix:", prefix);
-    
-    // Update desktop navigation links
-    const desktopLinks = document.querySelectorAll('.navbar__nav--desktop .navbar__link');
-    desktopLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('/')) {
-        // Convert absolute path to relative
-        const relativePath = prefix + href.substring(1);
-        link.setAttribute('href', relativePath);
-        console.log(`Updated link: ${href} -> ${relativePath}`);
-      }
-    });
-    
-    // Update mobile navigation links
-    const mobileLinks = document.querySelectorAll('.navbar__nav--mobile .navbar__link');
-    mobileLinks.forEach(link => {
-      const href = link.getAttribute('href');
-      if (href && href.startsWith('/')) {
-        // Convert absolute path to relative
-        const relativePath = prefix + href.substring(1);
-        link.setAttribute('href', relativePath);
-        console.log(`Updated mobile link: ${href} -> ${relativePath}`);
-      }
-    });
-    
-    // Update logo link
-    const logoLink = document.querySelector('.navbar__logo-link');
-    if (logoLink) {
-      const href = logoLink.getAttribute('href');
-      if (href === '/' || href === '/index.html') {
-        logoLink.setAttribute('href', prefix + 'index.html');
-        console.log(`Updated logo link: ${href} -> ${prefix}index.html`);
-      }
-    }
+    // Navigation links are already relative in HTML
+    // No manual path calculation needed
+    // window.resolveAssetPath is used for asset paths only
   }
 
   /**

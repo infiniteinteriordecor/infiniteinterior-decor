@@ -525,7 +525,17 @@
   // Export Bootstrap object
   window.EstimatorBootstrap = {
     bootstrap,
-    resolveAssetPath,
+    resolveAssetPath: function(path) {
+      if (!path) return '';
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      let baseUrl = '/';
+      if (isGitHubPages) {
+        const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+        baseUrl = '/' + (pathSegments[0] || '') + '/';
+      }
+      const cleanPath = path.startsWith('/') ? path.substring(1) : path;
+      return baseUrl + cleanPath;
+    },
     getDiagnostic: () => Diagnostic.getReport(),
     CONFIG
   };

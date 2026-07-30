@@ -1,1 +1,7 @@
 *.md
+
+# Exception for architecture audit documentation
+!docs/
+!docs/architecture-audit/
+!docs/architecture-audit/**
+!docs/architecture-audit/**/*.md

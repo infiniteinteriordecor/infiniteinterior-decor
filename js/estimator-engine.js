@@ -51,7 +51,7 @@
         this.budgetEngine = new window.EstimatorBudgetEngine();
         this.recommendationEngine = new window.EstimatorRecommendationEngine();
         this.comparisonEngine = new window.EstimatorComparisonEngine();
-        this.storage = window.EstimatorStorage;
+        this.storage = new window.EstimatorStorage();
         this.validation = new window.EstimatorValidation();
         this.packageEngine = new window.EstimatorPackageEngine();
         this.moduleEngine = new window.EstimatorModuleEngine();

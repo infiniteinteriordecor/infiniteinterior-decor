@@ -19,9 +19,6 @@
    */
   class Router {
     constructor(stateManager) {
-      if (!stateManager) {
-        throw new Error('stateManager is required');
-      }
       this.state = stateManager;
       
       // Step definitions

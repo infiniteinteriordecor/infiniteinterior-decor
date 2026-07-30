@@ -8,6 +8,22 @@
 (function() {
   'use strict';
 
+  // Safe Fallback for Base URL
+  window.getBaseUrl = window.getBaseUrl || function() {
+    const isGitHubPages = window.location.hostname.includes('github.io');
+    if (!isGitHubPages) return '/';
+    const pathSegments = window.location.pathname.split('/').filter(segment => segment.length > 0);
+    return '/' + (pathSegments[0] || '') + '/';
+  };
+
+  // Safe Fallback for Asset Path Resolution
+  window.resolveAssetPath = window.resolveAssetPath || function(assetPath) {
+    if (!assetPath) return '';
+    const baseUrl = window.getBaseUrl();
+    let cleanPath = assetPath.startsWith('/') ? assetPath.substring(1) : assetPath;
+    return baseUrl + cleanPath;
+  };
+
   /**
    * Core module loader
    * Dynamically loads modules based on current page

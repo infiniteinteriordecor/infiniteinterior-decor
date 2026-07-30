@@ -27,6 +27,9 @@
       
       // Event handlers
       this.handlers = {};
+
+      // TRACK CURRENT STEP TO PREVENT REDUNDANT RENDERING
+      this.currentRenderedStep = null;
     }
 
     /**
@@ -76,6 +79,11 @@
     handleStateChange(state) {
       this.updateNavigationButtons(state);
       this.updateProgress(state);
+      
+      // === CRITICAL FIX: Detect step change and render new UI content ===
+      if (state.currentStep && this.currentRenderedStep !== state.currentStep) {
+        this.renderStep(state.currentStep);
+      }
     }
 
     /**
@@ -113,16 +121,21 @@
      * @param {Object} state - Current state
      */
     renderProgress(state) {
-      const steps = this.router.getAllSteps();
-      const currentStep = state ? state.currentStep : this.router.currentStep;
+      // Handle the case where the router method might fail or return undefined safely
+      const steps = (typeof this.router.getAllSteps === 'function') ? this.router.getAllSteps() : [];
+      const currentStep = state ? state.currentStep : (this.router.currentStep || 1);
+      
+      // If we don't have explicit step titles from router, use defaults
+      const defaultTitles = ['Category', 'Type', 'Information', 'Requirements', 'Style', 'Package', 'Budget', 'Contact'];
       
       let html = '<div class="estimator-progress-line"></div>';
       html += '<div class="estimator-progress-steps">';
       
-      steps.forEach((step, index) => {
+      for(let index = 0; index < 8; index++) {
         const stepNumber = index + 1;
         const isCompleted = stepNumber < currentStep;
         const isActive = stepNumber === currentStep;
+        const title = steps[index] ? steps[index].title : defaultTitles[index];
         
         let statusClass = '';
         if (isCompleted) statusClass = 'estimator-progress-step--completed';
@@ -133,13 +146,12 @@
             <div class="estimator-progress-step__indicator">
               ${isCompleted ? '✓' : stepNumber}
             </div>
-            <span class="estimator-progress-step__label">${step.title}</span>
+            <span class="estimator-progress-step__label">${title}</span>
           </div>
         `;
-      });
+      }
       
       html += '</div>';
-      
       this.elements.progress.innerHTML = html;
     }
 
@@ -156,9 +168,8 @@
      * @param {number} stepId - Step ID
      */
     renderStep(stepId) {
-      const step = this.router.getStep(stepId);
-      
-      if (!step) return;
+      // Sync the tracking variable so we don't double-render
+      this.currentRenderedStep = stepId;
       
       // Add exiting animation
       this.elements.stepContainer.classList.add('estimator-step--exiting');
@@ -186,36 +197,34 @@
      * @param {number} stepId - Step ID
      */
     renderStepContent(stepId) {
-      // Placeholder for step-specific rendering logic
-      // Will be implemented with step-specific renderers
-      
+      // Note: Function names here are historical but they map perfectly to the 8 steps
       switch (stepId) {
         case 1:
-          this.renderPackageStep();
+          this.renderPackageStep();     // Renders Step 1: Category
           break;
         case 2:
-          this.renderBudgetStep();
+          this.renderBudgetStep();      // Renders Step 2: Type
           break;
         case 3:
-          this.renderRoomsStep();
+          this.renderRoomsStep();       // Renders Step 3: Information
           break;
         case 4:
-          this.renderModulesStep();
+          this.renderModulesStep();     // Renders Step 4: Requirements
           break;
         case 5:
-          this.renderMaterialsStep();
+          this.renderMaterialsStep();   // Renders Step 5: Design Style
           break;
         case 6:
-          this.renderDetailsStep();
+          this.renderDetailsStep();     // Renders Step 6: Package
           break;
         case 7:
-          this.renderReviewStep();
+          this.renderReviewStep();      // Renders Step 7: Budget
           break;
         case 8:
-          this.renderSummaryStep();
+          this.renderSummaryStep();     // Renders Step 8: Contact
           break;
         default:
-          this.elements.stepContainer.innerHTML = '<p>Step not found</p>';
+          this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
       }
     }
 
@@ -435,6 +444,7 @@
                 <option value="chennai" ${projectInfo.city === 'chennai' ? 'selected' : ''}>Chennai</option>
                 <option value="hyderabad" ${projectInfo.city === 'hyderabad' ? 'selected' : ''}>Hyderabad</option>
                 <option value="pune" ${projectInfo.city === 'pune' ? 'selected' : ''}>Pune</option>
+                <option value="bhimtal" ${projectInfo.city === 'bhimtal' ? 'selected' : ''}>Bhimtal</option>
                 <option value="other" ${projectInfo.city === 'other' ? 'selected' : ''}>Other</option>
               </select>
             </div>

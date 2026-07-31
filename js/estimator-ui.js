@@ -258,73 +258,117 @@
     renderCustomServicesStep() {
       const selectedServices = this.state.get('selectedCustomServices') || [];
       
+      // Comprehensive list of interior works
       const services = [
-        { id: 'modular_kitchen', name: 'Modular Kitchen', icon: '🍳', desc: 'Custom cabinets, countertops, and layouts' },
-        { id: 'wardrobe', name: 'Wardrobes & Storage', icon: '🚪', desc: 'Sliding, walk-in, and custom storage' },
-        { id: 'false_ceiling', name: 'False Ceiling', icon: '✨', desc: 'POP, Gypsum, and cove lighting designs' },
-        { id: 'wall_paneling', name: 'Wall Paneling & Paint', icon: '🎨', desc: 'Louvers, fluted panels, and premium paint' },
-        { id: 'flooring', name: 'Flooring', icon: '🪵', desc: 'Tiles, wooden flooring, and marble' },
-        { id: 'plumbing_electrical', name: 'Plumbing & Electrical', icon: '⚡', desc: 'Wiring, fixtures, and piping work' },
-        { id: 'custom_furniture', name: 'Custom Furniture', icon: '🛋️', desc: 'Bespoke beds, sofas, and dining sets' },
-        { id: 'glass_partition', name: 'Partitions & Glass Work', icon: '🪟', desc: 'Space dividers, shower cubicles, and mirrors' }
+        { id: 'modular_kitchen', name: 'Modular Kitchen' },
+        { id: 'wardrobe', name: 'Wardrobes & Storage' },
+        { id: 'false_ceiling', name: 'False Ceiling & Lighting' },
+        { id: 'wall_paneling', name: 'Wall Paneling & Wallpaper' },
+        { id: 'painting', name: 'Interior Painting & Textures' },
+        { id: 'flooring', name: 'Flooring (Tiles, Wood, Marble)' },
+        { id: 'plumbing', name: 'Plumbing & Sanitary Work' },
+        { id: 'electrical', name: 'Electrical & Wiring' },
+        { id: 'custom_furniture', name: 'Custom Furniture (Beds, Sofas, Dining)' },
+        { id: 'glass_work', name: 'Glass Partitions & Mirrors' },
+        { id: 'bathroom', name: 'Complete Bathroom Remodeling' },
+        { id: 'civil_work', name: 'Civil Work & Demolition' },
+        { id: 'doors_windows', name: 'Doors, Windows & UPVC' },
+        { id: 'soft_furnishings', name: 'Soft Furnishings (Curtains, Blinds)' },
+        { id: 'hvac', name: 'AC & HVAC Work' },
+        { id: 'automation', name: 'Smart Home Automation' },
+        { id: 'deep_cleaning', name: 'Post-Construction Deep Cleaning' }
       ];
 
       let html = `
         <div class="estimator-step__header">
           <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Services</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose all the specific interior works you require (Select multiple)</p>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Select all the specific interior works you require from the dropdown below</p>
         </div>
-        <div class="estimator-step__content">
-          <div class="estimator-card-grid estimator-card-grid--3">
-      `;
-
-      services.forEach(service => {
-        const isSelected = selectedServices.includes(service.id);
-        
-        html += `
-          <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" 
-               data-service="${service.id}" 
-               role="button" 
-               tabindex="0"
-               style="position: relative; cursor: pointer;">
-            ${isSelected ? '<div style="position: absolute; top: 16px; right: 16px; background: var(--color-champagne-500); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</div>' : ''}
-            <div class="estimator-card__icon">
-              <span style="font-size: 32px;">${service.icon}</span>
+        <div class="estimator-step__content" style="max-width: 600px; margin: 0 auto; min-height: 350px;">
+          
+          <div class="estimator-custom-dropdown" id="services-dropdown" style="position: relative; width: 100%;">
+            
+            <!-- Dropdown Trigger / Box -->
+            <div class="estimator-dropdown-trigger" style="background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.2); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-height: 60px; transition: all 0.3s ease;">
+              <div class="estimator-selected-tags" style="display: flex; flex-wrap: wrap; gap: 8px; flex: 1;">
+                <!-- Tags will be injected here dynamically -->
+              </div>
+              <span class="dropdown-icon" style="font-size: 14px; margin-left: 16px; color: var(--color-text-secondary); transition: transform 0.3s;">▼</span>
             </div>
-            <h3 class="estimator-card__title">${service.name}</h3>
-            <p class="estimator-card__description">${service.desc}</p>
-          </div>
-        `;
-      });
 
-      html += `
+            <!-- Dropdown Menu List -->
+            <div class="estimator-dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); margin-top: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 100; max-height: 300px; overflow-y: auto;">
+              ${services.map(service => {
+                const isChecked = selectedServices.includes(service.id);
+                return `
+                  <label class="dropdown-item" style="display: flex; align-items: center; padding: 14px 20px; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.04); transition: background 0.2s;">
+                    <input type="checkbox" value="${service.id}" data-name="${service.name}" ${isChecked ? 'checked' : ''} style="margin-right: 16px; width: 20px; height: 20px; accent-color: var(--color-champagne-500); cursor: pointer;">
+                    <span style="font-size: 16px; color: var(--color-text-primary); font-weight: 500;">${service.name}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
           </div>
+
         </div>
       `;
 
       this.elements.stepContainer.innerHTML = html;
 
-      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
-        card.addEventListener('click', (e) => this.handleCustomServiceSelection(e));
+      // Logic for Custom Dropdown
+      const dropdownContainer = this.elements.stepContainer.querySelector('#services-dropdown');
+      const trigger = dropdownContainer.querySelector('.estimator-dropdown-trigger');
+      const menu = dropdownContainer.querySelector('.estimator-dropdown-menu');
+      const tagsContainer = dropdownContainer.querySelector('.estimator-selected-tags');
+      const checkboxes = dropdownContainer.querySelectorAll('input[type="checkbox"]');
+      const dropdownIcon = dropdownContainer.querySelector('.dropdown-icon');
+
+      trigger.addEventListener('click', () => {
+        const isMenuOpen = menu.style.display === 'block';
+        menu.style.display = isMenuOpen ? 'none' : 'block';
+        trigger.style.borderColor = isMenuOpen ? 'rgba(0,0,0,0.2)' : 'var(--color-champagne-500)';
+        dropdownIcon.style.transform = isMenuOpen ? 'rotate(0deg)' : 'rotate(180deg)';
       });
 
-      this.state.set('canProceed', selectedServices.length > 0);
-    }
+      document.addEventListener('click', (e) => {
+        if (!dropdownContainer.contains(e.target) && menu.style.display === 'block') {
+          menu.style.display = 'none';
+          trigger.style.borderColor = 'rgba(0,0,0,0.2)';
+          dropdownIcon.style.transform = 'rotate(0deg)';
+        }
+      });
 
-    handleCustomServiceSelection(event) {
-      const card = event.currentTarget;
-      const serviceId = card.dataset.service;
-      
-      let selectedServices = this.state.get('selectedCustomServices') || [];
-      
-      if (selectedServices.includes(serviceId)) {
-        selectedServices = selectedServices.filter(id => id !== serviceId);
-      } else {
-        selectedServices.push(serviceId);
-      }
-      
-      this.state.set('selectedCustomServices', selectedServices);
-      this.renderCustomServicesStep();
+      const updateSelection = () => {
+        const selectedIds = [];
+        const selectedNames = [];
+        
+        checkboxes.forEach(cb => {
+          if (cb.checked) {
+            selectedIds.push(cb.value);
+            selectedNames.push(cb.dataset.name);
+            cb.closest('label').style.background = 'rgba(196,160,116,0.05)';
+          } else {
+            cb.closest('label').style.background = 'transparent';
+          }
+        });
+
+        this.state.set('selectedCustomServices', selectedIds);
+        this.state.set('canProceed', selectedIds.length > 0);
+
+        if (selectedNames.length === 0) {
+          tagsContainer.innerHTML = '<span style="color: var(--color-text-tertiary); font-size: 16px;">Select services (e.g. Kitchen, Wardrobe)...</span>';
+        } else {
+          tagsContainer.innerHTML = selectedNames.map(name => 
+            `<span style="background: rgba(196,160,116,0.1); color: var(--color-champagne-600); border: 1px solid rgba(196,160,116,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 500;">${name}</span>`
+          ).join('');
+        }
+      };
+
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', updateSelection);
+      });
+
+      updateSelection();
     }
 
     renderBudgetStep() {
@@ -640,12 +684,9 @@
       });
     }
 
-    /**
-     * Budget Step - Updated Buttons ("I have a budget" vs "Skip / Not Sure")
-     */
     renderReviewStep() {
       const budget = this.state.get('budget') || '';
-      const budgetType = this.state.get('budgetType') || 'unknown'; // Defaulting to unknown to let them optionally enter
+      const budgetType = this.state.get('budgetType') || 'unknown'; 
       
       const presetBudgets = [
         { id: '5L', label: '₹5L', value: 500000 },
@@ -725,7 +766,6 @@
         });
         this.validateBudget();
       } else {
-        // If unknown is selected, they can proceed without filling any budget
         this.state.set('canProceed', true);
       }
     }

@@ -1,8 +1,5 @@
 /**
  * Estimator UI Manager
- * 
- * UI management for estimator module.
- * Handles DOM manipulation, event handling, and UI rendering.
  */
 
 (function() {
@@ -59,7 +56,7 @@
     }
 
     async handleNext() {
-      const isFinalStep = this.elements.nextButton.textContent === 'Complete';
+      const isFinalStep = this.elements.nextButton.textContent === 'Submit';
 
       if (isFinalStep) {
         console.log("Completion triggered! Processing BOQ...");
@@ -97,9 +94,8 @@
       this.elements.prevButton.disabled = !state.canGoBack;
       this.elements.nextButton.disabled = !state.canProceed;
       
-      // Update next button text for final step dynamically based on router's total steps
       if (state.currentStep === state.totalSteps || state.currentStep === this.router.totalSteps) {
-        this.elements.nextButton.textContent = 'Complete';
+        this.elements.nextButton.textContent = 'Submit';
       } else {
         this.elements.nextButton.textContent = 'Next';
       }
@@ -109,7 +105,6 @@
       const steps = (typeof this.router.getAllSteps === 'function') ? this.router.getAllSteps() : [];
       const currentStep = state ? state.currentStep : (this.router.currentStep || 1);
       
-      // Use router's steps if available (this will be useful for our dynamic branch)
       const defaultTitles = ['Category', 'Type', 'Information', 'Requirements', 'Style', 'Package', 'Budget', 'Contact'];
       const totalStepsToRender = steps.length > 0 ? steps.length : 8;
       
@@ -162,13 +157,7 @@
       }, 300);
     }
 
-    /**
-     * DYNAMIC STEP RENDERING
-     * If projectCategory is 'custom_services', the router will send different stepIds
-     * We map stepId strings to their respective render functions.
-     */
     renderStepContent(stepId) {
-      // Allow router to send string IDs for dynamic routing, fallback to numbers for legacy
       const stepMapper = typeof stepId === 'object' ? stepId.id : stepId.toString();
 
       switch (stepMapper) {
@@ -176,7 +165,6 @@
         case 'category':
           this.renderPackageStep(); break;
         
-        // STANDARD FLOW
         case '2':
         case 'type':
           this.renderBudgetStep(); break;
@@ -186,6 +174,10 @@
         case '4':
         case 'requirements':
           this.renderModulesStep(); break;
+        
+        case 'custom_services_selection':
+          this.renderCustomServicesStep(); break;
+
         case '5':
         case 'style':
           this.renderMaterialsStep(); break;
@@ -193,11 +185,6 @@
         case 'package':
           this.renderDetailsStep(); break;
         
-        // CUSTOM SERVICES FLOW
-        case 'custom_services_selection':
-          this.renderCustomServicesStep(); break;
-
-        // SHARED FINAL STEPS
         case '7':
         case 'budget':
           this.renderReviewStep(); break;
@@ -210,16 +197,12 @@
       }
     }
 
-    /**
-     * Render Step 1 - Project Category
-     */
     renderPackageStep() {
       const categories = [
         { id: 'residential', name: 'Residential', icon: '🏠', description: 'Home interior design for apartments, villas, and independent houses' },
         { id: 'commercial', name: 'Commercial', icon: '🏢', description: 'Office spaces, retail stores, and business interiors' },
         { id: 'hospitality', name: 'Hospitality', icon: '🏨', description: 'Hotels, restaurants, cafes, and entertainment spaces' },
         { id: 'retail', name: 'Retail', icon: '🛍️', description: 'Showrooms, boutiques, and shopping experiences' },
-        // === NEW 5TH CATEGORY ===
         { id: 'custom_services', name: 'A La Carte / Custom', icon: '🛠️', description: 'Select specific services like Kitchen, Wardrobes, Ceiling, Wall Paneling, etc.' }
       ];
 
@@ -229,7 +212,7 @@
           <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose the type of space or service you need</p>
         </div>
         <div class="estimator-step__content">
-          <div class="estimator-card-grid estimator-card-grid--3"> <!-- Changed to grid-3 for better fit with 5 items -->
+          <div class="estimator-card-grid estimator-card-grid--3">
       `;
 
       categories.forEach(category => {
@@ -238,9 +221,7 @@
           <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" 
                data-category="${category.id}" 
                role="button" 
-               tabindex="0"
-               aria-label="Select ${category.name} category"
-               aria-pressed="${isSelected}">
+               tabindex="0">
             <div class="estimator-card__icon">
               <span style="font-size: 32px;">${category.icon}</span>
             </div>
@@ -259,12 +240,6 @@
 
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleCategorySelection(e));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handleCategorySelection(e);
-          }
-        });
       });
     }
 
@@ -274,21 +249,13 @@
       
       this.state.set('projectCategory', categoryId);
       
-      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => {
-        c.classList.remove('estimator-card--selected');
-        c.setAttribute('aria-pressed', 'false');
-      });
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => c.classList.remove('estimator-card--selected'));
       card.classList.add('estimator-card--selected');
-      card.setAttribute('aria-pressed', 'true');
       
       this.state.set('canProceed', true);
     }
 
-    /**
-     * === NEW: Render Custom Services Selection Step ===
-     */
     renderCustomServicesStep() {
-      // Get previously selected services (if any)
       const selectedServices = this.state.get('selectedCustomServices') || [];
       
       const services = [
@@ -319,9 +286,7 @@
                data-service="${service.id}" 
                role="button" 
                tabindex="0"
-               style="position: relative; cursor: pointer;"
-               aria-label="Select ${service.name} service"
-               aria-pressed="${isSelected}">
+               style="position: relative; cursor: pointer;">
             ${isSelected ? '<div style="position: absolute; top: 16px; right: 16px; background: var(--color-champagne-500); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</div>' : ''}
             <div class="estimator-card__icon">
               <span style="font-size: 32px;">${service.icon}</span>
@@ -341,15 +306,8 @@
 
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleCustomServiceSelection(e));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handleCustomServiceSelection(e);
-          }
-        });
       });
 
-      // Require at least one service to proceed
       this.state.set('canProceed', selectedServices.length > 0);
     }
 
@@ -359,7 +317,6 @@
       
       let selectedServices = this.state.get('selectedCustomServices') || [];
       
-      // Toggle logic
       if (selectedServices.includes(serviceId)) {
         selectedServices = selectedServices.filter(id => id !== serviceId);
       } else {
@@ -367,20 +324,15 @@
       }
       
       this.state.set('selectedCustomServices', selectedServices);
-      
-      // Re-render to show checkmarks
       this.renderCustomServicesStep();
     }
 
-    /**
-     * Render Step 2 - Project Type (STANDARD FLOW)
-     */
     renderBudgetStep() {
       const projectTypes = [
-        { id: 'new_construction', name: 'New Construction', description: 'Complete interior design for newly built spaces', features: ['Full space planning', 'Complete furnishing', 'Custom design elements'], icon: '🏗️' },
-        { id: 'renovation', name: 'Renovation', description: 'Transform existing spaces with modern design', features: ['Space optimization', 'Modern upgrades', 'Structural modifications'], icon: '🔧' },
-        { id: 'interior_redesign', name: 'Interior Redesign', description: 'Refresh your space with new aesthetics', features: ['Style refresh', 'Furniture updates', 'Decor enhancements'], icon: '🎨' },
-        { id: 'partial_upgrade', name: 'Partial Upgrade', description: 'Focus on specific areas or rooms', features: ['Room-specific design', 'Budget-friendly', 'Flexible scope'], icon: '📐' }
+        { id: 'new_construction', name: 'New Construction', description: 'Complete interior design for newly built spaces', features: [], icon: '🏗️' },
+        { id: 'renovation', name: 'Renovation', description: 'Transform existing spaces with modern design', features: [], icon: '🔧' },
+        { id: 'interior_redesign', name: 'Interior Redesign', description: 'Refresh your space with new aesthetics', features: [], icon: '🎨' },
+        { id: 'partial_upgrade', name: 'Partial Upgrade', description: 'Focus on specific areas or rooms', features: [], icon: '📐' }
       ];
 
       let html = `
@@ -394,45 +346,25 @@
 
       projectTypes.forEach(type => {
         const isSelected = this.state.get('projectType') === type.id;
-        const isExpanded = isSelected;
-        
         html += `
           <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" 
                data-type="${type.id}" 
                role="button" 
-               tabindex="0"
-               aria-label="Select ${type.name} project type"
-               aria-pressed="${isSelected}"
-               aria-expanded="${isExpanded}">
+               tabindex="0">
             <div class="estimator-card__icon">
               <span style="font-size: 32px;">${type.icon}</span>
             </div>
             <h3 class="estimator-card__title">${type.name}</h3>
             <p class="estimator-card__description">${type.description}</p>
-            ${isExpanded ? `
-              <div class="estimator-card__features" style="margin-top: var(--spacing-4); padding-top: var(--spacing-4); border-top: 1px solid rgba(0,0,0,0.05);">
-                ${type.features.map(f => `<span class="estimator-tag" style="margin-right: var(--spacing-2); margin-bottom: var(--spacing-2);">${f}</span>`).join('')}
-              </div>
-            ` : ''}
           </div>
         `;
       });
 
-      html += `
-          </div>
-        </div>
-      `;
-
+      html += `</div></div>`;
       this.elements.stepContainer.innerHTML = html;
 
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleProjectTypeSelection(e));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handleProjectTypeSelection(e);
-          }
-        });
       });
     }
 
@@ -445,12 +377,8 @@
       this.state.set('canProceed', true);
     }
 
-    /**
-     * Render Step 3 - Project Information
-     */
     renderRoomsStep() {
       const projectInfo = this.state.get('projectInfo') || {};
-      
       let html = `
         <div class="estimator-step__header">
           <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Project Information</h2>
@@ -460,53 +388,25 @@
           <div class="estimator-form-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--spacing-6);">
             <div class="estimator-form-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
               <label class="estimator-label" for="area">Total Area (sqft)</label>
-              <input type="number" id="area" class="estimator-input" placeholder="Enter total area" value="${projectInfo.area || ''}" aria-required="true">
+              <input type="number" id="area" class="estimator-input" placeholder="Enter total area" value="${projectInfo.area || ''}">
             </div>
-            
-            <div class="estimator-form-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
-              <label class="estimator-label" for="floor">Floor Number</label>
-              <input type="number" id="floor" class="estimator-input" placeholder="Enter floor number" value="${projectInfo.floor || ''}">
-            </div>
-            
             <div class="estimator-form-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
               <label class="estimator-label" for="city">City</label>
-              <select id="city" class="estimator-select" aria-required="true">
+              <select id="city" class="estimator-select">
                 <option value="">Select city</option>
                 <option value="mumbai" ${projectInfo.city === 'mumbai' ? 'selected' : ''}>Mumbai</option>
                 <option value="delhi" ${projectInfo.city === 'delhi' ? 'selected' : ''}>Delhi</option>
                 <option value="bangalore" ${projectInfo.city === 'bangalore' ? 'selected' : ''}>Bangalore</option>
-                <option value="chennai" ${projectInfo.city === 'chennai' ? 'selected' : ''}>Chennai</option>
-                <option value="hyderabad" ${projectInfo.city === 'hyderabad' ? 'selected' : ''}>Hyderabad</option>
-                <option value="pune" ${projectInfo.city === 'pune' ? 'selected' : ''}>Pune</option>
-                <option value="bhimtal" ${projectInfo.city === 'bhimtal' ? 'selected' : ''}>Bhimtal</option>
                 <option value="other" ${projectInfo.city === 'other' ? 'selected' : ''}>Other</option>
               </select>
             </div>
-            
             <div class="estimator-form-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
               <label class="estimator-label" for="constructionType">Construction Type</label>
-              <select id="constructionType" class="estimator-select" aria-required="true">
+              <select id="constructionType" class="estimator-select">
                 <option value="">Select type</option>
                 <option value="apartment" ${projectInfo.constructionType === 'apartment' ? 'selected' : ''}>Apartment</option>
                 <option value="villa" ${projectInfo.constructionType === 'villa' ? 'selected' : ''}>Villa</option>
-                <option value="independent_house" ${projectInfo.constructionType === 'independent_house' ? 'selected' : ''}>Independent House</option>
-                <option value="penthouse" ${projectInfo.constructionType === 'penthouse' ? 'selected' : ''}>Penthouse</option>
-                <option value="commercial_space" ${projectInfo.constructionType === 'commercial_space' ? 'selected' : ''}>Commercial Space</option>
-              </select>
-            </div>
-            
-            <div class="estimator-form-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
-              <label class="estimator-label" for="propertySize">Property Size</label>
-              <select id="propertySize" class="estimator-select">
-                <option value="">Select size</option>
-                <option value="1bhk" ${projectInfo.propertySize === '1bhk' ? 'selected' : ''}>1 BHK</option>
-                <option value="2bhk" ${projectInfo.propertySize === '2bhk' ? 'selected' : ''}>2 BHK</option>
-                <option value="3bhk" ${projectInfo.propertySize === '3bhk' ? 'selected' : ''}>3 BHK</option>
-                <option value="4bhk" ${projectInfo.propertySize === '4bhk' ? 'selected' : ''}>4 BHK</option>
-                <option value="5bhk" ${projectInfo.propertySize === '5bhk' ? 'selected' : ''}>5 BHK</option>
-                <option value="studio" ${projectInfo.propertySize === 'studio' ? 'selected' : ''}>Studio</option>
-                <option value="office" ${projectInfo.propertySize === 'office' ? 'selected' : ''}>Office Space</option>
-                <option value="retail" ${projectInfo.propertySize === 'retail' ? 'selected' : ''}>Retail Space</option>
+                <option value="commercial" ${projectInfo.constructionType === 'commercial' ? 'selected' : ''}>Commercial</option>
               </select>
             </div>
           </div>
@@ -517,21 +417,17 @@
 
       const inputs = this.elements.stepContainer.querySelectorAll('input, select');
       inputs.forEach(input => {
-        input.addEventListener('input', (e) => this.handleProjectInfoChange(e));
         input.addEventListener('change', (e) => this.handleProjectInfoChange(e));
       });
-
       this.validateProjectInfo();
     }
 
     handleProjectInfoChange(event) {
       const field = event.target.id;
       const value = event.target.value;
-      
       const projectInfo = this.state.get('projectInfo') || {};
       projectInfo[field] = value;
       this.state.set('projectInfo', projectInfo);
-      
       this.validateProjectInfo();
     }
 
@@ -541,23 +437,8 @@
       this.state.set('canProceed', isValid);
     }
 
-    /**
-     * Render Step 4 - Requirement Builder
-     */
     renderModulesStep() {
       const rooms = this.state.get('rooms') || [];
-      
-      const roomTypes = [
-        { id: 'living_room', name: 'Living Room', icon: '🛋️' },
-        { id: 'bedroom', name: 'Bedroom', icon: '🛏️' },
-        { id: 'kitchen', name: 'Kitchen', icon: '🍳' },
-        { id: 'bathroom', name: 'Bathroom', icon: '🚿' },
-        { id: 'dining', name: 'Dining Room', icon: '🍽️' },
-        { id: 'study', name: 'Study Room', icon: '📚' },
-        { id: 'balcony', name: 'Balcony', icon: '🌿' },
-        { id: 'puja_room', name: 'Puja Room', icon: '🙏' }
-      ];
-
       let html = `
         <div class="estimator-step__header">
           <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Requirement Builder</h2>
@@ -572,25 +453,18 @@
           <div class="estimator-empty-state" style="text-align: center; padding: var(--spacing-12); color: var(--color-text-tertiary);">
             <span style="font-size: 48px; display: block; margin-bottom: var(--spacing-4);">🏠</span>
             <p style="font-size: var(--font-size-lg);">No rooms added yet</p>
-            <p style="font-size: var(--font-size-sm);">Click "Add Room" to get started</p>
           </div>
         `;
       } else {
         rooms.forEach((room, index) => {
           html += `
-            <div class="estimator-room-card" data-room-index="${index}" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-6); margin-bottom: var(--spacing-4); border: 1px solid rgba(0,0,0,0.08);">
-              <div class="estimator-room-card__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-4);">
-                <div style="display: flex; align-items: center; gap: var(--spacing-4);">
-                  <span style="font-size: 24px;">${roomTypes.find(t => t.id === room.type)?.icon || '🏠'}</span>
-                  <div>
-                    <h4 style="font-family: var(--font-heading); font-size: var(--font-size-lg); color: var(--color-text-primary); margin: 0;">${roomTypes.find(t => t.id === room.type)?.name || 'Room'}</h4>
-                    <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin: 0;">${room.area || 0} sqft</p>
-                  </div>
+            <div class="estimator-room-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-6); margin-bottom: var(--spacing-4); border: 1px solid rgba(0,0,0,0.08);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <h4 style="margin: 0;">${room.type.replace('_', ' ').toUpperCase()}</h4>
+                  <p style="margin: 0;">${room.area || 0} sqft</p>
                 </div>
-                <div style="display: flex; gap: var(--spacing-2);">
-                  <button class="estimator-room-card__duplicate" data-index="${index}" style="padding: var(--spacing-2) var(--spacing-4); border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); background: rgba(255,255,255,0.9); cursor: pointer; transition: all 0.3s var(--ease-luxury);" aria-label="Duplicate room">📋</button>
-                  <button class="estimator-room-card__delete" data-index="${index}" style="padding: var(--spacing-2) var(--spacing-4); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-lg); background: rgba(239,68,68,0.1); cursor: pointer; transition: all 0.3s var(--ease-luxury);" aria-label="Delete room">🗑️</button>
-                </div>
+                <button class="estimator-room-card__delete" data-index="${index}" style="padding: 8px 16px; border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-lg); background: rgba(239,68,68,0.1); cursor: pointer;">🗑️</button>
               </div>
             </div>
           `;
@@ -599,109 +473,70 @@
 
       html += `
           </div>
-          <button class="estimator-add-room-btn" style="width: 100%; padding: var(--spacing-5); border: 2px dashed rgba(196,160,116,0.3); border-radius: var(--radius-xl); background: rgba(196,160,116,0.05); color: var(--color-champagne-600); font-size: var(--font-size-lg); font-weight: var(--font-weight-semibold); cursor: pointer; transition: all 0.3s var(--ease-luxury); display: flex; align-items: center; justify-content: center; gap: var(--spacing-3);" aria-label="Add new room">
-            <span style="font-size: 24px;">+</span>
-            Add Room
+          <button class="estimator-add-room-btn" style="width: 100%; padding: var(--spacing-5); border: 2px dashed rgba(196,160,116,0.3); border-radius: var(--radius-xl); background: rgba(196,160,116,0.05); color: var(--color-champagne-600); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: var(--spacing-3);">
+            <span style="font-size: 24px;">+</span> Add Room
           </button>
         </div>
       `;
 
       this.elements.stepContainer.innerHTML = html;
-
       const addBtn = this.elements.stepContainer.querySelector('.estimator-add-room-btn');
       addBtn.addEventListener('click', () => this.showAddRoomModal());
 
-      this.elements.stepContainer.querySelectorAll('.estimator-room-card__duplicate').forEach(btn => {
-        btn.addEventListener('click', (e) => this.duplicateRoom(e));
-      });
-
       this.elements.stepContainer.querySelectorAll('.estimator-room-card__delete').forEach(btn => {
-        btn.addEventListener('click', (e) => this.deleteRoom(e));
+        btn.addEventListener('click', (e) => {
+          const index = parseInt(e.target.dataset.index);
+          const currentRooms = this.state.get('rooms') || [];
+          currentRooms.splice(index, 1);
+          this.state.set('rooms', currentRooms);
+          this.renderModulesStep();
+        });
       });
 
       this.state.set('canProceed', rooms.length > 0);
     }
 
     showAddRoomModal() {
-      const roomTypes = [
-        { id: 'living_room', name: 'Living Room', icon: '🛋️' },
-        { id: 'bedroom', name: 'Bedroom', icon: '🛏️' },
-        { id: 'kitchen', name: 'Kitchen', icon: '🍳' },
-        { id: 'bathroom', name: 'Bathroom', icon: '🚿' },
-        { id: 'dining', name: 'Dining Room', icon: '🍽️' },
-        { id: 'study', name: 'Study Room', icon: '📚' },
-        { id: 'balcony', name: 'Balcony', icon: '🌿' },
-        { id: 'puja_room', name: 'Puja Room', icon: '🙏' }
-      ];
-
       let modalHtml = `
         <div class="estimator-modal estimator-modal--active" id="add-room-modal">
           <div class="estimator-modal__content">
-            <h3 style="font-family: var(--font-heading); font-size: var(--font-size-2xl); color: var(--color-text-primary); margin-bottom: var(--spacing-6);">Add Room</h3>
-            <div class="estimator-form-group" style="margin-bottom: var(--spacing-6);">
-              <label class="estimator-label" for="room-type">Room Type</label>
+            <h3 style="margin-bottom: var(--spacing-6);">Add Room</h3>
+            <div style="margin-bottom: var(--spacing-6);">
+              <label class="estimator-label">Room Type</label>
               <select id="room-type" class="estimator-select">
-                ${roomTypes.map(type => `<option value="${type.id}">${type.icon} ${type.name}</option>`).join('')}
+                <option value="living_room">Living Room</option>
+                <option value="bedroom">Bedroom</option>
+                <option value="kitchen">Kitchen</option>
+                <option value="bathroom">Bathroom</option>
               </select>
             </div>
-            <div class="estimator-form-group" style="margin-bottom: var(--spacing-6);">
-              <label class="estimator-label" for="room-area">Area (sqft)</label>
+            <div style="margin-bottom: var(--spacing-6);">
+              <label class="estimator-label">Area (sqft)</label>
               <input type="number" id="room-area" class="estimator-input" placeholder="Enter area">
             </div>
-            <div style="display: flex; gap: var(--spacing-4); justify-content: flex-end; margin-top: var(--spacing-8);">
-              <button class="estimator-modal-cancel" style="padding: var(--spacing-4) var(--spacing-6); border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); background: rgba(255,255,255,0.9); cursor: pointer;">Cancel</button>
-              <button class="estimator-modal-confirm" style="padding: var(--spacing-4) var(--spacing-6); border: none; border-radius: var(--radius-lg); background: var(--color-champagne-500); color: white; cursor: pointer;">Add Room</button>
+            <div style="display: flex; gap: var(--spacing-4); justify-content: flex-end;">
+              <button class="estimator-modal-cancel" style="padding: 12px 24px; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); background: white; cursor: pointer;">Cancel</button>
+              <button class="estimator-modal-confirm" style="padding: 12px 24px; border: none; border-radius: var(--radius-lg); background: var(--color-champagne-500); color: white; cursor: pointer;">Add</button>
             </div>
           </div>
         </div>
       `;
 
       document.body.insertAdjacentHTML('beforeend', modalHtml);
-
       const modal = document.getElementById('add-room-modal');
-      const cancelBtn = modal.querySelector('.estimator-modal-cancel');
-      const confirmBtn = modal.querySelector('.estimator-modal-confirm');
-
-      cancelBtn.addEventListener('click', () => modal.remove());
-      confirmBtn.addEventListener('click', () => this.addRoom(modal));
-    }
-
-    addRoom(modal) {
-      const type = modal.querySelector('#room-type').value;
-      const area = modal.querySelector('#room-area').value;
-
-      const rooms = this.state.get('rooms') || [];
-      rooms.push({
-        id: Date.now().toString(),
-        type,
-        area: parseInt(area) || 0
+      
+      modal.querySelector('.estimator-modal-cancel').addEventListener('click', () => modal.remove());
+      modal.querySelector('.estimator-modal-confirm').addEventListener('click', () => {
+        const type = modal.querySelector('#room-type').value;
+        const area = modal.querySelector('#room-area').value;
+        const currentRooms = this.state.get('rooms') || [];
+        currentRooms.push({ id: Date.now().toString(), type, area: parseInt(area) || 0 });
+        this.state.set('rooms', currentRooms);
+        modal.remove();
+        this.renderModulesStep();
       });
-
-      this.state.set('rooms', rooms);
-      modal.remove();
-      this.renderModulesStep();
     }
 
-    duplicateRoom(event) {
-      const index = parseInt(event.target.dataset.index);
-      const rooms = this.state.get('rooms') || [];
-      const roomToDuplicate = { ...rooms[index], id: Date.now().toString() };
-      rooms.splice(index + 1, 0, roomToDuplicate);
-      this.state.set('rooms', rooms);
-      this.renderModulesStep();
-    }
-
-    deleteRoom(event) {
-      const index = parseInt(event.target.dataset.index);
-      const rooms = this.state.get('rooms') || [];
-      rooms.splice(index, 1);
-      this.state.set('rooms', rooms);
-      this.renderModulesStep();
-    }
-
-    /**
-     * Render Step 5 - Design Style
-     */
     renderMaterialsStep() {
       const designStyles = [
         { id: 'modern', name: 'Modern', description: 'Clean lines, neutral colors, functional design', colorPalette: ['#FFFFFF', '#F5F5F5', '#E0E0E0', '#333333'], icon: '🏢' },
@@ -709,16 +544,13 @@
         { id: 'luxury', name: 'Luxury', description: 'Premium materials, elegant finishes, sophisticated', colorPalette: ['#1C1C1C', '#C4A074', '#D4AF37', '#FFFFFF'], icon: '✨' },
         { id: 'industrial', name: 'Industrial', description: 'Raw materials, exposed elements, urban aesthetic', colorPalette: ['#4A4A4A', '#8B7355', '#B8860B', '#D3D3D3'], icon: '🏭' },
         { id: 'japandi', name: 'Japandi', description: 'Japanese minimalism meets Scandinavian warmth', colorPalette: ['#F5F5DC', '#D2B48C', '#8B4513', '#FAF0E6'], icon: '🎋' },
-        { id: 'classic', name: 'Classic', description: 'Timeless elegance, traditional elements, refined', colorPalette: ['#FFF8DC', '#DEB887', '#8B4513', '#F5F5DC'], icon: '🏛️' },
-        { id: 'scandinavian', name: 'Scandinavian', description: 'Light, airy, natural materials, cozy warmth', colorPalette: ['#F5F5DC', '#E0E0E0', '#87CEEB', '#FFFFFF'], icon: '❄️' },
-        { id: 'neo_classical', name: 'Neo Classical', description: 'Modern interpretation of classical elements', colorPalette: ['#FFFDD0', '#C0C0C0', '#DAA520', '#FAFAD2'], icon: '🏛️' },
-        { id: 'contemporary', name: 'Contemporary', description: 'Current trends, flexible, adaptable design', colorPalette: ['#E8E8E8', '#A9A9A9', '#696969', '#2F4F4F'], icon: '🎨' }
+        { id: 'classic', name: 'Classic', description: 'Timeless elegance, traditional elements, refined', colorPalette: ['#FFF8DC', '#DEB887', '#8B4513', '#F5F5DC'], icon: '🏛️' }
       ];
 
       let html = `
         <div class="estimator-step__header">
-          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Design Style</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose your preferred aesthetic</p>
+          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Preferred Aesthetic</h2>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose your preferred design style</p>
         </div>
         <div class="estimator-step__content">
           <div class="estimator-card-grid estimator-card-grid--3">
@@ -731,9 +563,7 @@
           <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" 
                data-style="${style.id}" 
                role="button" 
-               tabindex="0"
-               aria-label="Select ${style.name} design style"
-               aria-pressed="${isSelected}">
+               tabindex="0">
             <div class="estimator-card__image">
               <div style="display: flex; gap: var(--spacing-2);">
                 ${style.colorPalette.slice(0, 4).map(color => 
@@ -756,12 +586,6 @@
 
       this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
         card.addEventListener('click', (e) => this.handleDesignStyleSelection(e));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handleDesignStyleSelection(e);
-          }
-        });
       });
     }
 
@@ -771,32 +595,21 @@
       
       this.state.set('designStyle', styleId);
       
-      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => {
-        c.classList.remove('estimator-card--selected');
-        c.setAttribute('aria-pressed', 'false');
-      });
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => c.classList.remove('estimator-card--selected'));
       card.classList.add('estimator-card--selected');
-      card.setAttribute('aria-pressed', 'true');
       
       this.state.set('canProceed', true);
     }
 
-    /**
-     * Render Step 6 - Package Selection
-     */
     renderDetailsStep() {
       const packages = [
-        { id: 'basic', name: 'Basic', tier: 'essential', description: 'Essential interior design for budget-conscious projects', timeline: '15-30 days', features: ['Basic design consultation', 'Material selection', 'Standard installation'], inclusions: ['2 design revisions', 'Standard materials', 'Basic lighting'], exclusions: ['Custom furniture', 'Premium materials', 'Smart home integration'], popular: false },
-        { id: 'standard', name: 'Standard', tier: 'premium', description: 'Comprehensive design with quality materials', timeline: '30-45 days', features: ['Full design planning', 'Premium materials', 'Professional installation'], inclusions: ['4 design revisions', 'Premium materials', 'Advanced lighting', 'Custom cabinetry'], exclusions: ['Smart home integration', 'Premium furniture'], popular: true },
-        { id: 'premium', name: 'Premium', tier: 'luxury', description: 'Luxury design with premium finishes and custom elements', timeline: '45-60 days', features: ['Bespoke design', 'Luxury materials', 'White-glove installation'], inclusions: ['Unlimited revisions', 'Luxury materials', 'Smart lighting', 'Custom furniture', 'Home automation'], exclusions: ['Architectural modifications'], popular: false },
-        { id: 'luxury_signature', name: 'Luxury Signature', tier: 'elite', description: 'Ultra-premium design with exclusive materials and services', timeline: '60-90 days', features: ['Exclusive design', 'Imported materials', 'Concierge service'], inclusions: ['Unlimited revisions', 'Imported materials', 'Smart home integration', 'Custom furniture', 'Project management', 'Post-installation support'], exclusions: ['Structural changes'], popular: false },
-        { id: 'custom', name: 'Custom', tier: 'elite', description: 'Fully customized solution tailored to your needs', timeline: 'Based on scope', features: ['Personalized design', 'Flexible scope', 'Dedicated team'], inclusions: ['Custom scope', 'Dedicated designer', 'Priority scheduling'], exclusions: ['None - fully customizable'], popular: false }
+        { id: 'standard', name: 'Standard', tier: 'premium', description: 'Comprehensive design with quality materials', timeline: '30-45 days' },
+        { id: 'premium', name: 'Premium', tier: 'luxury', description: 'Luxury design with premium finishes', timeline: '45-60 days' }
       ];
 
       let html = `
         <div class="estimator-step__header">
           <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Package</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose the level of service that fits your needs</p>
         </div>
         <div class="estimator-step__content">
           <div class="estimator-package-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--spacing-6);">
@@ -804,109 +617,55 @@
 
       packages.forEach(pkg => {
         const isSelected = this.state.get('selectedPackage') === pkg.id;
-        const isExpanded = isSelected;
-        
         html += `
-          <div class="estimator-package-card ${isSelected ? 'estimator-package-card--selected' : ''} ${pkg.popular ? 'estimator-package-card--popular' : ''}" 
+          <div class="estimator-package-card ${isSelected ? 'estimator-package-card--selected' : ''}" 
                data-package="${pkg.id}" 
-               style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-2xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08); cursor: pointer; transition: all 0.4s var(--ease-luxury); position: relative;"
-               role="button" 
-               tabindex="0"
-               aria-label="Select ${pkg.name} package"
-               aria-pressed="${isSelected}"
-               aria-expanded="${isExpanded}">
-            ${pkg.popular ? '<span class="estimator-badge" style="position: absolute; top: var(--spacing-4); right: var(--spacing-4);">Popular</span>' : ''}
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--spacing-4);">
-              <h3 class="estimator-card__title" style="margin: 0;">${pkg.name}</h3>
-              <span class="estimator-tag" style="background: rgba(196,160,116,0.1); color: var(--color-champagne-600);">${pkg.tier}</span>
-            </div>
-            <p class="estimator-card__description" style="margin-bottom: var(--spacing-4);">${pkg.description}</p>
-            <div style="display: flex; align-items: center; gap: var(--spacing-2); margin-bottom: var(--spacing-4); color: var(--color-text-secondary); font-size: var(--font-size-sm);">
-              <span>⏱️</span>
-              <span>${pkg.timeline}</span>
-            </div>
-            ${isExpanded ? `
-              <div class="estimator-package-details" style="margin-top: var(--spacing-6); padding-top: var(--spacing-6); border-top: 1px solid rgba(0,0,0,0.05);">
-                <div style="margin-bottom: var(--spacing-4);">
-                  <h4 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--spacing-2);">Features</h4>
-                  <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${pkg.features.map(f => `<li style="font-size: var(--font-size-sm); color: var(--color-text-secondary); padding: var(--spacing-1) 0;">✓ ${f}</li>`).join('')}
-                  </ul>
-                </div>
-                <div style="margin-bottom: var(--spacing-4);">
-                  <h4 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--spacing-2);">What's Included</h4>
-                  <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${pkg.inclusions.map(i => `<li style="font-size: var(--font-size-sm); color: var(--color-text-secondary); padding: var(--spacing-1) 0;">✓ ${i}</li>`).join('')}
-                  </ul>
-                </div>
-                <div>
-                  <h4 style="font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); margin-bottom: var(--spacing-2);">Exclusions</h4>
-                  <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${pkg.exclusions.map(e => `<li style="font-size: var(--font-size-sm); color: var(--color-text-tertiary); padding: var(--spacing-1) 0;">✗ ${e}</li>`).join('')}
-                  </ul>
-                </div>
-              </div>
-            ` : ''}
+               style="background: rgba(255,255,255,0.9); border-radius: var(--radius-2xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08); cursor: pointer;"
+               role="button" tabindex="0">
+            <h3>${pkg.name}</h3>
+            <p>${pkg.description}</p>
           </div>
         `;
       });
 
-      html += `
-          </div>
-        </div>
-      `;
-
+      html += `</div></div>`;
       this.elements.stepContainer.innerHTML = html;
 
       this.elements.stepContainer.querySelectorAll('.estimator-package-card').forEach(card => {
-        card.addEventListener('click', (e) => this.handlePackageSelection(e));
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            this.handlePackageSelection(e);
-          }
+        card.addEventListener('click', (e) => {
+          this.state.set('selectedPackage', e.currentTarget.dataset.package);
+          this.renderDetailsStep();
+          this.state.set('canProceed', true);
         });
       });
     }
 
-    handlePackageSelection(event) {
-      const card = event.currentTarget;
-      const packageId = card.dataset.package;
-      
-      this.state.set('selectedPackage', packageId);
-      this.renderDetailsStep();
-      this.state.set('canProceed', true);
-    }
-
     /**
-     * Render Step 7 - Budget
+     * Budget Step - Updated Buttons ("I have a budget" vs "Skip / Not Sure")
      */
     renderReviewStep() {
       const budget = this.state.get('budget') || '';
-      const budgetType = this.state.get('budgetType') || 'known';
+      const budgetType = this.state.get('budgetType') || 'unknown'; // Defaulting to unknown to let them optionally enter
       
       const presetBudgets = [
         { id: '5L', label: '₹5L', value: 500000 },
         { id: '10L', label: '₹10L', value: 1000000 },
         { id: '25L', label: '₹25L', value: 2500000 },
-        { id: '50L', label: '₹50L', value: 5000000 },
-        { id: '1Cr', label: '₹1Cr', value: 10000000 },
-        { id: '2Cr', label: '₹2Cr', value: 20000000 },
-        { id: '5Cr', label: '₹5Cr', value: 50000000 }
+        { id: '50L', label: '₹50L', value: 5000000 }
       ];
 
       let html = `
         <div class="estimator-step__header">
-          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Budget</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Set your budget range</p>
+          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Budget (Optional)</h2>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Set your budget range or skip to decide later</p>
         </div>
         <div class="estimator-step__content">
           <div class="estimator-budget-type-selector" style="display: flex; gap: var(--spacing-4); margin-bottom: var(--spacing-8);">
-            <button class="estimator-chip ${budgetType === 'known' ? 'estimator-chip--selected' : ''}" data-type="known" style="flex: 1;">
-              Known Budget
-            </button>
             <button class="estimator-chip ${budgetType === 'unknown' ? 'estimator-chip--selected' : ''}" data-type="unknown" style="flex: 1;">
-              Unknown Budget
+              Skip / Not Sure
+            </button>
+            <button class="estimator-chip ${budgetType === 'known' ? 'estimator-chip--selected' : ''}" data-type="known" style="flex: 1;">
+              I have a budget
             </button>
           </div>
           
@@ -918,7 +677,6 @@
               </div>
               
               <div style="margin-bottom: var(--spacing-4);">
-                <p style="font-size: var(--font-size-sm); color: var(--color-text-tertiary); margin-bottom: var(--spacing-4);">Or select a preset:</p>
                 <div class="estimator-budget-presets" style="display: flex; flex-wrap: wrap; gap: var(--spacing-3);">
                  ${presetBudgets.map(preset => `
                     <button class="estimator-chip ${budget === preset.value ? 'estimator-chip--selected' : ''}" data-value="${preset.value}" style="font-size: var(--font-size-sm);">
@@ -927,24 +685,12 @@
                   `).join('')}
                 </div>
               </div>
-              
-              <div class="estimator-budget-slider-section" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-8); border: 1px solid rgba(0,0,0,0.08);">
-                <label class="estimator-label">Budget Range</label>
-                <input type="range" id="budget-slider" class="estimator-slider" min="500000" max="50000000" step="100000" value="${budget || 2500000}" style="width: 100%;">
-                <div style="display: flex; justify-content: space-between; margin-top: var(--spacing-4); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
-                  <span>₹5L</span>
-                  <span>₹5Cr</span>
-                </div>
-              </div>
             </div>
           ` : `
             <div class="estimator-unknown-budget-section" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-10); text-align: center; border: 1px solid rgba(0,0,0,0.08);">
               <span style="font-size: 48px; display: block; margin-bottom: var(--spacing-4);">💰</span>
-              <h3 style="font-family: var(--font-heading); font-size: var(--font-size-xl); color: var(--color-text-primary); margin-bottom: var(--spacing-2);">Not Sure About Budget?</h3>
-              <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-6);">No problem! We'll help you explore options and provide estimates based on your requirements.</p>
-              <button class="estimator-chip estimator-chip--selected" style="margin: 0 auto;">
-                I'll Explore Options
-              </button>
+              <h3 style="font-family: var(--font-heading); font-size: var(--font-size-xl); color: var(--color-text-primary); margin-bottom: var(--spacing-2);">You can skip this step!</h3>
+              <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-6);">No problem. Just click Next, and we'll calculate everything and provide options based on your requirements.</p>
             </div>
           `}
         </div>
@@ -955,48 +701,41 @@
       this.elements.stepContainer.querySelectorAll('.estimator-budget-type-selector .estimator-chip').forEach(chip => {
         chip.addEventListener('click', (e) => {
           this.state.set('budgetType', e.target.dataset.type);
+          
+          if(e.target.dataset.type === 'unknown') {
+            this.state.set('budget', null);
+          }
           this.renderReviewStep();
         });
       });
 
       if (budgetType === 'known') {
         const budgetInput = this.elements.stepContainer.querySelector('#budget-amount');
-        const budgetSlider = this.elements.stepContainer.querySelector('#budget-slider');
-        
         budgetInput.addEventListener('input', (e) => {
           this.state.set('budget', parseInt(e.target.value) || 0);
           this.validateBudget();
         });
         
-        budgetSlider.addEventListener('input', (e) => {
-          this.state.set('budget', parseInt(e.target.value));
-          budgetInput.value = e.target.value;
-          this.validateBudget();
-        });
-
         this.elements.stepContainer.querySelectorAll('.estimator-budget-presets .estimator-chip').forEach(chip => {
           chip.addEventListener('click', (e) => {
             const value = parseInt(e.target.dataset.value);
             this.state.set('budget', value);
-            budgetInput.value = value;
-            budgetSlider.value = value;
             this.renderReviewStep();
           });
         });
+        this.validateBudget();
       } else {
+        // If unknown is selected, they can proceed without filling any budget
         this.state.set('canProceed', true);
       }
     }
 
     validateBudget() {
       const budget = this.state.get('budget');
-      const isValid = budget && budget >= 500000;
+      const isValid = budget && budget > 0;
       this.state.set('canProceed', isValid);
     }
 
-    /**
-     * Render Step 8 - Contact & Review
-     */
     renderSummaryStep() {
       const clientDetails = this.state.get('clientDetails') || {};
       
@@ -1009,7 +748,7 @@
         selectedPackage: this.state.get('selectedPackage'),
         budget: this.state.get('budget'),
         budgetType: this.state.get('budgetType'),
-        customServices: this.state.get('selectedCustomServices') // New Field Added here
+        customServices: this.state.get('selectedCustomServices')
       };
 
       const categoryNames = {
@@ -1018,6 +757,15 @@
         'hospitality': 'Hospitality',
         'retail': 'Retail',
         'custom_services': 'A La Carte / Custom Services'
+      };
+
+      const styleNames = {
+        'modern': 'Modern',
+        'minimalist': 'Minimalist',
+        'luxury': 'Luxury',
+        'industrial': 'Industrial',
+        'japandi': 'Japandi',
+        'classic': 'Classic'
       };
 
       let html = `
@@ -1041,6 +789,10 @@
                   <span class="estimator-summary-item__label">Selected Services</span>
                   <span class="estimator-summary-item__value">${summary.customServices ? summary.customServices.length : 0} Services Selected</span>
                 </div>
+                <div class="estimator-summary-item">
+                  <span class="estimator-summary-item__label">Preferred Aesthetic</span>
+                  <span class="estimator-summary-item__value">${styleNames[summary.designStyle] || 'Not Selected'}</span>
+                </div>
                 ` : `
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Area</span>
@@ -1054,7 +806,7 @@
                 
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Budget</span>
-                  <span class="estimator-summary-item__value">${summary.budgetType === 'unknown' ? 'Unknown' : '₹' + (summary.budget || 0).toLocaleString()}</span>
+                  <span class="estimator-summary-item__value">${summary.budgetType === 'unknown' ? 'To Be Decided' : '₹' + (summary.budget || 0).toLocaleString()}</span>
                 </div>
               </div>
             </div>
@@ -1080,21 +832,7 @@
                 
                 <div style="margin-bottom: var(--spacing-6);">
                   <label class="estimator-label" for="client-city">City *</label>
-                  <select id="client-city" class="estimator-select" aria-required="true">
-                    <option value="">Select city</option>
-                    <option value="mumbai" ${clientDetails.city === 'mumbai' ? 'selected' : ''}>Mumbai</option>
-                    <option value="delhi" ${clientDetails.city === 'delhi' ? 'selected' : ''}>Delhi</option>
-                    <option value="bangalore" ${clientDetails.city === 'bangalore' ? 'selected' : ''}>Bangalore</option>
-                    <option value="chennai" ${clientDetails.city === 'chennai' ? 'selected' : ''}>Chennai</option>
-                    <option value="hyderabad" ${clientDetails.city === 'hyderabad' ? 'selected' : ''}>Hyderabad</option>
-                    <option value="pune" ${clientDetails.city === 'pune' ? 'selected' : ''}>Pune</option>
-                    <option value="other" ${clientDetails.city === 'other' ? 'selected' : ''}>Other</option>
-                  </select>
-                </div>
-                
-                <div style="margin-bottom: var(--spacing-6);">
-                  <label class="estimator-label" for="client-notes">Additional Notes</label>
-                  <textarea id="client-notes" class="estimator-textarea" placeholder="Any specific requirements or notes...">${clientDetails.notes || ''}</textarea>
+                  <input type="text" id="client-city" class="estimator-input" placeholder="Enter your city" value="${clientDetails.city || ''}" aria-required="true">
                 </div>
               </div>
             </div>
@@ -1104,10 +842,9 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      const inputs = this.elements.stepContainer.querySelectorAll('input, select, textarea');
+      const inputs = this.elements.stepContainer.querySelectorAll('input');
       inputs.forEach(input => {
         input.addEventListener('input', (e) => this.handleContactDetailChange(e));
-        input.addEventListener('change', (e) => this.handleContactDetailChange(e));
       });
 
       this.validateContactForm();
@@ -1127,7 +864,6 @@
     validateContactForm() {
       const clientDetails = this.state.get('clientDetails') || {};
       const isValid = clientDetails.name && clientDetails.phone && clientDetails.email && clientDetails.city;
-      
       this.state.set('canProceed', isValid);
     }
 
@@ -1141,33 +877,10 @@
       if(this.elements.main) this.elements.main.hidden = false;
     }
 
-    showAlert(message, type = 'info') {
-      const alert = document.createElement('div');
-      alert.className = `estimator-alert estimator-alert--${type}`;
-      alert.textContent = message;
-      
-      if(this.elements.stepContainer) {
-          this.elements.stepContainer.insertBefore(alert, this.elements.stepContainer.firstChild);
-          setTimeout(() => {
-            alert.classList.add('estimator-alert--exiting');
-            setTimeout(() => alert.remove(), 300);
-          }, 5000);
-      }
-    }
-
-    clearAlerts() {
-      if(this.elements.stepContainer) {
-          const alerts = this.elements.stepContainer.querySelectorAll('.estimator-alert');
-          alerts.forEach(alert => alert.remove());
-      }
-    }
-
     showSummary() {
       if(this.elements.wizard) this.elements.wizard.hidden = true;
-      
       if(this.elements.summary) {
           this.elements.summary.hidden = false;
-          
           this.elements.summary.innerHTML = `
             <div style="text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-2xl); max-width: 600px; margin: 40px auto; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.05);">
                 <span style="font-size: 72px; display: block; margin-bottom: 24px;">🎉</span>

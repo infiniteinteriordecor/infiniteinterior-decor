@@ -2,10 +2,10 @@
  * Estimator Router
  * 
  * Internal routing system for the estimator wizard.
- * Handles step navigation, deep linking, and draft resumption.
+ * Handles step navigation, deep linking, and dynamic branching.
  * 
  * Architecture:
- * - Purpose: Navigate between wizard steps
+ * - Purpose: Navigate between wizard steps dynamically based on category
  * - Dependencies: estimator-state.js
  * - Exports: Router class
  */
@@ -15,7 +15,7 @@
 
   /**
    * Router Class
-   * Manages wizard step navigation
+   * Manages dynamic wizard step navigation
    */
   class Router {
     constructor(stateManager) {
@@ -24,35 +24,83 @@
       }
       this.state = stateManager;
       
-      // Step definitions
-      this.steps = [
-        { id: 1, name: 'category', title: 'Category' },
-        { id: 2, name: 'type', title: 'Type' },
-        { id: 3, name: 'information', title: 'Information' },
-        { id: 4, name: 'requirements', title: 'Requirements' },
-        { id: 5, name: 'style', title: 'Style' },
-        { id: 6, name: 'package', title: 'Package' },
-        { id: 7, name: 'budget', title: 'Budget' },
-        { id: 8, name: 'contact', title: 'Contact' }
-      ];
-      
       // Navigation guards
       this.guards = {};
       
-      // Current step
+      // Current step numerical index (Always 1-based)
       this.currentStep = 1;
+    }
+
+    /**
+     * DYNAMIC FLOW ENGINE
+     * Automatically adjusts the steps array based on the chosen category.
+     */
+    get steps() {
+      const category = this.state.get('projectCategory');
+      
+      // Branch 1: Custom Services (Short Flow)
+      if (category === 'custom_services') {
+        return [
+          { id: 'category', name: 'category', title: 'Category' },
+          { id: 'custom_services_selection', name: 'services', title: 'Services' },
+          { id: 'budget', name: 'budget', title: 'Budget' },
+          { id: 'contact', name: 'contact', title: 'Contact' }
+        ];
+      } 
+      
+      // Branch 2: Standard Full Interior (Long Flow)
+      return [
+        { id: 'category', name: 'category', title: 'Category' },
+        { id: 'type', name: 'type', title: 'Type' },
+        { id: 'info', name: 'information', title: 'Information' },
+        { id: 'requirements', name: 'requirements', title: 'Requirements' },
+        { id: 'style', name: 'style', title: 'Style' },
+        { id: 'package', name: 'package', title: 'Package' },
+        { id: 'budget', name: 'budget', title: 'Budget' },
+        { id: 'contact', name: 'contact', title: 'Contact' }
+      ];
+    }
+
+    /**
+     * Total steps getter (useful for UI completion check)
+     */
+    get totalSteps() {
+      return this.steps.length;
+    }
+
+    /**
+     * Helper to broadcast step changes properly to UI
+     * Sends an object that works as both a number (for progress bar) and string (for rendering)
+     */
+    _broadcastStep(stepIndex) {
+      const stepDef = this.steps[stepIndex - 1];
+      if (!stepDef) return;
+      
+      // Magic Payload: Behaves like an index for math operations, but outputs ID string for logic
+      const stepPayload = {
+        id: stepDef.id,
+        name: stepDef.name,
+        title: stepDef.title,
+        index: stepIndex,
+        valueOf: function() { return this.index; },
+        toString: function() { return this.id; }
+      };
+      
+      this.state.set('currentStep', stepPayload);
     }
 
     /**
      * Initialize router
      */
     init() {
-      // Check for deep link or draft resumption
       this.checkDeepLink();
       this.checkDraftResumption();
       
-      // Set initial step
-      this.currentStep = this.state.get('currentStep') || 1;
+      // Extract numeric index if state currently holds the object payload
+      let savedStep = this.state.get('currentStep');
+      this.currentStep = typeof savedStep === 'object' ? savedStep.index : (savedStep || 1);
+      
+      this._broadcastStep(this.currentStep);
       this.updateNavigationState();
     }
 
@@ -64,16 +112,13 @@
       const nextStep = this.currentStep + 1;
       
       if (nextStep <= this.steps.length) {
-        // Check if navigation is allowed
         if (this.canNavigateTo(nextStep)) {
           this.currentStep = nextStep;
-          this.state.set('currentStep', nextStep);
+          this._broadcastStep(this.currentStep);
           this.updateNavigationState();
-          this.renderStep(nextStep);
           return true;
         }
       }
-      
       return false;
     }
 
@@ -86,53 +131,42 @@
       
       if (prevStep >= 1) {
         this.currentStep = prevStep;
-        this.state.set('currentStep', prevStep);
+        this._broadcastStep(this.currentStep);
         this.updateNavigationState();
-        this.renderStep(prevStep);
         return true;
       }
-      
       return false;
     }
 
     /**
-     * Navigate to specific step
-     * @param {number} stepId - Target step ID
+     * Navigate to specific step index
+     * @param {number} stepId - Target step index
      * @returns {boolean} Success status
      */
     goTo(stepId) {
       if (stepId >= 1 && stepId <= this.steps.length) {
         if (this.canNavigateTo(stepId)) {
           this.currentStep = stepId;
-          this.state.set('currentStep', stepId);
+          this._broadcastStep(this.currentStep);
           this.updateNavigationState();
-          this.renderStep(stepId);
           return true;
         }
       }
-      
       return false;
     }
 
     /**
      * Check if navigation to step is allowed
-     * @param {number} stepId - Target step ID
-     * @returns {boolean} Allow status
      */
     canNavigateTo(stepId) {
-      // Check guard for target step
       if (this.guards[stepId]) {
         return this.guards[stepId](this.state.getState());
       }
-      
-      // Default: allow navigation
       return true;
     }
 
     /**
      * Add navigation guard
-     * @param {number} stepId - Step ID
-     * @param {Function} guard - Guard function
      */
     addGuard(stepId, guard) {
       this.guards[stepId] = guard;
@@ -140,7 +174,6 @@
 
     /**
      * Remove navigation guard
-     * @param {number} stepId - Step ID
      */
     removeGuard(stepId) {
       delete this.guards[stepId];
@@ -160,35 +193,21 @@
     }
 
     /**
-     * Render step content
-     * @param {number} stepId - Step ID
-     */
-    renderStep(stepId) {
-      // Placeholder for step rendering logic
-      // Will be implemented in estimator-ui.js
-      console.log('Rendering step:', stepId);
-    }
-
-    /**
      * Get step information
-     * @param {number} stepId - Step ID
-     * @returns {Object|null} Step information
      */
     getStep(stepId) {
-      return this.steps.find(step => step.id === stepId) || null;
+      return this.steps[stepId - 1] || null;
     }
 
     /**
      * Get current step information
-     * @returns {Object} Current step information
      */
     getCurrentStep() {
       return this.getStep(this.currentStep);
     }
 
     /**
-     * Get all steps
-     * @returns {Array} All steps
+     * Get all steps for current active flow
      */
     getAllSteps() {
       return [...this.steps];
@@ -214,10 +233,7 @@
      */
     checkDraftResumption() {
       const draftId = this.state.get('draftId');
-      
       if (draftId) {
-        // Placeholder for draft resumption logic
-        // Will be implemented in storage.js
         console.log('Resuming draft:', draftId);
       }
     }
@@ -236,12 +252,11 @@
      */
     reset() {
       this.currentStep = 1;
-      this.state.set('currentStep', 1);
+      this._broadcastStep(1);
       this.updateNavigationState();
     }
   }
 
-  // Export for use in other modules
   window.EstimatorRouter = Router;
 
 })();

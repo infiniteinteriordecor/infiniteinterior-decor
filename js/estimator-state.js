@@ -27,6 +27,11 @@
         canProceed: false,
         canGoBack: false,
         
+        // Project Basics
+        projectCategory: null,
+        projectType: null,
+        projectInfo: {},
+        
         // Package selection
         selectedPackage: null,
         packageTier: null,
@@ -34,10 +39,14 @@
         // Budget
         budget: null,
         budgetRange: null,
+        budgetType: 'known',
         
-        // Rooms
+        // Rooms (For standard flow)
         rooms: [],
         roomCount: 0,
+        
+        // Custom Services (For A La Carte flow)
+        selectedCustomServices: [],
         
         // Modules
         selectedModules: [],
@@ -49,10 +58,11 @@
           email: null,
           phone: null,
           city: null,
-          address: null
+          notes: null
         },
         
-        // Material tier
+        // Material tier & Style
+        designStyle: null,
         materialTier: null,
         
         // Comparison data
@@ -181,12 +191,17 @@
         totalSteps: 8,
         canProceed: false,
         canGoBack: false,
+        projectCategory: null,
+        projectType: null,
+        projectInfo: {},
         selectedPackage: null,
         packageTier: null,
         budget: null,
         budgetRange: null,
+        budgetType: 'known',
         rooms: [],
         roomCount: 0,
+        selectedCustomServices: [],
         selectedModules: [],
         moduleCount: 0,
         clientDetails: {
@@ -194,8 +209,9 @@
           email: null,
           phone: null,
           city: null,
-          address: null
+          notes: null
         },
+        designStyle: null,
         materialTier: null,
         comparisonData: null,
         recommendations: [],

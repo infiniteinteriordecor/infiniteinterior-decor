@@ -3,38 +3,20 @@
  * 
  * UI management for estimator module.
  * Handles DOM manipulation, event handling, and UI rendering.
- * 
- * Architecture:
- * - Purpose: Manage UI interactions and rendering
- * - Dependencies: estimator-state.js, estimator-router.js
- * - Exports: UIManager class
  */
 
 (function() {
   'use strict';
 
-  /**
-   * UI Manager Class
-   * Manages all UI operations
-   */
   class UIManager {
     constructor(stateManager, router) {
       this.state = stateManager;
       this.router = router;
-      
-      // UI elements
       this.elements = {};
-      
-      // Event handlers
       this.handlers = {};
-
-      // TRACK CURRENT STEP TO PREVENT REDUNDANT RENDERING
       this.currentRenderedStep = null;
     }
 
-    /**
-     * Initialize UI manager
-     */
     init() {
       this.cacheElements();
       this.bindEvents();
@@ -42,9 +24,6 @@
       this.hideLoading();
     }
 
-    /**
-     * Cache DOM elements
-     */
     cacheElements() {
       this.elements = {
         app: document.getElementById('estimator-app'),
@@ -60,50 +39,31 @@
       };
     }
 
-    /**
-     * Bind event handlers
-     */
     bindEvents() {
-      // Navigation buttons
       this.elements.prevButton.addEventListener('click', () => this.handlePrevious());
       this.elements.nextButton.addEventListener('click', () => this.handleNext());
-      
-      // State subscription
       this.state.subscribe((state) => this.handleStateChange(state));
     }
 
-    /**
-     * Handle state changes
-     * @param {Object} state - Current state
-     */
     handleStateChange(state) {
       this.updateNavigationButtons(state);
       this.updateProgress(state);
       
-      // Detect step change and render new UI content
       if (state.currentStep && this.currentRenderedStep !== state.currentStep) {
         this.renderStep(state.currentStep);
       }
     }
 
-    /**
-     * Handle previous button click
-     */
     handlePrevious() {
       this.router.previous();
     }
 
-    /**
-     * Handle next button click (UPDATED FOR COMPLETION)
-     */
     async handleNext() {
-      // Check if this is the final step
       const isFinalStep = this.elements.nextButton.textContent === 'Complete';
 
       if (isFinalStep) {
         console.log("Completion triggered! Processing BOQ...");
         
-        // Show loading state for BOQ Generation
         const loadingScreen = document.getElementById('estimator-loading');
         if (loadingScreen) {
             const loadingText = loadingScreen.querySelector('.estimator-loading__text');
@@ -113,7 +73,6 @@
         }
 
         try {
-            // Trigger PDF Generation via global App instance safely
             if (window.EstimatorApp && typeof window.EstimatorApp.generateBOQ === 'function') {
                 const success = await window.EstimatorApp.generateBOQ();
                 if (!success) console.warn("PDF generation returned false, check if estimator-engine.js is fully loaded.");
@@ -123,7 +82,6 @@
         } catch(error) {
             console.error("BOQ Generation failed:", error);
         } finally {
-            // Hide loading and show summary success screen
             if (loadingScreen) {
                 loadingScreen.style.opacity = '0';
                 setTimeout(() => { loadingScreen.style.display = 'none'; }, 500);
@@ -131,41 +89,34 @@
             this.showSummary();
         }
       } else {
-        // Normal next step
         this.router.next();
       }
     }
 
-    /**
-     * Update navigation buttons
-     * @param {Object} state - Current state
-     */
     updateNavigationButtons(state) {
       this.elements.prevButton.disabled = !state.canGoBack;
       this.elements.nextButton.disabled = !state.canProceed;
       
-      // Update next button text for final step
-      if (state.currentStep === state.totalSteps || state.currentStep === 8) {
+      // Update next button text for final step dynamically based on router's total steps
+      if (state.currentStep === state.totalSteps || state.currentStep === this.router.totalSteps) {
         this.elements.nextButton.textContent = 'Complete';
       } else {
         this.elements.nextButton.textContent = 'Next';
       }
     }
 
-    /**
-     * Render progress indicator
-     * @param {Object} state - Current state
-     */
     renderProgress(state) {
       const steps = (typeof this.router.getAllSteps === 'function') ? this.router.getAllSteps() : [];
       const currentStep = state ? state.currentStep : (this.router.currentStep || 1);
       
+      // Use router's steps if available (this will be useful for our dynamic branch)
       const defaultTitles = ['Category', 'Type', 'Information', 'Requirements', 'Style', 'Package', 'Budget', 'Contact'];
+      const totalStepsToRender = steps.length > 0 ? steps.length : 8;
       
       let html = '<div class="estimator-progress-line"></div>';
       html += '<div class="estimator-progress-steps">';
       
-      for(let index = 0; index < 8; index++) {
+      for(let index = 0; index < totalStepsToRender; index++) {
         const stepNumber = index + 1;
         const isCompleted = stepNumber < currentStep;
         const isActive = stepNumber === currentStep;
@@ -189,18 +140,10 @@
       this.elements.progress.innerHTML = html;
     }
 
-    /**
-     * Update progress indicator
-     * @param {Object} state - Current state
-     */
     updateProgress(state) {
       this.renderProgress(state);
     }
 
-    /**
-     * Render step content
-     * @param {number} stepId - Step ID
-     */
     renderStep(stepId) {
       this.currentRenderedStep = stepId;
       
@@ -220,20 +163,50 @@
     }
 
     /**
-     * Render step-specific content
-     * @param {number} stepId - Step ID
+     * DYNAMIC STEP RENDERING
+     * If projectCategory is 'custom_services', the router will send different stepIds
+     * We map stepId strings to their respective render functions.
      */
     renderStepContent(stepId) {
-      switch (stepId) {
-        case 1: this.renderPackageStep(); break;
-        case 2: this.renderBudgetStep(); break;
-        case 3: this.renderRoomsStep(); break;
-        case 4: this.renderModulesStep(); break;
-        case 5: this.renderMaterialsStep(); break;
-        case 6: this.renderDetailsStep(); break;
-        case 7: this.renderReviewStep(); break;
-        case 8: this.renderSummaryStep(); break;
-        default: this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
+      // Allow router to send string IDs for dynamic routing, fallback to numbers for legacy
+      const stepMapper = typeof stepId === 'object' ? stepId.id : stepId.toString();
+
+      switch (stepMapper) {
+        case '1':
+        case 'category':
+          this.renderPackageStep(); break;
+        
+        // STANDARD FLOW
+        case '2':
+        case 'type':
+          this.renderBudgetStep(); break;
+        case '3':
+        case 'info':
+          this.renderRoomsStep(); break;
+        case '4':
+        case 'requirements':
+          this.renderModulesStep(); break;
+        case '5':
+        case 'style':
+          this.renderMaterialsStep(); break;
+        case '6':
+        case 'package':
+          this.renderDetailsStep(); break;
+        
+        // CUSTOM SERVICES FLOW
+        case 'custom_services_selection':
+          this.renderCustomServicesStep(); break;
+
+        // SHARED FINAL STEPS
+        case '7':
+        case 'budget':
+          this.renderReviewStep(); break;
+        case '8':
+        case 'contact':
+          this.renderSummaryStep(); break;
+        
+        default: 
+          this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
       }
     }
 
@@ -245,16 +218,18 @@
         { id: 'residential', name: 'Residential', icon: '🏠', description: 'Home interior design for apartments, villas, and independent houses' },
         { id: 'commercial', name: 'Commercial', icon: '🏢', description: 'Office spaces, retail stores, and business interiors' },
         { id: 'hospitality', name: 'Hospitality', icon: '🏨', description: 'Hotels, restaurants, cafes, and entertainment spaces' },
-        { id: 'retail', name: 'Retail', icon: '🛍️', description: 'Showrooms, boutiques, and shopping experiences' }
+        { id: 'retail', name: 'Retail', icon: '🛍️', description: 'Showrooms, boutiques, and shopping experiences' },
+        // === NEW 5TH CATEGORY ===
+        { id: 'custom_services', name: 'A La Carte / Custom', icon: '🛠️', description: 'Select specific services like Kitchen, Wardrobes, Ceiling, Wall Paneling, etc.' }
       ];
 
       let html = `
         <div class="estimator-step__header">
           <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Project Category</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose the type of space you want to design</p>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose the type of space or service you need</p>
         </div>
         <div class="estimator-step__content">
-          <div class="estimator-card-grid estimator-card-grid--2">
+          <div class="estimator-card-grid estimator-card-grid--3"> <!-- Changed to grid-3 for better fit with 5 items -->
       `;
 
       categories.forEach(category => {
@@ -310,7 +285,95 @@
     }
 
     /**
-     * Render Step 2 - Project Type
+     * === NEW: Render Custom Services Selection Step ===
+     */
+    renderCustomServicesStep() {
+      // Get previously selected services (if any)
+      const selectedServices = this.state.get('selectedCustomServices') || [];
+      
+      const services = [
+        { id: 'modular_kitchen', name: 'Modular Kitchen', icon: '🍳', desc: 'Custom cabinets, countertops, and layouts' },
+        { id: 'wardrobe', name: 'Wardrobes & Storage', icon: '🚪', desc: 'Sliding, walk-in, and custom storage' },
+        { id: 'false_ceiling', name: 'False Ceiling', icon: '✨', desc: 'POP, Gypsum, and cove lighting designs' },
+        { id: 'wall_paneling', name: 'Wall Paneling & Paint', icon: '🎨', desc: 'Louvers, fluted panels, and premium paint' },
+        { id: 'flooring', name: 'Flooring', icon: '🪵', desc: 'Tiles, wooden flooring, and marble' },
+        { id: 'plumbing_electrical', name: 'Plumbing & Electrical', icon: '⚡', desc: 'Wiring, fixtures, and piping work' },
+        { id: 'custom_furniture', name: 'Custom Furniture', icon: '🛋️', desc: 'Bespoke beds, sofas, and dining sets' },
+        { id: 'glass_partition', name: 'Partitions & Glass Work', icon: '🪟', desc: 'Space dividers, shower cubicles, and mirrors' }
+      ];
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Services</h2>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Choose all the specific interior works you require (Select multiple)</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-card-grid estimator-card-grid--3">
+      `;
+
+      services.forEach(service => {
+        const isSelected = selectedServices.includes(service.id);
+        
+        html += `
+          <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" 
+               data-service="${service.id}" 
+               role="button" 
+               tabindex="0"
+               style="position: relative; cursor: pointer;"
+               aria-label="Select ${service.name} service"
+               aria-pressed="${isSelected}">
+            ${isSelected ? '<div style="position: absolute; top: 16px; right: 16px; background: var(--color-champagne-500); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px;">✓</div>' : ''}
+            <div class="estimator-card__icon">
+              <span style="font-size: 32px;">${service.icon}</span>
+            </div>
+            <h3 class="estimator-card__title">${service.name}</h3>
+            <p class="estimator-card__description">${service.desc}</p>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
+        card.addEventListener('click', (e) => this.handleCustomServiceSelection(e));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleCustomServiceSelection(e);
+          }
+        });
+      });
+
+      // Require at least one service to proceed
+      this.state.set('canProceed', selectedServices.length > 0);
+    }
+
+    handleCustomServiceSelection(event) {
+      const card = event.currentTarget;
+      const serviceId = card.dataset.service;
+      
+      let selectedServices = this.state.get('selectedCustomServices') || [];
+      
+      // Toggle logic
+      if (selectedServices.includes(serviceId)) {
+        selectedServices = selectedServices.filter(id => id !== serviceId);
+      } else {
+        selectedServices.push(serviceId);
+      }
+      
+      this.state.set('selectedCustomServices', selectedServices);
+      
+      // Re-render to show checkmarks
+      this.renderCustomServicesStep();
+    }
+
+    /**
+     * Render Step 2 - Project Type (STANDARD FLOW)
      */
     renderBudgetStep() {
       const projectTypes = [
@@ -945,41 +1008,16 @@
         designStyle: this.state.get('designStyle'),
         selectedPackage: this.state.get('selectedPackage'),
         budget: this.state.get('budget'),
-        budgetType: this.state.get('budgetType')
+        budgetType: this.state.get('budgetType'),
+        customServices: this.state.get('selectedCustomServices') // New Field Added here
       };
 
       const categoryNames = {
         'residential': 'Residential',
         'commercial': 'Commercial',
         'hospitality': 'Hospitality',
-        'retail': 'Retail'
-      };
-
-      const typeNames = {
-        'new_construction': 'New Construction',
-        'renovation': 'Renovation',
-        'interior_redesign': 'Interior Redesign',
-        'partial_upgrade': 'Partial Upgrade'
-      };
-
-      const styleNames = {
-        'modern': 'Modern',
-        'minimalist': 'Minimalist',
-        'luxury': 'Luxury',
-        'industrial': 'Industrial',
-        'japandi': 'Japandi',
-        'classic': 'Classic',
-        'scandinavian': 'Scandinavian',
-        'neo_classical': 'Neo Classical',
-        'contemporary': 'Contemporary'
-      };
-
-      const packageNames = {
-        'basic': 'Basic',
-        'standard': 'Standard',
-        'premium': 'Premium',
-        'luxury_signature': 'Luxury Signature',
-        'custom': 'Custom'
+        'retail': 'Retail',
+        'custom_services': 'A La Carte / Custom Services'
       };
 
       let html = `
@@ -995,35 +1033,25 @@
               <div class="estimator-summary-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-6); margin-bottom: var(--spacing-4); border: 1px solid rgba(0,0,0,0.08);">
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Project Category</span>
-                  <span class="estimator-summary-item__value">${categoryNames[summary.projectCategory] || '-'}</span>
+                  <span class="estimator-summary-item__value" style="font-weight:bold; color:var(--color-champagne-600);">${categoryNames[summary.projectCategory] || '-'}</span>
                 </div>
+                
+                ${summary.projectCategory === 'custom_services' ? `
                 <div class="estimator-summary-item">
-                  <span class="estimator-summary-item__label">Project Type</span>
-                  <span class="estimator-summary-item__value">${typeNames[summary.projectType] || '-'}</span>
+                  <span class="estimator-summary-item__label">Selected Services</span>
+                  <span class="estimator-summary-item__value">${summary.customServices ? summary.customServices.length : 0} Services Selected</span>
                 </div>
+                ` : `
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Area</span>
                   <span class="estimator-summary-item__value">${summary.projectInfo?.area || 0} sqft</span>
                 </div>
                 <div class="estimator-summary-item">
-                  <span class="estimator-summary-item__label">City</span>
-                  <span class="estimator-summary-item__value">${summary.projectInfo?.city || '-'}</span>
-                </div>
-              </div>
-
-              <div class="estimator-summary-card" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-xl); padding: var(--spacing-6); margin-bottom: var(--spacing-4); border: 1px solid rgba(0,0,0,0.08);">
-                <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Rooms</span>
                   <span class="estimator-summary-item__value">${summary.rooms?.length || 0}</span>
                 </div>
-                <div class="estimator-summary-item">
-                  <span class="estimator-summary-item__label">Design Style</span>
-                  <span class="estimator-summary-item__value">${styleNames[summary.designStyle] || '-'}</span>
-                </div>
-                <div class="estimator-summary-item">
-                  <span class="estimator-summary-item__label">Package</span>
-                  <span class="estimator-summary-item__value">${packageNames[summary.selectedPackage] || '-'}</span>
-                </div>
+                `}
+                
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Budget</span>
                   <span class="estimator-summary-item__value">${summary.budgetType === 'unknown' ? 'Unknown' : '₹' + (summary.budget || 0).toLocaleString()}</span>
@@ -1134,16 +1162,12 @@
       }
     }
 
-    /**
-     * Show summary view (UPDATED WITH HTML INJECTION FOR SAFETY)
-     */
     showSummary() {
       if(this.elements.wizard) this.elements.wizard.hidden = true;
       
       if(this.elements.summary) {
           this.elements.summary.hidden = false;
           
-          // Inject a beautiful success message just in case the HTML div is empty
           this.elements.summary.innerHTML = `
             <div style="text-align: center; padding: 60px 20px; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); border-radius: var(--radius-2xl); max-width: 600px; margin: 40px auto; border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 20px 40px rgba(0,0,0,0.05);">
                 <span style="font-size: 72px; display: block; margin-bottom: 24px;">🎉</span>
@@ -1169,7 +1193,6 @@
     }
   }
 
-  // Export for use in other modules
   window.EstimatorUI = UIManager;
 
 })();

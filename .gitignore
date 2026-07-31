@@ -5,3 +5,8 @@
 !docs/architecture-audit/
 !docs/architecture-audit/**
 !docs/architecture-audit/**/*.md
+
+# Exception for project documentation
+!docs/project-documentation/
+!docs/project-documentation/**
+!docs/project-documentation/**/*.md

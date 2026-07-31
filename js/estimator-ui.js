@@ -1,5 +1,6 @@
 /**
  * Estimator UI Manager
+ * Upgraded for Premium Flow & Validation
  */
 
 (function() {
@@ -258,56 +259,51 @@
     renderCustomServicesStep() {
       const selectedServices = this.state.get('selectedCustomServices') || [];
       
-      // Comprehensive list of interior works
+      // Premium Visual Grid List
       const services = [
-        { id: 'modular_kitchen', name: 'Modular Kitchen' },
-        { id: 'wardrobe', name: 'Wardrobes & Storage' },
-        { id: 'false_ceiling', name: 'False Ceiling & Lighting' },
-        { id: 'wall_paneling', name: 'Wall Paneling & Wallpaper' },
-        { id: 'painting', name: 'Interior Painting & Textures' },
-        { id: 'flooring', name: 'Flooring (Tiles, Wood, Marble)' },
-        { id: 'plumbing', name: 'Plumbing & Sanitary Work' },
-        { id: 'electrical', name: 'Electrical & Wiring' },
-        { id: 'custom_furniture', name: 'Custom Furniture (Beds, Sofas, Dining)' },
-        { id: 'glass_work', name: 'Glass Partitions & Mirrors' },
-        { id: 'bathroom', name: 'Complete Bathroom Remodeling' },
-        { id: 'civil_work', name: 'Civil Work & Demolition' },
-        { id: 'doors_windows', name: 'Doors, Windows & UPVC' },
-        { id: 'soft_furnishings', name: 'Soft Furnishings (Curtains, Blinds)' },
-        { id: 'hvac', name: 'AC & HVAC Work' },
-        { id: 'automation', name: 'Smart Home Automation' },
-        { id: 'deep_cleaning', name: 'Post-Construction Deep Cleaning' }
+        { id: 'modular_kitchen', name: 'Modular Kitchen', icon: '🍳' },
+        { id: 'wardrobe', name: 'Wardrobes & Storage', icon: '🚪' },
+        { id: 'false_ceiling', name: 'False Ceiling', icon: '✨' },
+        { id: 'wall_paneling', name: 'Wall Paneling', icon: '🖼️' },
+        { id: 'painting', name: 'Interior Painting', icon: '🎨' },
+        { id: 'flooring', name: 'Flooring (Tiles/Wood)', icon: '🪵' },
+        { id: 'plumbing', name: 'Plumbing & Sanitary', icon: '🚰' },
+        { id: 'electrical', name: 'Electrical & Wiring', icon: '⚡' },
+        { id: 'custom_furniture', name: 'Custom Furniture', icon: '🛋️' },
+        { id: 'glass_work', name: 'Glass & Mirrors', icon: '🪞' },
+        { id: 'bathroom', name: 'Bathroom Remodel', icon: '🛁' },
+        { id: 'civil_work', name: 'Civil & Demolition', icon: '🧱' },
+        { id: 'doors_windows', name: 'Doors & Windows', icon: '🪟' },
+        { id: 'automation', name: 'Smart Home', icon: '📱' }
       ];
 
       let html = `
         <div class="estimator-step__header">
-          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Services</h2>
-          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Select all the specific interior works you require from the dropdown below</p>
+          <h2 class="estimator-step__title" style="font-family: var(--font-heading); font-size: var(--font-size-3xl); color: var(--color-text-primary); margin-bottom: var(--spacing-4);">Select Your Services</h2>
+          <p class="estimator-step__description" style="color: var(--color-text-secondary); font-size: var(--font-size-lg);">Tap on the specific interior works you require. You can select multiple options.</p>
         </div>
-        <div class="estimator-step__content" style="max-width: 600px; margin: 0 auto; min-height: 350px;">
+        <div class="estimator-step__content" style="max-width: 900px; margin: 0 auto;">
           
-          <div class="estimator-custom-dropdown" id="services-dropdown" style="position: relative; width: 100%;">
-            
-            <!-- Dropdown Trigger / Box -->
-            <div class="estimator-dropdown-trigger" style="background: rgba(255,255,255,0.9); border: 1px solid rgba(0,0,0,0.2); border-radius: var(--radius-lg); padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; min-height: 60px; transition: all 0.3s ease;">
-              <div class="estimator-selected-tags" style="display: flex; flex-wrap: wrap; gap: 8px; flex: 1;">
-                <!-- Tags will be injected here dynamically -->
-              </div>
-              <span class="dropdown-icon" style="font-size: 14px; margin-left: 16px; color: var(--color-text-secondary); transition: transform 0.3s;">▼</span>
-            </div>
-
-            <!-- Dropdown Menu List -->
-            <div class="estimator-dropdown-menu" style="display: none; position: absolute; top: 100%; left: 0; right: 0; background: #ffffff; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--radius-lg); margin-top: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); z-index: 100; max-height: 300px; overflow-y: auto;">
-              ${services.map(service => {
-                const isChecked = selectedServices.includes(service.id);
-                return `
-                  <label class="dropdown-item" style="display: flex; align-items: center; padding: 14px 20px; cursor: pointer; border-bottom: 1px solid rgba(0,0,0,0.04); transition: background 0.2s;">
-                    <input type="checkbox" value="${service.id}" data-name="${service.name}" ${isChecked ? 'checked' : ''} style="margin-right: 16px; width: 20px; height: 20px; accent-color: var(--color-champagne-500); cursor: pointer;">
-                    <span style="font-size: 16px; color: var(--color-text-primary); font-weight: 500;">${service.name}</span>
-                  </label>
-                `;
-              }).join('')}
-            </div>
+          <div class="estimator-services-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px;">
+            ${services.map(service => {
+              const isSelected = selectedServices.includes(service.id);
+              return `
+                <div class="estimator-service-chip ${isSelected ? 'selected' : ''}" 
+                     data-id="${service.id}" 
+                     style="background: ${isSelected ? 'rgba(196,160,116,0.1)' : 'rgba(255,255,255,0.9)'}; 
+                            border: 2px solid ${isSelected ? 'var(--color-champagne-500)' : 'rgba(0,0,0,0.08)'}; 
+                            border-radius: var(--radius-xl); 
+                            padding: 24px 16px; 
+                            cursor: pointer; 
+                            text-align: center; 
+                            backdrop-filter: blur(10px);
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                            box-shadow: ${isSelected ? '0 8px 24px rgba(196,160,116,0.15)' : '0 2px 8px rgba(0,0,0,0.04)'};">
+                  <div style="font-size: 32px; margin-bottom: 12px; transition: transform 0.3s;" class="chip-icon">${service.icon}</div>
+                  <div class="chip-text" style="font-size: 15px; font-weight: ${isSelected ? '600' : '500'}; color: ${isSelected ? 'var(--color-champagne-700)' : 'var(--color-text-primary)'}; line-height: 1.3;">${service.name}</div>
+                </div>
+              `;
+            }).join('')}
           </div>
 
         </div>
@@ -315,60 +311,48 @@
 
       this.elements.stepContainer.innerHTML = html;
 
-      // Logic for Custom Dropdown
-      const dropdownContainer = this.elements.stepContainer.querySelector('#services-dropdown');
-      const trigger = dropdownContainer.querySelector('.estimator-dropdown-trigger');
-      const menu = dropdownContainer.querySelector('.estimator-dropdown-menu');
-      const tagsContainer = dropdownContainer.querySelector('.estimator-selected-tags');
-      const checkboxes = dropdownContainer.querySelectorAll('input[type="checkbox"]');
-      const dropdownIcon = dropdownContainer.querySelector('.dropdown-icon');
-
-      trigger.addEventListener('click', () => {
-        const isMenuOpen = menu.style.display === 'block';
-        menu.style.display = isMenuOpen ? 'none' : 'block';
-        trigger.style.borderColor = isMenuOpen ? 'rgba(0,0,0,0.2)' : 'var(--color-champagne-500)';
-        dropdownIcon.style.transform = isMenuOpen ? 'rotate(0deg)' : 'rotate(180deg)';
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!dropdownContainer.contains(e.target) && menu.style.display === 'block') {
-          menu.style.display = 'none';
-          trigger.style.borderColor = 'rgba(0,0,0,0.2)';
-          dropdownIcon.style.transform = 'rotate(0deg)';
-        }
-      });
-
-      const updateSelection = () => {
-        const selectedIds = [];
-        const selectedNames = [];
-        
-        checkboxes.forEach(cb => {
-          if (cb.checked) {
-            selectedIds.push(cb.value);
-            selectedNames.push(cb.dataset.name);
-            cb.closest('label').style.background = 'rgba(196,160,116,0.05)';
-          } else {
-            cb.closest('label').style.background = 'transparent';
-          }
-        });
-
-        this.state.set('selectedCustomServices', selectedIds);
-        this.state.set('canProceed', selectedIds.length > 0);
-
-        if (selectedNames.length === 0) {
-          tagsContainer.innerHTML = '<span style="color: var(--color-text-tertiary); font-size: 16px;">Select services (e.g. Kitchen, Wardrobe)...</span>';
-        } else {
-          tagsContainer.innerHTML = selectedNames.map(name => 
-            `<span style="background: rgba(196,160,116,0.1); color: var(--color-champagne-600); border: 1px solid rgba(196,160,116,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 500;">${name}</span>`
-          ).join('');
-        }
+      const chips = this.elements.stepContainer.querySelectorAll('.estimator-service-chip');
+      
+      const updateNextButtonState = () => {
+          const currentSelected = this.state.get('selectedCustomServices') || [];
+          this.state.set('canProceed', currentSelected.length > 0);
+          this.updateNavigationButtons(this.state.get());
       };
 
-      checkboxes.forEach(cb => {
-        cb.addEventListener('change', updateSelection);
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          const serviceId = chip.dataset.id;
+          let currentSelected = this.state.get('selectedCustomServices') || [];
+          const textElement = chip.querySelector('.chip-text');
+          const iconElement = chip.querySelector('.chip-icon');
+          
+          if (currentSelected.includes(serviceId)) {
+            currentSelected = currentSelected.filter(id => id !== serviceId);
+            chip.style.background = 'rgba(255,255,255,0.9)';
+            chip.style.borderColor = 'rgba(0,0,0,0.08)';
+            chip.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+            chip.classList.remove('selected');
+            textElement.style.fontWeight = '500';
+            textElement.style.color = 'var(--color-text-primary)';
+            iconElement.style.transform = 'scale(1)';
+          } else {
+            currentSelected.push(serviceId);
+            chip.style.background = 'rgba(196,160,116,0.1)';
+            chip.style.borderColor = 'var(--color-champagne-500)';
+            chip.style.boxShadow = '0 8px 24px rgba(196,160,116,0.15)';
+            chip.classList.add('selected');
+            textElement.style.fontWeight = '600';
+            textElement.style.color = 'var(--color-champagne-700)';
+            iconElement.style.transform = 'scale(1.1)';
+          }
+          
+          this.state.set('selectedCustomServices', currentSelected);
+          updateNextButtonState();
+        });
       });
 
-      updateSelection();
+      // Run on load to lock/unlock Next button immediately
+      updateNextButtonState();
     }
 
     renderBudgetStep() {
@@ -788,7 +772,7 @@
         selectedPackage: this.state.get('selectedPackage'),
         budget: this.state.get('budget'),
         budgetType: this.state.get('budgetType'),
-        customServices: this.state.get('selectedCustomServices')
+        customServices: this.state.get('selectedCustomServices') || []
       };
 
       const categoryNames = {
@@ -807,6 +791,17 @@
         'japandi': 'Japandi',
         'classic': 'Classic'
       };
+      
+      // Upgrade: Display actual names of selected custom services
+      const servicesMap = {
+        'modular_kitchen': 'Modular Kitchen', 'wardrobe': 'Wardrobes', 
+        'false_ceiling': 'False Ceiling', 'wall_paneling': 'Wall Paneling',
+        'painting': 'Painting', 'flooring': 'Flooring', 'plumbing': 'Plumbing',
+        'electrical': 'Electrical', 'custom_furniture': 'Custom Furniture',
+        'glass_work': 'Glass Work', 'bathroom': 'Bathroom', 'civil_work': 'Civil Work',
+        'doors_windows': 'Doors/Windows', 'automation': 'Smart Home'
+      };
+      const customServiceNames = summary.customServices.map(id => servicesMap[id] || id).join(', ');
 
       let html = `
         <div class="estimator-step__header">
@@ -825,9 +820,9 @@
                 </div>
                 
                 ${summary.projectCategory === 'custom_services' ? `
-                <div class="estimator-summary-item">
-                  <span class="estimator-summary-item__label">Selected Services</span>
-                  <span class="estimator-summary-item__value">${summary.customServices ? summary.customServices.length : 0} Services Selected</span>
+                <div class="estimator-summary-item" style="align-items: flex-start;">
+                  <span class="estimator-summary-item__label" style="min-width: 120px;">Selected Services</span>
+                  <span class="estimator-summary-item__value" style="text-align: right; line-height: 1.4;">${customServiceNames || 'None Selected'}</span>
                 </div>
                 <div class="estimator-summary-item">
                   <span class="estimator-summary-item__label">Preferred Aesthetic</span>

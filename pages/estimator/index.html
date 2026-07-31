@@ -189,13 +189,71 @@
             <p class="estimator-loading__text">Loading Infinite Interior OS...</p>
         </div>
         
+        <!-- Premium Landing Section (Hidden until loaded) -->
+        <section id="estimator-landing" class="estimator-landing" hidden>
+            <div class="estimator-landing__container">
+                <div class="estimator-landing__header">
+                    <h1 class="estimator-landing__title">Build Your Dream Interior</h1>
+                    <p class="estimator-landing__subtitle">Get Instant Professional BOQ & Cost Estimate</p>
+                </div>
+                
+                <div class="estimator-landing__cards">
+                    <!-- Residential -->
+                    <div class="estimator-landing__card" data-category="residential" role="button" tabindex="0" aria-label="Select Residential category">
+                        <div class="estimator-landing__card-icon">🏠</div>
+                        <h3 class="estimator-landing__card-title">Residential</h3>
+                        <p class="estimator-landing__card-description">Transform your home into a luxury sanctuary with premium interior design</p>
+                        <div class="estimator-landing__card-background"></div>
+                    </div>
+                    
+                    <!-- Commercial -->
+                    <div class="estimator-landing__card" data-category="commercial" role="button" tabindex="0" aria-label="Select Commercial category">
+                        <div class="estimator-landing__card-icon">🏢</div>
+                        <h3 class="estimator-landing__card-title">Commercial</h3>
+                        <p class="estimator-landing__card-description">Create inspiring workspaces that boost productivity and brand identity</p>
+                        <div class="estimator-landing__card-background"></div>
+                    </div>
+                    
+                    <!-- Hospitality -->
+                    <div class="estimator-landing__card" data-category="hospitality" role="button" tabindex="0" aria-label="Select Hospitality category">
+                        <div class="estimator-landing__card-icon">🏨</div>
+                        <h3 class="estimator-landing__card-title">Hospitality</h3>
+                        <p class="estimator-landing__card-description">Design memorable experiences for hotels, restaurants, and entertainment venues</p>
+                        <div class="estimator-landing__card-background"></div>
+                    </div>
+                    
+                    <!-- Retail -->
+                    <div class="estimator-landing__card" data-category="retail" role="button" tabindex="0" aria-label="Select Retail category">
+                        <div class="estimator-landing__card-icon">🛍️</div>
+                        <h3 class="estimator-landing__card-title">Retail</h3>
+                        <p class="estimator-landing__card-description">Create stunning showrooms and boutiques that captivate customers</p>
+                        <div class="estimator-landing__card-background"></div>
+                    </div>
+                    
+                    <!-- A La Carte Custom -->
+                    <div class="estimator-landing__card" data-category="custom_services" role="button" tabindex="0" aria-label="Select A La Carte Custom category">
+                        <div class="estimator-landing__card-icon">🛠️</div>
+                        <h3 class="estimator-landing__card-title">A La Carte Custom</h3>
+                        <p class="estimator-landing__card-description">Select specific services like Kitchen, Wardrobes, Ceiling, and more</p>
+                        <div class="estimator-landing__card-background"></div>
+                    </div>
+                </div>
+                
+                <div class="estimator-landing__actions">
+                    <button id="estimator-landing-continue" class="estimator-landing__continue button button--primary" disabled>
+                        Continue to Estimator
+                    </button>
+                </div>
+            </div>
+        </section>
+        
         <!-- Main Content (Hidden until loaded) -->
         <main id="estimator-main" class="estimator-main" hidden>
             <!-- Wizard Container -->
             <div id="estimator-wizard" class="estimator-wizard">
-                <!-- Progress Indicator -->
-                <div id="estimator-progress" class="estimator-progress" aria-label="Wizard progress">
-                    <!-- Progress steps will be injected here -->
+                <!-- Premium Stepper -->
+                <div id="estimator-stepper" class="estimator-stepper" aria-label="Wizard progress">
+                    <!-- Stepper will be injected here -->
                 </div>
                 
                 <!-- Step Container -->
@@ -205,11 +263,11 @@
                 
                 <!-- Navigation Controls -->
                 <div id="estimator-navigation" class="estimator-navigation">
-                    <button id="estimator-prev" class="button button--secondary" disabled>
-                        Previous
+                    <button id="estimator-prev" class="estimator-navigation__button estimator-navigation__button--prev" disabled>
+                        ← Previous
                     </button>
-                    <button id="estimator-next" class="button button--primary">
-                        Next
+                    <button id="estimator-next" class="estimator-navigation__button estimator-navigation__button--next">
+                        Next →
                     </button>
                 </div>
             </div>

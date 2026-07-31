@@ -20,7 +20,7 @@
     init() {
       this.cacheElements();
       this.bindEvents();
-      this.renderProgress();
+      this.renderLanding();
       this.hideLoading();
     }
 
@@ -29,7 +29,10 @@
         app: document.getElementById('estimator-app'),
         loading: document.getElementById('estimator-loading'),
         main: document.getElementById('estimator-main'),
+        landing: document.getElementById('estimator-landing'),
+        landingContinue: document.getElementById('estimator-landing-continue'),
         wizard: document.getElementById('estimator-wizard'),
+        stepper: document.getElementById('estimator-stepper'),
         progress: document.getElementById('estimator-progress'),
         stepContainer: document.getElementById('estimator-step-container'),
         navigation: document.getElementById('estimator-navigation'),
@@ -42,16 +45,57 @@
     bindEvents() {
       this.elements.prevButton.addEventListener('click', () => this.handlePrevious());
       this.elements.nextButton.addEventListener('click', () => this.handleNext());
+      this.elements.landingContinue.addEventListener('click', () => this.handleLandingContinue());
       this.state.subscribe((state) => this.handleStateChange(state));
     }
 
     handleStateChange(state) {
       this.updateNavigationButtons(state);
       this.updateProgress(state);
-      
+
       if (state.currentStep && this.currentRenderedStep !== state.currentStep) {
         this.renderStep(state.currentStep);
       }
+    }
+
+    /**
+     * Render Premium Landing Page
+     */
+    renderLanding() {
+      this.elements.landing.hidden = false;
+      this.elements.main.hidden = true;
+
+      const cards = this.elements.landing.querySelectorAll('.estimator-landing__card');
+      cards.forEach(card => {
+        card.addEventListener('click', (e) => this.handleLandingCardSelection(e));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleLandingCardSelection(e);
+          }
+        });
+      });
+    }
+
+    handleLandingCardSelection(event) {
+      const card = event.currentTarget;
+      const categoryId = card.dataset.category;
+
+      this.state.set('projectCategory', categoryId);
+
+      this.elements.landing.querySelectorAll('.estimator-landing__card').forEach(c => {
+        c.classList.remove('estimator-landing__card--selected');
+      });
+      card.classList.add('estimator-landing__card--selected');
+
+      this.elements.landingContinue.disabled = false;
+    }
+
+    handleLandingContinue() {
+      this.elements.landing.hidden = true;
+      this.elements.main.hidden = false;
+      this.renderProgress();
+      this.renderStep(1);
     }
 
     handlePrevious() {
@@ -108,36 +152,43 @@
     renderProgress(state) {
       const steps = (typeof this.router.getAllSteps === 'function') ? this.router.getAllSteps() : [];
       const currentStep = state ? state.currentStep : (this.router.currentStep || 1);
-      
-      // Use router's steps if available (this will be useful for our dynamic branch)
-      const defaultTitles = ['Category', 'Type', 'Information', 'Requirements', 'Style', 'Package', 'Budget', 'Contact'];
-      const totalStepsToRender = steps.length > 0 ? steps.length : 8;
-      
-      let html = '<div class="estimator-progress-line"></div>';
-      html += '<div class="estimator-progress-steps">';
-      
-      for(let index = 0; index < totalStepsToRender; index++) {
+
+      // Premium stepper with step names
+      const stepNames = ['Project', 'Details', 'Furniture', 'Style', 'Services', 'Budget', 'BOQ'];
+      const totalStepsToRender = steps.length > 0 ? steps.length : 7;
+
+      let html = '<div class="estimator-stepper__container">';
+
+      for (let index = 0; index < totalStepsToRender; index++) {
         const stepNumber = index + 1;
         const isCompleted = stepNumber < currentStep;
         const isActive = stepNumber === currentStep;
-        const title = steps[index] ? steps[index].title : defaultTitles[index];
-        
+        const isFuture = stepNumber > currentStep;
+        const title = stepNames[index] || `Step ${stepNumber}`;
+
         let statusClass = '';
-        if (isCompleted) statusClass = 'estimator-progress-step--completed';
-        if (isActive) statusClass = 'estimator-progress-step--active';
-        
+        if (isCompleted) statusClass = 'estimator-stepper__step--completed';
+        if (isActive) statusClass = 'estimator-stepper__step--active';
+        if (isFuture) statusClass = 'estimator-stepper__step--future';
+
         html += `
-          <div class="estimator-progress-step ${statusClass}">
-            <div class="estimator-progress-step__indicator">
+          <div class="estimator-stepper__step ${statusClass}">
+            <div class="estimator-stepper__indicator">
               ${isCompleted ? '✓' : stepNumber}
             </div>
-            <span class="estimator-progress-step__label">${title}</span>
+            <span class="estimator-stepper__label">${title}</span>
           </div>
         `;
+
+        // Add arrow between steps (except after last step)
+        if (index < totalStepsToRender - 1) {
+          const arrowClass = isActive ? 'estimator-stepper__arrow--active' : '';
+          html += `<div class="estimator-stepper__arrow ${arrowClass}">→</div>`;
+        }
       }
-      
+
       html += '</div>';
-      this.elements.progress.innerHTML = html;
+      this.elements.stepper.innerHTML = html;
     }
 
     updateProgress(state) {
@@ -178,25 +229,25 @@
       switch (stepMapper) {
         case '1':
         case 'category':
-          this.renderPackageStep(); break;
-        
-        // STANDARD FLOW
+          this.renderProjectTypeStep(); break;
+
+        // RESIDENTIAL FLOW
         case '2':
         case 'type':
-          this.renderBudgetStep(); break;
+          this.renderBasicDetailsStep(); break;
         case '3':
         case 'info':
-          this.renderRoomsStep(); break;
+          this.renderFurnitureSelectionStep(); break;
         case '4':
         case 'requirements':
-          this.renderModulesStep(); break;
+          this.renderDesignStyleStep(); break;
         case '5':
         case 'style':
-          this.renderMaterialsStep(); break;
+          this.renderOptionalServicesStep(); break;
         case '6':
         case 'package':
-          this.renderDetailsStep(); break;
-        
+          this.renderBudgetStep(); break;
+
         // CUSTOM SERVICES FLOW
         case 'custom_services_selection':
           this.renderCustomServicesStep(); break;
@@ -208,8 +259,8 @@
         case '8':
         case 'contact':
           this.renderSummaryStep(); break;
-        
-        default: 
+
+        default:
           this.elements.stepContainer.innerHTML = '<div style="text-align: center; padding: 40px;"><h2>Loading...</h2></div>';
       }
     }
@@ -1127,6 +1178,602 @@
       const isValid = clientDetails.name && clientDetails.phone && clientDetails.email && clientDetails.city;
       
       this.state.set('canProceed', isValid);
+    }
+
+    /**
+     * Render Step 1 - Project Type (Residential Flow)
+     */
+    renderProjectTypeStep() {
+      const projectTypes = [
+        { id: 'apartment', name: 'Apartment', icon: '🏢', description: 'Modern apartment living with smart space optimization' },
+        { id: 'villa', name: 'Villa', icon: '🏠', description: 'Luxury independent villa with premium amenities' },
+        { id: 'independent_house', name: 'Independent House', icon: '🏡', description: 'Standalone house with complete design freedom' },
+        { id: 'duplex', name: 'Duplex', icon: '🏘️', description: 'Two-story connected living spaces' },
+        { id: 'penthouse', name: 'Penthouse', icon: '🌆', description: 'Top-floor luxury with panoramic views' },
+        { id: 'farmhouse', name: 'Farmhouse', icon: '🌾', description: 'Rural retreat with rustic charm' },
+        { id: 'holiday_home', name: 'Holiday Home', icon: '🏖️', description: 'Vacation property for relaxation' },
+        { id: 'builder_floor', name: 'Builder Floor', icon: '🏗️', description: 'Independent floor in multi-story building' },
+        { id: 'studio_apartment', name: 'Studio Apartment', icon: '🎨', description: 'Compact living with smart design solutions' }
+      ];
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Select Project Type</h2>
+          <p class="estimator-step__description">Choose the type of residential property</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-card-grid estimator-card-grid--3">
+      `;
+
+      projectTypes.forEach(type => {
+        const isSelected = this.state.get('projectType') === type.id;
+        html += `
+          <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}"
+               data-type="${type.id}"
+               role="button"
+               tabindex="0"
+               aria-label="Select ${type.name}"
+               aria-pressed="${isSelected}">
+            <div class="estimator-card__icon">
+              <span style="font-size: 40px;">${type.icon}</span>
+            </div>
+            <h3 class="estimator-card__title">${type.name}</h3>
+            <p class="estimator-card__description">${type.description}</p>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
+        card.addEventListener('click', (e) => this.handleProjectTypeSelection(e));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleProjectTypeSelection(e);
+          }
+        });
+      });
+    }
+
+    handleProjectTypeSelection(event) {
+      const card = event.currentTarget;
+      const typeId = card.dataset.type;
+
+      this.state.set('projectType', typeId);
+
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(c => {
+        c.classList.remove('estimator-card--selected');
+        c.setAttribute('aria-pressed', 'false');
+      });
+      card.classList.add('estimator-card--selected');
+      card.setAttribute('aria-pressed', 'true');
+
+      this.state.set('canProceed', true);
+    }
+
+    /**
+     * Render Step 2 - Basic Details
+     */
+    renderBasicDetailsStep() {
+      const projectInfo = this.state.get('projectInfo') || {};
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Basic Details</h2>
+          <p class="estimator-step__description">Tell us about your space</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-form">
+            <div class="estimator-form__group">
+              <input type="text" id="city" class="estimator-form__input" placeholder=" " value="${projectInfo.city || ''}" aria-required="true">
+              <label class="estimator-form__label" for="city">City</label>
+            </div>
+
+            <div class="estimator-form__row">
+              <div class="estimator-form__group">
+                <input type="number" id="carpetArea" class="estimator-form__input" placeholder=" " value="${projectInfo.carpetArea || ''}" aria-required="true">
+                <label class="estimator-form__label" for="carpetArea">Carpet Area (sqft)</label>
+              </div>
+              <div class="estimator-form__group">
+                <input type="number" id="builtUpArea" class="estimator-form__input" placeholder=" " value="${projectInfo.builtUpArea || ''}">
+                <label class="estimator-form__label" for="builtUpArea">Built-up Area (sqft)</label>
+              </div>
+            </div>
+
+            <div class="estimator-form__row">
+              <div class="estimator-form__group">
+                <input type="number" id="floors" class="estimator-form__input" placeholder=" " value="${projectInfo.floors || ''}">
+                <label class="estimator-form__label" for="floors">Number of Floors</label>
+              </div>
+              <div class="estimator-form__group">
+                <input type="number" id="bedrooms" class="estimator-form__input" placeholder=" " value="${projectInfo.bedrooms || ''}" aria-required="true">
+                <label class="estimator-form__label" for="bedrooms">Bedrooms</label>
+              </div>
+            </div>
+
+            <div class="estimator-form__row">
+              <div class="estimator-form__group">
+                <input type="number" id="bathrooms" class="estimator-form__input" placeholder=" " value="${projectInfo.bathrooms || ''}">
+                <label class="estimator-form__label" for="bathrooms">Bathrooms</label>
+              </div>
+              <div class="estimator-form__group">
+                <input type="number" id="balconies" class="estimator-form__input" placeholder=" " value="${projectInfo.balconies || ''}">
+                <label class="estimator-form__label" for="balconies">Balconies</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      const inputs = this.elements.stepContainer.querySelectorAll('input');
+      inputs.forEach(input => {
+        input.addEventListener('input', (e) => this.handleBasicDetailsChange(e));
+      });
+
+      this.validateBasicDetails();
+    }
+
+    handleBasicDetailsChange(event) {
+      const field = event.target.id;
+      const value = event.target.value;
+
+      const projectInfo = this.state.get('projectInfo') || {};
+      projectInfo[field] = value;
+      this.state.set('projectInfo', projectInfo);
+
+      this.validateBasicDetails();
+    }
+
+    validateBasicDetails() {
+      const projectInfo = this.state.get('projectInfo') || {};
+      const isValid = projectInfo.city && projectInfo.carpetArea && projectInfo.bedrooms;
+      this.state.set('canProceed', isValid);
+    }
+
+    /**
+     * Render Step 3 - Furniture Selection
+     */
+    renderFurnitureSelectionStep() {
+      const projectInfo = this.state.get('projectInfo') || {};
+      const bedroomCount = parseInt(projectInfo.bedrooms) || 2;
+      const selectedFurniture = this.state.get('selectedFurniture') || {};
+
+      const roomTypes = [
+        {
+          id: 'living_room',
+          name: 'Living Room',
+          items: [
+            { id: 'sofa', name: 'Sofa Set', optional: false },
+            { id: 'coffee_table', name: 'Coffee Table', optional: false },
+            { id: 'tv_unit', name: 'TV Unit', optional: true },
+            { id: 'display_units', name: 'Display Units', optional: true }
+          ]
+        },
+        {
+          id: 'dining',
+          name: 'Dining',
+          items: [
+            { id: 'dining_table', name: 'Dining Table', optional: false },
+            { id: 'sideboard', name: 'Sideboard', optional: true }
+          ]
+        },
+        {
+          id: 'kitchen',
+          name: 'Kitchen',
+          items: [
+            { id: 'modular_kitchen', name: 'Modular Kitchen', optional: false },
+            { id: 'chimney', name: 'Chimney', optional: true },
+            { id: 'dishwasher', name: 'Dishwasher', optional: true }
+          ]
+        },
+        {
+          id: 'master_bedroom',
+          name: 'Master Bedroom',
+          items: [
+            { id: 'bed', name: 'Bed', optional: false },
+            { id: 'wardrobe', name: 'Wardrobe', optional: false },
+            { id: 'nightstands', name: 'Nightstands', optional: true },
+            { id: 'dresser', name: 'Dresser', optional: true }
+          ]
+        }
+      ];
+
+      // Add additional bedrooms based on count
+      for (let i = 2; i <= bedroomCount; i++) {
+        roomTypes.push({
+          id: `bedroom_${i}`,
+          name: `Bedroom ${i}`,
+          items: [
+            { id: `bed_${i}`, name: 'Bed', optional: false },
+            { id: `wardrobe_${i}`, name: 'Wardrobe', optional: false },
+            { id: `study_table_${i}`, name: 'Study Table', optional: true }
+          ]
+        });
+      }
+
+      roomTypes.push(
+        { id: 'bathroom', name: 'Bathroom', items: [{ id: 'vanity', name: 'Vanity', optional: false }] },
+        { id: 'study', name: 'Study', items: [{ id: 'study_table', name: 'Study Table', optional: true }] },
+        { id: 'balcony', name: 'Balcony', items: [{ id: 'seating', name: 'Seating', optional: true }] },
+        { id: 'store', name: 'Store Room', items: [{ id: 'shelves', name: 'Shelves', optional: true }] }
+      );
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Furniture Selection</h2>
+          <p class="estimator-step__description">Select furniture for each room</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-furniture">
+      `;
+
+      roomTypes.forEach(room => {
+        html += `
+          <div class="estimator-furniture__room">
+            <h3 class="estimator-furniture__room-title">${room.name}</h3>
+            <div class="estimator-furniture__items">
+        `;
+
+        room.items.forEach(item => {
+          const itemKey = `${room.id}_${item.id}`;
+          const isSelected = selectedFurniture[itemKey]?.selected || false;
+          const quantity = selectedFurniture[itemKey]?.quantity || 1;
+
+          html += `
+            <div class="estimator-furniture__item">
+              <div class="estimator-furniture__item-info">
+                <span class="estimator-furniture__item-name">${item.name}</span>
+                ${item.optional ? '<span class="estimator-furniture__item-optional">(Optional)</span>' : ''}
+              </div>
+              <div class="estimator-furniture__item-controls">
+                <div class="estimator-toggle ${isSelected ? 'estimator-toggle--active' : ''}" data-item="${itemKey}" role="button" tabindex="0" aria-label="Toggle ${item.name}">
+                  <div class="estimator-toggle__slider"></div>
+                </div>
+                ${isSelected ? `
+                  <div class="estimator-quantity">
+                    <button class="estimator-quantity__button" data-action="decrease" data-item="${itemKey}">−</button>
+                    <span class="estimator-quantity__value">${quantity}</span>
+                    <button class="estimator-quantity__button" data-action="increase" data-item="${itemKey}">+</button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      // Bind toggle events
+      this.elements.stepContainer.querySelectorAll('.estimator-toggle').forEach(toggle => {
+        toggle.addEventListener('click', (e) => this.handleFurnitureToggle(e));
+        toggle.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleFurnitureToggle(e);
+          }
+        });
+      });
+
+      // Bind quantity events
+      this.elements.stepContainer.querySelectorAll('.estimator-quantity__button').forEach(button => {
+        button.addEventListener('click', (e) => this.handleQuantityChange(e));
+      });
+
+      this.validateFurnitureSelection();
+    }
+
+    handleFurnitureToggle(event) {
+      const toggle = event.currentTarget;
+      const itemKey = toggle.dataset.item;
+
+      const selectedFurniture = this.state.get('selectedFurniture') || {};
+      if (!selectedFurniture[itemKey]) {
+        selectedFurniture[itemKey] = { selected: false, quantity: 1 };
+      }
+
+      selectedFurniture[itemKey].selected = !selectedFurniture[itemKey].selected;
+      this.state.set('selectedFurniture', selectedFurniture);
+
+      this.renderFurnitureSelectionStep();
+    }
+
+    handleQuantityChange(event) {
+      const button = event.currentTarget;
+      const action = button.dataset.action;
+      const itemKey = button.dataset.item;
+
+      const selectedFurniture = this.state.get('selectedFurniture') || {};
+      if (selectedFurniture[itemKey]) {
+        if (action === 'increase') {
+          selectedFurniture[itemKey].quantity++;
+        } else if (action === 'decrease' && selectedFurniture[itemKey].quantity > 1) {
+          selectedFurniture[itemKey].quantity--;
+        }
+        this.state.set('selectedFurniture', selectedFurniture);
+        this.renderFurnitureSelectionStep();
+      }
+    }
+
+    validateFurnitureSelection() {
+      const selectedFurniture = this.state.get('selectedFurniture') || {};
+      const hasSelection = Object.values(selectedFurniture).some(item => item.selected);
+      this.state.set('canProceed', hasSelection);
+    }
+
+    /**
+     * Render Step 4 - Design Style
+     */
+    renderDesignStyleStep() {
+      const selectedStyle = this.state.get('designStyle');
+
+      const styles = [
+        { id: 'modern', name: 'Modern', icon: '🏢', description: 'Clean lines, minimal clutter, neutral colors', colors: ['#E5E5E5', '#808080', '#2C2C2C'], luxury: 'High', maintenance: 'Low', cost: 'Premium' },
+        { id: 'contemporary', name: 'Contemporary', icon: '🎨', description: 'Current trends, curved lines, mixed materials', colors: ['#F5F5DC', '#D2691E', '#4A4A4A'], luxury: 'High', maintenance: 'Medium', cost: 'Premium' },
+        { id: 'minimalist', name: 'Minimalist', icon: '⬜', description: 'Less is more, functional, monochromatic', colors: ['#FFFFFF', '#F0F0F0', '#333333'], luxury: 'Medium', maintenance: 'Low', cost: 'Standard' },
+        { id: 'scandinavian', name: 'Scandinavian', icon: '❄️', description: 'Cozy, natural materials, light colors', colors: ['#FEFEFE', '#E8E8E8', '#8B7355'], luxury: 'Medium', maintenance: 'Low', cost: 'Standard' },
+        { id: 'japandi', name: 'Japandi', icon: '🎋', description: 'Japanese minimalism meets Scandinavian cozy', colors: ['#F5F5F0', '#D4C4A8', '#4A4A4A'], luxury: 'High', maintenance: 'Low', cost: 'Premium' },
+        { id: 'industrial', name: 'Industrial', icon: '🏭', description: 'Raw materials, exposed elements, bold', colors: ['#696969', '#2F4F4F', '#1C1C1C'], luxury: 'Medium', maintenance: 'Medium', cost: 'Standard' },
+        { id: 'luxury_modern', name: 'Luxury Modern', icon: '✨', description: 'High-end materials, statement pieces', colors: ['#FFD700', '#1A1A1A', '#FFFFFF'], luxury: 'Ultra', maintenance: 'Medium', cost: 'Ultra Luxury' },
+        { id: 'classic_luxury', name: 'Classic Luxury', icon: '👑', description: 'Timeless elegance, rich materials', colors: ['#8B4513', '#DAA520', '#2F2F2F'], luxury: 'Ultra', maintenance: 'High', cost: 'Ultra Luxury' },
+        { id: 'traditional_indian', name: 'Traditional Indian', icon: '🪷', description: 'Heritage patterns, warm colors, craftsmanship', colors: ['#FF6347', '#FFD700', '#8B0000'], luxury: 'High', maintenance: 'High', cost: 'Luxury' },
+        { id: 'rajputana', name: 'Rajputana Heritage', icon: '🏰', description: 'Royal Rajasthani elegance, intricate details', colors: ['#B8860B', '#800020', '#F5DEB3'], luxury: 'Ultra', maintenance: 'High', cost: 'Ultra Luxury' },
+        { id: 'chettinad', name: 'Chettinad', icon: '🕌', description: 'South Indian heritage, bold patterns', colors: ['#A0522D', '#D2691E', '#FAEBD7'], luxury: 'High', maintenance: 'High', cost: 'Luxury' },
+        { id: 'modern_indian_fusion', name: 'Modern Indian Fusion', icon: '🇮🇳', description: 'Traditional meets contemporary', colors: ['#FF7F50', '#F0E68C', '#2E8B57'], luxury: 'High', maintenance: 'Medium', cost: 'Premium' },
+        { id: 'minimalist_indian', name: 'Minimalist Indian', icon: '🪔', description: 'Subtle Indian elements, clean design', colors: ['#FAF9F6', '#D2B48C', '#4A4A4A'], luxury: 'Medium', maintenance: 'Low', cost: 'Standard' },
+        { id: 'indian_colonial', name: 'Indian Colonial', icon: '🏛️', description: 'British colonial influence with Indian touch', colors: ['#DEB887', '#8B4513', '#F5F5DC'], luxury: 'High', maintenance: 'Medium', cost: 'Premium' },
+        { id: 'desi_bohemian', name: 'Desi Bohemian', icon: '🎭', description: 'Eclectic, colorful, free-spirited', colors: ['#FF69B4', '#FFD700', '#9370DB'], luxury: 'Medium', maintenance: 'Medium', cost: 'Standard' },
+        { id: 'rustic_indian', name: 'Rustic Indian', icon: '🪵', description: 'Natural materials, earthy tones', colors: ['#8B7355', '#A0522D', '#F5DEB3'], luxury: 'Medium', maintenance: 'Medium', cost: 'Standard' }
+      ];
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Design Style</h2>
+          <p class="estimator-step__description">Choose your preferred design aesthetic</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-card-grid estimator-card-grid--4">
+      `;
+
+      styles.forEach(style => {
+        const isSelected = selectedStyle === style.id;
+        html += `
+          <div class="estimator-style-card ${isSelected ? 'estimator-style-card--selected' : ''}" data-style="${style.id}" role="button" tabindex="0" aria-label="Select ${style.name} style">
+            <div class="estimator-style-card__image">
+              <span>${style.icon}</span>
+            </div>
+            <div class="estimator-style-card__content">
+              <h3 class="estimator-style-card__title">${style.name}</h3>
+              <p class="estimator-style-card__description">${style.description}</p>
+              <div class="estimator-style-card__palette">
+                ${style.colors.map(color => `<div class="estimator-style-card__color" style="background: ${color};"></div>`).join('')}
+              </div>
+              <div class="estimator-style-card__meta">
+                <span class="estimator-style-card__badge">${style.luxury}</span>
+                <span>${style.maintenance} Maintenance</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      this.elements.stepContainer.querySelectorAll('.estimator-style-card').forEach(card => {
+        card.addEventListener('click', (e) => this.handleStyleSelection(e));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleStyleSelection(e);
+          }
+        });
+      });
+    }
+
+    handleStyleSelection(event) {
+      const card = event.currentTarget;
+      const styleId = card.dataset.style;
+
+      this.state.set('designStyle', styleId);
+
+      this.elements.stepContainer.querySelectorAll('.estimator-style-card').forEach(c => {
+        c.classList.remove('estimator-style-card--selected');
+      });
+      card.classList.add('estimator-style-card--selected');
+
+      this.state.set('canProceed', true);
+    }
+
+    /**
+     * Render Step 5 - Optional Services
+     */
+    renderOptionalServicesStep() {
+      const selectedServices = this.state.get('selectedServices') || [];
+
+      const services = [
+        { id: 'false_ceiling', name: 'False Ceiling', icon: '✨', description: 'POP, Gypsum, and cove lighting' },
+        { id: 'electrical', name: 'Electrical Work', icon: '⚡', description: 'Wiring, switches, and fixtures' },
+        { id: 'lighting', name: 'Lighting Design', icon: '💡', description: 'Ambient, task, and accent lighting' },
+        { id: 'painting', name: 'Painting', icon: '🎨', description: 'Interior and exterior painting' },
+        { id: 'wallpaper', name: 'Wallpaper', icon: '🖼️', description: 'Premium wallpaper installation' },
+        { id: 'smart_home', name: 'Smart Home', icon: '🏠', description: 'Automation and IoT integration' },
+        { id: 'hvac', name: 'HVAC', icon: '❄️', description: 'Air conditioning and ventilation' },
+        { id: 'cctv', name: 'CCTV Security', icon: '📹', description: 'Security camera installation' },
+        { id: 'home_theatre', name: 'Home Theatre', icon: '🎬', description: 'Entertainment system setup' },
+        { id: 'automation', name: 'Home Automation', icon: '🤖', description: 'Smart controls and sensors' },
+        { id: 'curtains', name: 'Curtains', icon: '🪟', description: 'Window treatments and drapes' },
+        { id: 'blinds', name: 'Blinds', icon: '🔲', description: 'Roller, Venetian, and vertical blinds' },
+        { id: 'civil_work', name: 'Civil Work', icon: '🏗️', description: 'Demolition and construction' },
+        { id: 'flooring', name: 'Flooring', icon: '🪵', description: 'Tiles, marble, and wooden flooring' },
+        { id: 'stone_work', name: 'Stone Work', icon: '🪨', description: 'Cladding and stone finishes' },
+        { id: 'glass_work', name: 'Glass Work', icon: '🔮', description: 'Partitions and railings' },
+        { id: 'acp', name: 'ACP Work', icon: '🏢', description: 'Aluminum composite panel cladding' },
+        { id: 'fabrication', name: 'Fabrication', icon: '🔧', description: 'Metal and wood fabrication' },
+        { id: 'landscape', name: 'Landscaping', icon: '🌿', description: 'Garden and outdoor design' },
+        { id: 'solar', name: 'Solar', icon: '☀️', description: 'Solar panel installation' },
+        { id: 'waterproofing', name: 'Waterproofing', icon: '💧', description: 'Water and damp proofing' },
+        { id: 'modular_kitchen_upgrade', name: 'Modular Kitchen Upgrade', icon: '🍳', description: 'Premium kitchen enhancements' },
+        { id: 'wardrobe_upgrade', name: 'Wardrobe Upgrade', icon: '🚪', description: 'Custom wardrobe solutions' }
+      ];
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Optional Services</h2>
+          <p class="estimator-step__description">Select additional services (Select multiple)</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-card-grid estimator-card-grid--4">
+      `;
+
+      services.forEach(service => {
+        const isSelected = selectedServices.includes(service.id);
+        html += `
+          <div class="estimator-card ${isSelected ? 'estimator-card--selected' : ''}" data-service="${service.id}" role="button" tabindex="0" aria-label="Select ${service.name}" aria-pressed="${isSelected}">
+            <div class="estimator-card__icon">
+              <span style="font-size: 36px;">${service.icon}</span>
+            </div>
+            <h3 class="estimator-card__title">${service.name}</h3>
+            <p class="estimator-card__description">${service.description}</p>
+          </div>
+        `;
+      });
+
+      html += `
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      this.elements.stepContainer.querySelectorAll('.estimator-card').forEach(card => {
+        card.addEventListener('click', (e) => this.handleServiceSelection(e));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.handleServiceSelection(e);
+          }
+        });
+      });
+
+      this.state.set('canProceed', true);
+    }
+
+    handleServiceSelection(event) {
+      const card = event.currentTarget;
+      const serviceId = card.dataset.service;
+
+      let selectedServices = this.state.get('selectedServices') || [];
+
+      if (selectedServices.includes(serviceId)) {
+        selectedServices = selectedServices.filter(id => id !== serviceId);
+      } else {
+        selectedServices.push(serviceId);
+      }
+
+      this.state.set('selectedServices', selectedServices);
+      this.renderOptionalServicesStep();
+    }
+
+    /**
+     * Render Step 6 - Budget
+     */
+    renderBudgetStep() {
+      const budget = this.state.get('budget') || 2500000;
+
+      let html = `
+        <div class="estimator-step__header">
+          <h2 class="estimator-step__title">Budget Range</h2>
+          <p class="estimator-step__description">Select your approximate budget</p>
+        </div>
+        <div class="estimator-step__content">
+          <div class="estimator-budget">
+            <div class="estimator-budget__slider-container">
+              <input type="range" id="budget-slider" class="estimator-budget__slider" min="500000" max="10000000" step="100000" value="${budget}">
+            </div>
+            <div class="estimator-budget__ranges">
+              <div class="estimator-budget__range" data-budget="1000000">
+                <div class="estimator-budget__range-label">Economy</div>
+                <div class="estimator-budget__range-value">₹10L</div>
+              </div>
+              <div class="estimator-budget__range" data-budget="2500000">
+                <div class="estimator-budget__range-label">Standard</div>
+                <div class="estimator-budget__range-value">₹25L</div>
+              </div>
+              <div class="estimator-budget__range" data-budget="5000000">
+                <div class="estimator-budget__range-label">Premium</div>
+                <div class="estimator-budget__range-value">₹50L</div>
+              </div>
+              <div class="estimator-budget__range" data-budget="7500000">
+                <div class="estimator-budget__range-label">Luxury</div>
+                <div class="estimator-budget__range-value">₹75L</div>
+              </div>
+              <div class="estimator-budget__range" data-budget="10000000">
+                <div class="estimator-budget__range-label">Ultra Luxury</div>
+                <div class="estimator-budget__range-value">₹1Cr+</div>
+              </div>
+            </div>
+            <div class="estimator-budget__display">
+              <div class="estimator-budget__amount">₹${(budget / 100000).toFixed(1)} Lakhs</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      this.elements.stepContainer.innerHTML = html;
+
+      const slider = this.elements.stepContainer.querySelector('#budget-slider');
+      slider.addEventListener('input', (e) => this.handleBudgetChange(e));
+
+      this.elements.stepContainer.querySelectorAll('.estimator-budget__range').forEach(range => {
+        range.addEventListener('click', (e) => {
+          const value = parseInt(range.dataset.budget);
+          slider.value = value;
+          this.handleBudgetChange({ target: slider });
+        });
+      });
+
+      this.state.set('canProceed', true);
+    }
+
+    handleBudgetChange(event) {
+      const value = parseInt(event.target.value);
+      this.state.set('budget', value);
+
+      const display = this.elements.stepContainer.querySelector('.estimator-budget__amount');
+      if (display) {
+        display.textContent = `₹${(value / 100000).toFixed(1)} Lakhs`;
+      }
+
+      // Update active range
+      this.elements.stepContainer.querySelectorAll('.estimator-budget__range').forEach(range => {
+        range.classList.remove('estimator-budget__range--active');
+        if (parseInt(range.dataset.budget) <= value) {
+          range.classList.add('estimator-budget__range--active');
+        }
+      });
     }
 
     showLoading() {

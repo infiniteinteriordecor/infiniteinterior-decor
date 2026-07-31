@@ -1,58 +1,41 @@
 /**
+ * js/estimator-state.js
  * Estimator State Manager
  * 
  * Global state management for the estimator module.
  * Implements a centralized state store with subscription pattern.
- * 
- * Architecture:
- * - Purpose: Single source of truth for all estimator data
- * - Dependencies: None (core module)
- * - Exports: StateManager class
  */
 
 (function() {
   'use strict';
 
-  /**
-   * State Manager Class
-   * Manages global application state with subscription pattern
-   */
   class StateManager {
     constructor() {
-      // Initial state structure
       this.state = {
-        // Wizard navigation
         currentStep: 1,
         totalSteps: 8,
         canProceed: false,
         canGoBack: false,
         
-        // Project Basics
         projectCategory: null,
         projectType: null,
         projectInfo: {},
         
-        // Package selection
         selectedPackage: null,
         packageTier: null,
         
-        // Budget
         budget: null,
         budgetRange: null,
         budgetType: 'known',
         
-        // Rooms (For standard flow)
         rooms: [],
         roomCount: 0,
         
-        // Custom Services (For A La Carte flow)
         selectedCustomServices: [],
         
-        // Modules
         selectedModules: [],
         moduleCount: 0,
         
-        // Client details
         clientDetails: {
           name: null,
           email: null,
@@ -61,28 +44,21 @@
           notes: null
         },
         
-        // Material tier & Style
         designStyle: null,
         materialTier: null,
         
-        // Comparison data
         comparisonData: null,
-        
-        // Recommendations
         recommendations: [],
         
-        // Validation status
         validationStatus: {
           currentStep: false,
           overall: false
         },
         
-        // Draft status
         isDraft: false,
         draftId: null,
         lastSaved: null,
         
-        // Calculation results
         calculations: {
           subtotal: 0,
           tax: 0,
@@ -90,7 +66,6 @@
           breakdown: {}
         },
         
-        // UI state
         ui: {
           isLoading: false,
           isSaving: false,
@@ -98,28 +73,19 @@
         }
       };
       
-      // Subscribers
       this.subscribers = [];
-      
-      // State history for undo functionality
       this.history = [];
       this.historyIndex = -1;
     }
 
-    /**
-     * Get current state
-     * @returns {Object} Current state
-     */
     getState() {
       return { ...this.state };
     }
 
-    /**
-     * Get specific state property
-     * @param {string} path - Dot notation path to property
-     * @returns {*} Property value
-     */
     get(path) {
+      // Safety check to prevent undefined 'split' crash
+      if (!path || typeof path !== 'string') return undefined;
+      
       const keys = path.split('.');
       let value = this.state;
       
@@ -134,13 +100,10 @@
       return value;
     }
 
-    /**
-     * Set state property
-     * @param {string} path - Dot notation path to property
-     * @param {*} value - New value
-     * @param {boolean} notify - Whether to notify subscribers
-     */
     set(path, value, notify = true) {
+      // Safety check to prevent undefined 'split' crash
+      if (!path || typeof path !== 'string') return;
+      
       const keys = path.split('.');
       const lastKey = keys.pop();
       let target = this.state;
@@ -152,7 +115,6 @@
         target = target[key];
       }
       
-      // Save to history before change
       this.saveToHistory();
       
       target[lastKey] = value;
@@ -162,11 +124,6 @@
       }
     }
 
-    /**
-     * Set multiple state properties at once
-     * @param {Object} updates - Object with path-value pairs
-     * @param {boolean} notify - Whether to notify subscribers
-     */
     setMany(updates, notify = true) {
       this.saveToHistory();
       
@@ -179,10 +136,6 @@
       }
     }
 
-    /**
-     * Reset state to initial values
-     * @param {boolean} notify - Whether to notify subscribers
-     */
     reset(notify = true) {
       this.saveToHistory();
       
@@ -240,15 +193,8 @@
       }
     }
 
-    /**
-     * Subscribe to state changes
-     * @param {Function} callback - Callback function
-     * @returns {Function} Unsubscribe function
-     */
     subscribe(callback) {
       this.subscribers.push(callback);
-      
-      // Return unsubscribe function
       return () => {
         const index = this.subscribers.indexOf(callback);
         if (index > -1) {
@@ -257,9 +203,6 @@
       };
     }
 
-    /**
-     * Notify all subscribers
-     */
     notify() {
       const state = this.getState();
       this.subscribers.forEach(callback => {
@@ -271,30 +214,20 @@
       });
     }
 
-    /**
-     * Save current state to history
-     */
     saveToHistory() {
-      // Remove any future history if we're not at the end
       if (this.historyIndex < this.history.length - 1) {
         this.history = this.history.slice(0, this.historyIndex + 1);
       }
       
-      // Save current state
       this.history.push(JSON.stringify(this.state));
       this.historyIndex++;
       
-      // Limit history size
       if (this.history.length > 50) {
         this.history.shift();
         this.historyIndex--;
       }
     }
 
-    /**
-     * Undo last state change
-     * @returns {boolean} Success status
-     */
     undo() {
       if (this.historyIndex > 0) {
         this.historyIndex--;
@@ -305,10 +238,6 @@
       return false;
     }
 
-    /**
-     * Redo last undone state change
-     * @returns {boolean} Success status
-     */
     redo() {
       if (this.historyIndex < this.history.length - 1) {
         this.historyIndex++;
@@ -319,28 +248,17 @@
       return false;
     }
 
-    /**
-     * Export state for persistence
-     * @returns {Object} Serializable state
-     */
     export() {
       return JSON.stringify(this.state);
     }
 
-    /**
-     * Import state from persistence
-     * @param {string} serialized - Serialized state
-     * @param {boolean} notify - Whether to notify subscribers
-     */
     import(serialized, notify = true) {
       try {
         this.saveToHistory();
         this.state = JSON.parse(serialized);
-        
         if (notify) {
           this.notify();
         }
-        
         return true;
       } catch (error) {
         console.error('State import error:', error);
@@ -349,10 +267,7 @@
     }
   }
 
-  // Create singleton instance
   const stateManager = new StateManager();
-
-  // Export for use in other modules
   window.EstimatorState = stateManager;
 
 })();

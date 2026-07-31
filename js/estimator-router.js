@@ -1,8 +1,9 @@
 /**
+ * js/estimator-router.js
  * Estimator Router
  * 
- * Internal routing system for the estimator wizard.
- * Handles step navigation, deep linking, and dynamic branching.
+ * Handles navigation logic and dynamic branching 
+ * between Standard and Custom Services flows.
  */
 
 (function() {
@@ -10,157 +11,81 @@
 
   class Router {
     constructor(stateManager) {
-      if (!stateManager) {
-        throw new Error('stateManager is required');
-      }
       this.state = stateManager;
-      this.guards = {};
-      this.currentStep = 1;
-    }
+      this.currentStepIndex = 0;
+      this.currentFlow = [];
+      
+      // Standard full-interior flow (8 steps)
+      this.standardFlow = [
+        { id: '1', title: 'Category' },
+        { id: '2', title: 'Type' },
+        { id: '3', title: 'Information' },
+        { id: '4', title: 'Requirements' },
+        { id: '5', title: 'Style' },
+        { id: '6', title: 'Package' },
+        { id: '7', title: 'Budget' },
+        { id: '8', title: 'Contact' }
+      ];
 
-    /**
-     * DYNAMIC FLOW ENGINE
-     * Automatically adjusts the steps array based on the chosen category.
-     */
-    get steps() {
-      const category = this.state.get('projectCategory');
-      
-      // Branch 1: Custom Services (A La Carte 5-Step Flow)
-      if (category === 'custom_services') {
-        return [
-          { id: 'category', name: 'category', title: 'Category' },
-          { id: 'custom_services_selection', name: 'services', title: 'Services' },
-          { id: 'style', name: 'style', title: 'Aesthetic' }, // NEW STEP ADDED HERE
-          { id: 'budget', name: 'budget', title: 'Budget' },
-          { id: 'contact', name: 'contact', title: 'Contact' }
-        ];
-      } 
-      
-      // Branch 2: Standard Full Interior (Long Flow)
-      return [
-        { id: 'category', name: 'category', title: 'Category' },
-        { id: 'type', name: 'type', title: 'Type' },
-        { id: 'info', name: 'information', title: 'Information' },
-        { id: 'requirements', name: 'requirements', title: 'Requirements' },
-        { id: 'style', name: 'style', title: 'Style' },
-        { id: 'package', name: 'package', title: 'Package' },
-        { id: 'budget', name: 'budget', title: 'Budget' },
-        { id: 'contact', name: 'contact', title: 'Contact' }
+      // A La Carte / Custom Services flow (5 steps)
+      this.customFlow = [
+        { id: '1', title: 'Category' },
+        { id: 'custom_services_selection', title: 'Services' },
+        { id: '5', title: 'Style' },
+        { id: '7', title: 'Budget' },
+        { id: '8', title: 'Contact' }
       ];
     }
 
-    get totalSteps() {
-      return this.steps.length;
-    }
-
-    _broadcastStep(stepIndex) {
-      const stepDef = this.steps[stepIndex - 1];
-      if (!stepDef) return;
-      
-      const stepPayload = {
-        id: stepDef.id,
-        name: stepDef.name,
-        title: stepDef.title,
-        index: stepIndex,
-        valueOf: function() { return this.index; },
-        toString: function() { return this.id; }
-      };
-      
-      this.state.set('currentStep', stepPayload);
-    }
-
     init() {
-      this.checkDeepLink();
-      this.checkDraftResumption();
+      this.updateFlow();
+      this.navigate(0);
+    }
+
+    updateFlow() {
+      const category = this.state.get('projectCategory');
       
-      let savedStep = this.state.get('currentStep');
-      this.currentStep = typeof savedStep === 'object' ? savedStep.index : (savedStep || 1);
+      if (category === 'custom_services') {
+        this.currentFlow = this.customFlow;
+      } else {
+        this.currentFlow = this.standardFlow;
+      }
       
-      this._broadcastStep(this.currentStep);
-      this.updateNavigationState();
-    }
-
-    next() {
-      const nextStep = this.currentStep + 1;
-      if (nextStep <= this.steps.length) {
-        if (this.canNavigateTo(nextStep)) {
-          this.currentStep = nextStep;
-          this._broadcastStep(this.currentStep);
-          this.updateNavigationState();
-          return true;
-        }
-      }
-      return false;
-    }
-
-    previous() {
-      const prevStep = this.currentStep - 1;
-      if (prevStep >= 1) {
-        this.currentStep = prevStep;
-        this._broadcastStep(this.currentStep);
-        this.updateNavigationState();
-        return true;
-      }
-      return false;
-    }
-
-    goTo(stepId) {
-      if (stepId >= 1 && stepId <= this.steps.length) {
-        if (this.canNavigateTo(stepId)) {
-          this.currentStep = stepId;
-          this._broadcastStep(this.currentStep);
-          this.updateNavigationState();
-          return true;
-        }
-      }
-      return false;
-    }
-
-    canNavigateTo(stepId) {
-      if (this.guards[stepId]) {
-        return this.guards[stepId](this.state.getState());
-      }
-      return true;
-    }
-
-    addGuard(stepId, guard) {
-      this.guards[stepId] = guard;
-    }
-
-    removeGuard(stepId) {
-      delete this.guards[stepId];
-    }
-
-    updateNavigationState() {
-      const canGoBack = this.currentStep > 1;
-      const canProceed = this.currentStep < this.steps.length;
-      
-      this.state.setMany({
-        'canGoBack': canGoBack,
-        'canProceed': canProceed
-      });
-    }
-
-    getStep(stepId) {
-      return this.steps[stepId - 1] || null;
-    }
-
-    getCurrentStep() {
-      return this.getStep(this.currentStep);
+      // Keep UI total steps in sync
+      this.totalSteps = this.currentFlow.length;
     }
 
     getAllSteps() {
-      return [...this.steps];
+      this.updateFlow();
+      return this.currentFlow;
     }
 
-    checkDeepLink() {}
-    checkDraftResumption() {}
-    updateURL() {}
+    navigate(index) {
+      if (index < 0 || index >= this.currentFlow.length) return;
+      
+      this.currentStepIndex = index;
+      const step = this.currentFlow[this.currentStepIndex];
+      
+      // Update state so UI listens and renders the mapped step
+      this.state.setMany({
+        currentStep: step.id,
+        canGoBack: this.currentStepIndex > 0,
+        canProceed: false 
+      });
+    }
 
-    reset() {
-      this.currentStep = 1;
-      this._broadcastStep(1);
-      this.updateNavigationState();
+    next() {
+      this.updateFlow();
+      if (this.currentStepIndex < this.currentFlow.length - 1) {
+        this.navigate(this.currentStepIndex + 1);
+      }
+    }
+
+    previous() {
+      this.updateFlow();
+      if (this.currentStepIndex > 0) {
+        this.navigate(this.currentStepIndex - 1);
+      }
     }
   }
 
